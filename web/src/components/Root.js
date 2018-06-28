@@ -9,11 +9,11 @@ const Root = ({ children, initialState = {} }) => {
   const store = createStore(reducers, initialState, applyMiddleware(thunk));
 
   return (
-    <BrowserRouter>
-      <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
         {children}
-      </Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   );
 };
 

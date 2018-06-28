@@ -38,7 +38,10 @@ exports.startGame = functions.https.onCall((data, context) => {
 
     return db.ref('/games').push(game).then(snapshot => {
       return db.ref(snapshot.ref).once('value').then(snapshot => {
-        return snapshot.val();
+        return {
+          gameId: snapshot.val().gameId,
+          gameUid: snapshot.key
+        };
       });
     });
   });

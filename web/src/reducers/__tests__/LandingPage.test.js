@@ -3,7 +3,8 @@ import {
   JOIN_GAME_ERROR,
   GAME_ID_CHANGED,
   STARTING_GAME,
-  STARTED_GAME
+  STARTED_GAME,
+  NAME_CHANGED
 } from '../../actions/types';
 
 describe('default behavior', () => {
@@ -33,14 +34,63 @@ it('sets an error message', () => {
   expect(newState.error).toEqual('test error');
 });
 
-it('saves the game id', () => {
-  const action = {
-    type: GAME_ID_CHANGED,
-    payload: 'new id'
-  };
+describe('game ID changed action', () => {
+  it('saves the game id', () => {
+    const action = {
+      type: GAME_ID_CHANGED,
+      payload: 'new id'
+    };
 
-  const newState = LandingPage(undefined, action);
-  expect(newState.gameId).toEqual('new id');
+    const newState = LandingPage(undefined, action);
+    expect(newState.gameId).toEqual('new id');
+  });
+
+  it('enables the join game prop', () => {
+    const action = {
+      type: GAME_ID_CHANGED,
+      payload: 'A9'
+    };
+
+    const newState = LandingPage({ ...INITIAL_STATE, name: 'azs' }, action);
+    expect(newState.joinGameEnabled).toEqual(true);
+  });
+});
+
+describe('name changed action', () => {
+  it('saves the name', () => {
+    const action = {
+      type: NAME_CHANGED,
+      payload: 'new name'
+    };
+
+    const newState = LandingPage(undefined, action);
+    expect(newState.name).toEqual('new name');
+  });
+
+  it('enables the start game prop', () => {
+    const action = {
+      type: NAME_CHANGED,
+      payload: 'new name'
+    };
+
+    let newState = LandingPage(undefined, action);
+    expect(newState.startGameEnabled).toEqual(true);
+
+    action.payload = '';
+
+    newState = LandingPage(newState, action);
+    expect(newState.startGameEnabled).toEqual(false);
+  });
+
+  it('enables the join game prop', () => {
+    const action = {
+      type: NAME_CHANGED,
+      payload: 'new name'
+    };
+
+    const newState = LandingPage({ gameId: 'A9' }, action);
+    expect(newState.joinGameEnabled).toEqual(true);
+  });
 });
 
 it('sets loading when starting a game', () => {

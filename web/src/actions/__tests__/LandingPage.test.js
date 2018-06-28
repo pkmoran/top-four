@@ -27,14 +27,21 @@ it('should return the new game ID', () => {
 
 describe('startGame', () => {
   let startGameService;
+  let addPlayer;
   let dispatch;
+  let getState;
 
   beforeEach(() => {
     startGameService = sinon.stub();
+    addPlayer = sinon.stub();
     dispatch = sinon.fake();
+    getState = sinon.stub();
+
+    getState.returns({ Game: { name: 'andrew' } });
 
     sinon.replace(services, 'startGameService', startGameService);
-    startGame()(dispatch);
+    sinon.replace(services, 'addPlayer', addPlayer);
+    startGame()(dispatch, getState);
   });
 
   afterEach(() => {
@@ -48,12 +55,13 @@ describe('startGame', () => {
   });
 
   it('should start a new game', () => {
-    startGameService.callArgWith(0, 'B9');
+    startGameService.callArgWith(0, { gameId: 'B9', gameUid: 'asdf' });
 
     const dispatchedAction = dispatch.secondCall.args[0];
 
     expect(dispatchedAction.type).toEqual(STARTED_GAME);
-    expect(dispatchedAction.payload).toEqual('B9');
+    expect(dispatchedAction.payload.gameId).toEqual('B9');
+    expect(dispatchedAction.payload.gameUid).toEqual('asdf');
   });
 
   it('should dispatch an error', () => {
@@ -62,5 +70,15 @@ describe('startGame', () => {
     const dispatchedAction = dispatch.secondCall.args[0];
 
     expect(dispatchedAction.type).toEqual(START_GAME_ERROR);
+  });
+
+  it('should call addPlayer', () => {
+    startGameService.callArgWith(0, { gameId: 'B9', gameUid: 'asdf' });
+
+    const gameUid = addPlayer.firstCall.args[0];
+    const name = addPlayer.firstCall.args[1];
+
+    expect(gameUid).toEqual('asdf');
+    expect(name).toEqual('andrew');
   });
 });

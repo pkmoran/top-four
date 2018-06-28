@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import LandingPage from './LandingPage';
+import AddTopics from './AddTopics';
 
 import './styles/App.css';
 
@@ -21,6 +22,7 @@ class App extends Component {
     return (
       <div className="App">
         <Route path="/" exact component={LandingPage} />
+        <Route path="/:gameId/addTopics" component={AddTopics} />
       </div>
     );
   }

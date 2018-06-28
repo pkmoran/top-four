@@ -3,19 +3,29 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
-import { joinGame, gameIdChanged, startGame } from '../actions';
+import {
+  joinGame,
+  gameIdChanged,
+  startGame,
+  nameChanged
+} from '../actions';
 
 import './styles/LandingPage.css';
 
-class LandingPage extends Component {
+class LandingPageComponent extends Component {
   constructor(props) {
     super(props);
 
     this.gameIdChanged = this.gameIdChanged.bind(this);
+    this.nameChanged = this.nameChanged.bind(this);
   }
 
   gameIdChanged(event) {
     this.props.gameIdChanged(event.target.value);
+  }
+
+  nameChanged(event) {
+    this.props.nameChanged(event.target.value);
   }
 
   renderStartGameButton() {
@@ -23,7 +33,14 @@ class LandingPage extends Component {
       return <CircularProgress />;
     }
 
-    return <Button onClick={this.props.startGame}>Start Game</Button>;
+    return (
+      <Button
+        onClick={() => this.props.startGame(this.props.history)}
+        disabled={!this.props.startGameEnabled}
+      >
+        Start Game
+      </Button>
+    );
   }
 
   renderJoinGameButton() {
@@ -34,6 +51,7 @@ class LandingPage extends Component {
     return (
       <Button
         onClick={() => this.props.joinGame(this.props.gameId)}
+        disabled={!this.props.joinGameEnabled}
       >
         Join Game
       </Button>
@@ -43,16 +61,22 @@ class LandingPage extends Component {
   render() {
     return (
       <div className="LandingPage">
-        <h1>Top Four - {this.props.azs}</h1>
+        <h1>Top Four</h1>
+        <TextField
+          onChange={this.nameChanged}
+          value={this.props.name}
+          id="name"
+          label="Name"
+          placeholder="e.g. Harry Grundle"
+        />
         {this.renderStartGameButton()}
         <div>
           <TextField
             onChange={this.gameIdChanged}
             value={this.props.gameId}
             id="gameId"
-            placeholder="Game ID"
-            helperText={this.props.error}
-            error={!!this.props.error}
+            label="Game ID"
+            placeholder="e.g. A9"
           />
           {this.renderJoinGameButton()}
         </div>
@@ -61,11 +85,30 @@ class LandingPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  gameId: state.LandingPage.gameId,
-  error: state.LandingPage.error,
-  loading: state.LandingPage.loading,
-  azs: state.LandingPage.azs
-});
+const mapStateToProps = ({ LandingPage }) => {
+  const {
+    gameId,
+    error,
+    loading,
+    startGameEnabled,
+    joinGameEnabled
+  } = LandingPage;
 
-export default connect(mapStateToProps, { joinGame, gameIdChanged, startGame })(LandingPage);
+  return {
+    gameId,
+    error,
+    loading,
+    startGameEnabled,
+    joinGameEnabled
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {
+    joinGame,
+    gameIdChanged,
+    startGame,
+    nameChanged
+  }
+)(LandingPageComponent);

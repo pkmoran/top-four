@@ -14,6 +14,6 @@ afterEach(() => {
   wrapped.unmount();
 });
 
-it('contains one route', () => {
-  expect(wrapped.find(Route).length).toEqual(1);
+it('contains two routes', () => {
+  expect(wrapped.find(Route).length).toEqual(2);
 });
