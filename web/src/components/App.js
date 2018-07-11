@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import firebase from 'firebase';
+import { connect } from 'react-redux';
 import LandingPage from './LandingPage';
 import AddTopics from './AddTopics';
+import { getGames } from '../actions';
 
 import './styles/App.css';
 
@@ -16,6 +18,8 @@ class App extends Component {
       storageBucket: '',
       messagingSenderId: '120019969623'
     });
+
+    this.props.getGames();
   }
 
   render() {
@@ -28,4 +32,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(null, { getGames })(App);

@@ -1,26 +1,24 @@
+import { addTopicService, getTopicsService } from '../services/AddTopics';
+
 import {
-  ADD_TOPIC,
   TOPIC_CHANGED,
-  CLEAR_TOPIC
+  NEW_TOPICS
 } from './types';
 
 export const addTopic = topic => (dispatch, getState) => {
-  const { topics } = getState().AddTopics;
-
-  if (topics.includes(topic)) {
-    dispatch({
-      type: CLEAR_TOPIC
-    });
-    return;
-  }
-
-  dispatch({
-    type: ADD_TOPIC,
-    payload: topic
-  });
+  addTopicService(topic, getState().Game.gameUid);
 };
 
 export const topicChanged = topic => ({
   type: TOPIC_CHANGED,
   payload: topic
 });
+
+export const getTopics = () => (dispatch, getState) => {
+  getTopicsService(getState().Game.gameUid, (topics) => {
+    dispatch({
+      type: NEW_TOPICS,
+      payload: topics
+    });
+  });
+};

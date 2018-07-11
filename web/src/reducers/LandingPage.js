@@ -4,7 +4,8 @@ import {
   STARTING_GAME,
   STARTED_GAME,
   START_GAME_ERROR,
-  NAME_CHANGED
+  NAME_CHANGED,
+  SHOW_JOIN_GAME
 } from '../actions/types';
 
 export const INITIAL_STATE = {
@@ -14,11 +15,15 @@ export const INITIAL_STATE = {
   loading: false,
   name: '',
   startGameEnabled: false,
-  joinGameEnabled: false
+  joinGameEnabled: false,
+  joinEnabled: false,
+  showJoinGame: false
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SHOW_JOIN_GAME:
+      return { ...state, showJoinGame: true };
     case STARTING_GAME:
       return { ...state, loading: true };
     case STARTED_GAME:
@@ -31,7 +36,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         gameId: action.payload,
-        joinGameEnabled: action.payload.length === 2 && !!state.name,
+        joinEnabled: action.payload.length === 2,
         error: ''
       };
     case NAME_CHANGED:
@@ -39,7 +44,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         name: action.payload,
         startGameEnabled: !!action.payload,
-        joinGameEnabled: !!action.payload && state.gameId.length === 2,
+        joinGameEnabled: !!action.payload,
         error: ''
       };
     default:

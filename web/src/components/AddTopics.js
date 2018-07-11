@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import requireGame from './requireGame';
-import { addTopic, topicChanged } from '../actions';
+import { addTopic, topicChanged, getTopics } from '../actions';
 
 import './styles/AddTopics.css';
 
@@ -15,12 +16,16 @@ class AddTopicsComponent extends Component {
     this.renderTopics = this.renderTopics.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getTopics();
+  }
+
   topicChanged(event) {
     this.props.topicChanged(event.target.value);
   }
 
   renderTopics() {
-    return this.props.topics.map(topic => <li key={topic}>{topic}</li>);
+    return this.props.topics.map(t => <li key={t.uid}>{t.topic}</li>);
   }
 
   render() {
@@ -53,7 +58,7 @@ const mapStateToProps = ({ AddTopics }) => {
 
   return {
     topic,
-    topics
+    topics: _.map(topics, (val, uid) => ({ ...val, uid }))
   };
 };
 
@@ -61,6 +66,7 @@ export default connect(
   mapStateToProps,
   {
     addTopic,
-    topicChanged
+    topicChanged,
+    getTopics
   }
 )(requireGame(AddTopicsComponent));

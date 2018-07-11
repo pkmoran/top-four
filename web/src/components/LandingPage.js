@@ -7,7 +7,8 @@ import {
   joinGame,
   gameIdChanged,
   startGame,
-  nameChanged
+  nameChanged,
+  showJoinGameSection
 } from '../actions';
 
 import './styles/LandingPage.css';
@@ -50,7 +51,7 @@ class LandingPageComponent extends Component {
 
     return (
       <Button
-        onClick={() => this.props.joinGame(this.props.gameId)}
+        onClick={() => this.props.showJoinGameSection()}
         disabled={!this.props.joinGameEnabled}
       >
         Join Game
@@ -58,18 +59,9 @@ class LandingPageComponent extends Component {
     );
   }
 
-  render() {
-    return (
-      <div className="LandingPage">
-        <h1>Top Four</h1>
-        <TextField
-          onChange={this.nameChanged}
-          value={this.props.name}
-          id="name"
-          label="Name"
-          placeholder="e.g. Harry Grundle"
-        />
-        {this.renderStartGameButton()}
+  renderJoinGameSection() {
+    if (this.props.showJoinGame) {
+      return (
         <div>
           <TextField
             onChange={this.gameIdChanged}
@@ -78,8 +70,45 @@ class LandingPageComponent extends Component {
             label="Game ID"
             placeholder="e.g. A9"
           />
+
+          <Button
+            onClick={() => this.props.joinGame(this.props.gameId, this.props.history)}
+            disabled={!this.props.joinEnabled}
+          >
+            Join
+          </Button>
+
+        </div>
+      );
+    }
+
+    return (
+      <br />
+    );
+  }
+
+  render() {
+    return (
+      <div className="LandingPage">
+        <h1>Top Four TM</h1>
+
+        <TextField
+          onChange={this.nameChanged}
+          value={this.props.name}
+          id="name"
+          label="Name"
+          placeholder="e.g. Harry Grundle"
+        />
+
+        <div className="ButtonSection">
+          {this.renderStartGameButton()}
+
+          <span>OR</span>
+
           {this.renderJoinGameButton()}
         </div>
+
+        {this.renderJoinGameSection()}
       </div>
     );
   }
@@ -91,7 +120,9 @@ const mapStateToProps = ({ LandingPage }) => {
     error,
     loading,
     startGameEnabled,
-    joinGameEnabled
+    joinGameEnabled,
+    joinEnabled,
+    showJoinGame
   } = LandingPage;
 
   return {
@@ -99,7 +130,9 @@ const mapStateToProps = ({ LandingPage }) => {
     error,
     loading,
     startGameEnabled,
-    joinGameEnabled
+    joinGameEnabled,
+    joinEnabled,
+    showJoinGame
   };
 };
 
@@ -109,6 +142,7 @@ export default connect(
     joinGame,
     gameIdChanged,
     startGame,
-    nameChanged
+    nameChanged,
+    showJoinGameSection
   }
 )(LandingPageComponent);
