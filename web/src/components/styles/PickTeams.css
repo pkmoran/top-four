@@ -1,0 +1,15 @@
+.PickTeams {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TeamNames {
+  width: 100%;
+}
+
+.TeamNamesHeader {
+  display: flex;
+  justify-content: space-between;
+}

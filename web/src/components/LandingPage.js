@@ -29,33 +29,29 @@ class LandingPageComponent extends Component {
     this.props.nameChanged(event.target.value);
   }
 
-  renderStartGameButton() {
+  renderButtonSection() {
     if (this.props.loading) {
       return <CircularProgress />;
     }
 
     return (
-      <Button
-        onClick={() => this.props.startGame(this.props.history)}
-        disabled={!this.props.startGameEnabled}
-      >
-        Start Game
-      </Button>
-    );
-  }
+      <div className="ButtonSection">
+        <Button
+          onClick={() => this.props.startGame(this.props.history)}
+          disabled={!this.props.startGameEnabled}
+        >
+          Start Game
+        </Button>
 
-  renderJoinGameButton() {
-    if (this.props.loading) {
-      return <CircularProgress />;
-    }
+        <span>OR</span>
 
-    return (
-      <Button
-        onClick={() => this.props.showJoinGameSection()}
-        disabled={!this.props.joinGameEnabled}
-      >
-        Join Game
-      </Button>
+        <Button
+          onClick={() => this.props.showJoinGameSection()}
+          disabled={!this.props.joinGameEnabled}
+        >
+          Join Game
+        </Button>
+      </div>
     );
   }
 
@@ -100,13 +96,7 @@ class LandingPageComponent extends Component {
           placeholder="e.g. Harry Grundle"
         />
 
-        <div className="ButtonSection">
-          {this.renderStartGameButton()}
-
-          <span>OR</span>
-
-          {this.renderJoinGameButton()}
-        </div>
+        {this.renderButtonSection()}
 
         {this.renderJoinGameSection()}
       </div>

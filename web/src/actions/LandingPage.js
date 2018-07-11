@@ -53,7 +53,7 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
     });
 
     addPlayerService(gameUid, getState().Game.name, () => {
-      history.push(`/${gameId}/addTopics`);
+      history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({
         type: JOIN_GAME_ERROR,
@@ -80,7 +80,7 @@ export const startGame = history => (dispatch, getState) => {
     });
 
     addPlayerService(gameUid, getState().Game.name, () => {
-      history.push(`/${gameId}/addTopics`);
+      history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({
         type: START_GAME_ERROR,

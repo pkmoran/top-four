@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import LandingPage from './LandingPage';
+import PickTeams from './PickTeams';
 import AddTopics from './AddTopics';
 import { getGames } from '../actions';
 
@@ -26,6 +27,7 @@ class App extends Component {
     return (
       <div className="App">
         <Route path="/" exact component={LandingPage} />
+        <Route path="/:gameId/pickTeams" component={PickTeams} />
         <Route path="/:gameId/addTopics" component={AddTopics} />
       </div>
     );
