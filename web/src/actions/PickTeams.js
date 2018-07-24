@@ -1,10 +1,8 @@
-import { addTeamService, getTeamsService, joinTeamService, getTeamPlayersService } from '../services/PickTeams';
+import { addTeamService, joinTeamService } from '../services/PickTeams';
 
 import {
   TEAM_NAME_CHANGED,
-  ADDED_TEAM,
-  NEW_TEAMS,
-  NEW_TEAM_PLAYERS
+  ADDED_TEAM
 } from './types';
 
 export const teamNameChanged = teamName => ({
@@ -18,24 +16,6 @@ export const addTeam = teamName => (dispatch, getState) => {
   });
 
   addTeamService(teamName, getState().Game.gameUid);
-};
-
-export const getTeams = () => (dispatch, getState) => {
-  getTeamsService(getState().Game.gameUid, (teams) => {
-    dispatch({
-      type: NEW_TEAMS,
-      payload: teams
-    });
-  });
-};
-
-export const getTeamPlayers = () => (dispatch, getState) => {
-  getTeamPlayersService(getState().Game.gameUid, (teamPlayers) => {
-    dispatch({
-      type: NEW_TEAM_PLAYERS,
-      payload: teamPlayers
-    });
-  });
 };
 
 export const joinTeam = teamUid => (dispatch, getState) => {

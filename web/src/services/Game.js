@@ -5,3 +5,17 @@ export const getGamesService = (onGames) => {
     onGames(snapshot.val());
   });
 };
+
+export const getTeamsService = (gameUid, onTeams) => {
+  firebase.database().ref(`/games/${gameUid}/teams`)
+    .on('value', (snapshot) => {
+      onTeams(snapshot.val());
+    });
+};
+
+export const getTeamPlayersService = (gameUid, onTeamPlayers) => {
+  firebase.database().ref(`/games/${gameUid}/teamPlayers`)
+    .on('value', (snapshot) => {
+      onTeamPlayers(snapshot.val());
+    });
+};

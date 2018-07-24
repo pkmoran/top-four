@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import _ from 'lodash';
+
 import GameId from './GameId';
 import TeamRow from './TeamRow';
 import requireGame from './requireGame';
-import { teamNameChanged, getTeams, getTeamPlayers, addTeam, joinTeam } from '../actions';
+import { teamNameChanged, addTeam, joinTeam } from '../actions';
 
 import './styles/PickTeams.css';
 
@@ -15,11 +16,6 @@ class PickTeamsComponent extends Component {
     super(props);
 
     this.teamNameChanged = this.teamNameChanged.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.getTeams();
-    this.props.getTeamPlayers();
   }
 
   teamNameChanged(event) {
@@ -99,9 +95,7 @@ export default connect(
   mapStateToProps,
   {
     teamNameChanged,
-    getTeams,
     addTeam,
-    joinTeam,
-    getTeamPlayers
+    joinTeam
   }
 )(requireGame(PickTeamsComponent));

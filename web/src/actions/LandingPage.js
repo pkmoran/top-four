@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { startGameService, addPlayerService } from '../services/LandingPage';
+import { getGameData } from './';
 
 import {
   JOIN_GAME_ERROR,
@@ -59,6 +60,7 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
         payload: playerUid
       });
 
+      dispatch(getGameData());
       history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({
@@ -91,6 +93,7 @@ export const startGame = history => (dispatch, getState) => {
         payload: playerUid
       });
 
+      dispatch(getGameData());
       history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({
