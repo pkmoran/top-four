@@ -14,9 +14,10 @@ export const TOPIC_CHANGED = 'topic_changed';
 export const NEW_TOPICS = 'new_topics';
 
 // game
+export const ADDED_PLAYER = 'added_player';
 
 // pick teams
 export const TEAM_NAME_CHANGED = 'team_name_changed';
-export const ADDING_TEAM = 'adding_team';
 export const ADDED_TEAM = 'added_team';
 export const NEW_TEAMS = 'new_teams';
+export const NEW_TEAM_PLAYERS = 'new_team_players';

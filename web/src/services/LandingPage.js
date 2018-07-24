@@ -8,9 +8,8 @@ export const startGameService = (onSuccess, onFail) => {
     .catch(onFail);
 };
 
-export const addPlayerService = (gameUid, name, onSuccess, onFail) => {
+export const addPlayerService = (gameUid, name, onSuccess) => {
   firebase.database().ref(`/games/${gameUid}/players`)
     .push({ name })
-    .then(onSuccess)
-    .catch(onFail);
+    .then(ref => onSuccess(ref.key));
 };

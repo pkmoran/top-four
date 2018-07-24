@@ -8,7 +8,8 @@ import {
   STARTED_GAME,
   START_GAME_ERROR,
   NAME_CHANGED,
-  SHOW_JOIN_GAME
+  SHOW_JOIN_GAME,
+  ADDED_PLAYER
 } from './types';
 
 export const gameIdChanged = gameId => ({
@@ -52,7 +53,12 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
       payload: { gameId, gameUid }
     });
 
-    addPlayerService(gameUid, getState().Game.name, () => {
+    addPlayerService(gameUid, getState().Game.name, (playerUid) => {
+      dispatch({
+        type: ADDED_PLAYER,
+        payload: playerUid
+      });
+
       history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({
@@ -79,7 +85,12 @@ export const startGame = history => (dispatch, getState) => {
       payload: { gameId, gameUid }
     });
 
-    addPlayerService(gameUid, getState().Game.name, () => {
+    addPlayerService(gameUid, getState().Game.name, (playerUid) => {
+      dispatch({
+        type: ADDED_PLAYER,
+        payload: playerUid
+      });
+
       history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({
