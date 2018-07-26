@@ -1,11 +1,14 @@
-import { addTopicService, getTopicsService } from '../services/AddTopics';
+import { addTopicService } from '../services/AddTopics';
 
 import {
-  TOPIC_CHANGED,
-  NEW_TOPICS
+  TOPIC_CHANGED, ADDED_TOPIC
 } from './types';
 
 export const addTopic = topic => (dispatch, getState) => {
+  dispatch({
+    type: ADDED_TOPIC
+  });
+
   addTopicService(topic, getState().Game.gameUid);
 };
 
@@ -13,12 +16,3 @@ export const topicChanged = topic => ({
   type: TOPIC_CHANGED,
   payload: topic
 });
-
-export const getTopics = () => (dispatch, getState) => {
-  getTopicsService(getState().Game.gameUid, (topics) => {
-    dispatch({
-      type: NEW_TOPICS,
-      payload: topics
-    });
-  });
-};

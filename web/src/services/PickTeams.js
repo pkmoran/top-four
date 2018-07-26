@@ -5,7 +5,8 @@ export const addTeamService = (name, gameUid) => {
     .push({ name });
 };
 
-export const joinTeamService = (teamUid, playerUid, gameUid) => {
+export const joinTeamService = (teamUid, playerUid, gameUid, joined) => {
   firebase.database().ref(`/games/${gameUid}/teamPlayers`)
-    .push({ teamUid, playerUid });
+    .push({ teamUid, playerUid })
+    .then(joined);
 };

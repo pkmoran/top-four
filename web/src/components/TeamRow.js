@@ -1,15 +1,20 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-const TeamRow = ({ name, playerCount, onClick }) => (
+import './styles/TeamRow.css';
+
+const TeamRow = ({
+  name, playerCount, selected, onClick
+}) => (
   <div className="TeamRow">
     <Button
+      className="TeamRowButton"
+      variant={selected ? 'contained' : 'text'}
       onClick={onClick}
     >
       {name}
     </Button>
-
-    <span>{playerCount}</span>
+    <span className="TeamRowPlayerCount">{playerCount}</span>
   </div>
 );
 

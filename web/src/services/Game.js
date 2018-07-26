@@ -19,3 +19,10 @@ export const getTeamPlayersService = (gameUid, onTeamPlayers) => {
       onTeamPlayers(snapshot.val());
     });
 };
+
+export const getTopicsService = (gameUid, onTopics) => {
+  firebase.database().ref(`/games/${gameUid}/topics`)
+    .on('value', (snapshot) => {
+      onTopics(snapshot.val());
+    });
+};

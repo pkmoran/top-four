@@ -1,0 +1,14 @@
+.TeamRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.TeamRowButton {
+  flex-grow: 1;
+}
+
+.TeamRowPlayerCount {
+  margin-left: 50px;
+}

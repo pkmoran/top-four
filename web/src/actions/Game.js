@@ -1,13 +1,15 @@
 import {
   getGamesService,
   getTeamsService,
-  getTeamPlayersService
+  getTeamPlayersService,
+  getTopicsService
 } from '../services/Game';
 
 import {
   NEW_GAMES,
   NEW_TEAMS,
-  NEW_TEAM_PLAYERS
+  NEW_TEAM_PLAYERS,
+  NEW_TOPICS
 } from './types';
 
 export const getGames = () => (dispatch) => {
@@ -37,8 +39,18 @@ export const getTeamPlayers = () => (dispatch, getState) => {
   });
 };
 
+export const getTopics = () => (dispatch, getState) => {
+  getTopicsService(getState().Game.gameUid, (topics) => {
+    dispatch({
+      type: NEW_TOPICS,
+      payload: topics
+    });
+  });
+};
+
 export const getGameData = () => (dispatch) => {
   dispatch(getGames());
   dispatch(getTeams());
   dispatch(getTeamPlayers());
+  dispatch(getTopics());
 };

@@ -4,7 +4,8 @@ import {
   NEW_GAMES,
   NEW_TEAMS,
   ADDED_PLAYER,
-  NEW_TEAM_PLAYERS
+  NEW_TEAM_PLAYERS,
+  NEW_TOPICS
 } from '../actions/types';
 
 export const INITIAL_STATE = {
@@ -14,7 +15,8 @@ export const INITIAL_STATE = {
   playerUid: '',
   games: [],
   teams: [],
-  teamPlayers: []
+  teamPlayers: [],
+  topics: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -35,6 +37,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, teams: action.payload };
     case NEW_TEAM_PLAYERS:
       return { ...state, teamPlayers: action.payload };
+    case NEW_TOPICS:
+      return { ...state, topics: action.payload };
     default:
       return state;
   }

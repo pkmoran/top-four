@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'lodash';
 
 import GameId from './GameId';
 import TeamRow from './TeamRow';
 import requireGame from './requireGame';
-import { teamNameChanged, addTeam, joinTeam } from '../actions';
+import { teamNameChanged, addTeam, selectTeam, joinTeam, addTopics } from '../actions';
 
 import './styles/PickTeams.css';
 
@@ -16,6 +17,12 @@ class PickTeamsComponent extends Component {
     super(props);
 
     this.teamNameChanged = this.teamNameChanged.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.joinedTeam) {
+      this.props.addTopics(this.props.history);
+    }
   }
 
   teamNameChanged(event) {
@@ -28,8 +35,23 @@ class PickTeamsComponent extends Component {
         key={team.uid}
         name={team.name}
         playerCount={team.playerCount}
-        onClick={() => this.props.joinTeam(team.uid)}
+        selected={this.props.selectedTeam === team.uid}
+        onClick={() => this.props.selectTeam(team.uid)}
       />));
+  }
+
+  renderAddTopicsButton() {
+    if (this.props.loading) {
+      return <CircularProgress />;
+    }
+
+    return (
+      <Button
+        onClick={() => this.props.joinTeam(this.props.history)}
+      >
+        Next, Add Topics!
+      </Button>
+    );
   }
 
   render() {
@@ -63,9 +85,11 @@ class PickTeamsComponent extends Component {
             <span>Join Team:</span>
             <span># of players</span>
           </div>
+
+          {this.renderTeams()}
         </div>
 
-        {this.renderTeams()}
+        {this.renderAddTopicsButton()}
       </div>
     );
   }
@@ -85,10 +109,25 @@ const teamsAndPlayerCounts = ({ teams, teamPlayers }) => {
   return _.map(withPlayerCount, (val, uid) => ({ ...val, uid }));
 };
 
+const joinedTeam = ({ teamPlayers, playerUid }) => {
+  let result = false;
+
+  _.forEach(teamPlayers, (teamPlayer) => {
+    if (teamPlayer.playerUid === playerUid) {
+      result = true;
+    }
+  });
+
+  return result;
+};
+
 const mapStateToProps = ({ PickTeams, Game }) => ({
   teamName: PickTeams.teamName,
   addTeamEnabled: PickTeams.teamName,
-  teams: teamsAndPlayerCounts(Game)
+  teams: teamsAndPlayerCounts(Game),
+  selectedTeam: PickTeams.selectedTeam,
+  loading: PickTeams.loading,
+  joinedTeam: joinedTeam(Game)
 });
 
 export default connect(
@@ -96,6 +135,8 @@ export default connect(
   {
     teamNameChanged,
     addTeam,
-    joinTeam
+    joinTeam,
+    selectTeam,
+    addTopics
   }
 )(requireGame(PickTeamsComponent));

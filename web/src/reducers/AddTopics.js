@@ -1,22 +1,17 @@
 import {
-  TOPIC_CHANGED, NEW_TOPICS
+  TOPIC_CHANGED, ADDED_TOPIC
 } from '../actions/types';
 
 export const INITIAL_STATE = {
-  topic: '',
-  topics: []
+  topic: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TOPIC_CHANGED:
       return { ...state, topic: action.payload };
-    case NEW_TOPICS:
-      return {
-        ...state,
-        topic: '',
-        topics: action.payload
-      };
+    case ADDED_TOPIC:
+      return { ...state, topic: '' };
     default:
       return state;
   }

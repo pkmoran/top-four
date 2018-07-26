@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import requireGame from './requireGame';
-import { addTopic, topicChanged, getTopics } from '../actions';
+import GameId from './GameId';
+import { addTopic, topicChanged } from '../actions';
 
 import './styles/AddTopics.css';
 
@@ -14,10 +15,6 @@ class AddTopicsComponent extends Component {
 
     this.topicChanged = this.topicChanged.bind(this);
     this.renderTopics = this.renderTopics.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.getTopics();
   }
 
   topicChanged(event) {
@@ -31,6 +28,7 @@ class AddTopicsComponent extends Component {
   render() {
     return (
       <div className="AddTopics">
+        <GameId />
         <h1>Add Topics</h1>
         <div>
           <TextField
@@ -50,23 +48,15 @@ class AddTopicsComponent extends Component {
   }
 }
 
-const mapStateToProps = ({ AddTopics }) => {
-  const {
-    topic,
-    topics
-  } = AddTopics;
-
-  return {
-    topic,
-    topics: _.map(topics, (val, uid) => ({ ...val, uid }))
-  };
-};
+const mapStateToProps = ({ AddTopics, Game }) => ({
+  topic: AddTopics.topic,
+  topics: _.map(Game.topics, (val, uid) => ({ ...val, uid }))
+});
 
 export default connect(
   mapStateToProps,
   {
     addTopic,
-    topicChanged,
-    getTopics
+    topicChanged
   }
 )(requireGame(AddTopicsComponent));
