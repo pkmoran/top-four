@@ -1,15 +1,15 @@
 import {
   getGamesService,
   getTeamsService,
-  getTeamPlayersService,
-  getTopicsService
+  getTopicsService,
+  getPlayersService
 } from '../services/Game';
 
 import {
   NEW_GAMES,
   NEW_TEAMS,
-  NEW_TEAM_PLAYERS,
-  NEW_TOPICS
+  NEW_TOPICS,
+  NEW_PLAYERS
 } from './types';
 
 export const getGames = () => (dispatch) => {
@@ -30,11 +30,11 @@ export const getTeams = () => (dispatch, getState) => {
   });
 };
 
-export const getTeamPlayers = () => (dispatch, getState) => {
-  getTeamPlayersService(getState().Game.gameUid, (teamPlayers) => {
+export const getPlayers = () => (dispatch, getState) => {
+  getPlayersService(getState().Game.gameUid, (players) => {
     dispatch({
-      type: NEW_TEAM_PLAYERS,
-      payload: teamPlayers
+      type: NEW_PLAYERS,
+      payload: players
     });
   });
 };
@@ -51,6 +51,6 @@ export const getTopics = () => (dispatch, getState) => {
 export const getGameData = () => (dispatch) => {
   dispatch(getGames());
   dispatch(getTeams());
-  dispatch(getTeamPlayers());
   dispatch(getTopics());
+  dispatch(getPlayers());
 };

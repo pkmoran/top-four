@@ -15,13 +15,10 @@ export const ADDED_TOPIC = 'added_topic';
 // game
 export const ADDED_PLAYER = 'added_player';
 export const NEW_TEAMS = 'new_teams';
-export const NEW_TEAM_PLAYERS = 'new_team_players';
 export const NEW_GAMES = 'new_games';
 export const NEW_TOPICS = 'new_topics';
+export const NEW_PLAYERS = 'new_players';
 
 // pick teams
 export const TEAM_NAME_CHANGED = 'team_name_changed';
 export const ADDED_TEAM = 'added_team';
-export const TEAM_SELECTED = 'team_selected';
-export const JOINING_TEAM = 'joining_team';
-export const JOINED_TEAM = 'joined_team';

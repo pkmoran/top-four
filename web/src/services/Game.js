@@ -13,10 +13,10 @@ export const getTeamsService = (gameUid, onTeams) => {
     });
 };
 
-export const getTeamPlayersService = (gameUid, onTeamPlayers) => {
-  firebase.database().ref(`/games/${gameUid}/teamPlayers`)
+export const getPlayersService = (gameUid, onPlayers) => {
+  firebase.database().ref(`/games/${gameUid}/players`)
     .on('value', (snapshot) => {
-      onTeamPlayers(snapshot.val());
+      onPlayers(snapshot.val());
     });
 };
 
