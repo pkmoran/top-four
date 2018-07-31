@@ -73,7 +73,7 @@ class PickTeamsComponent extends Component {
           </Button>
         </div>
 
-        <span>OR</span>
+        <span className="Or">OR</span>
 
         <div className="TeamNames">
           <div className="TeamNamesHeader">
