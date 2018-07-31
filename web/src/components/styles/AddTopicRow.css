@@ -1,0 +1,13 @@
+.AddTopicRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Topic {
+  flex-grow: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -3,15 +3,16 @@ import {
 } from '../actions/types';
 
 export const INITIAL_STATE = {
-  topic: ''
+  topic: '',
+  addTopicEnabled: false
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TOPIC_CHANGED:
-      return { ...state, topic: action.payload };
+      return { ...state, topic: action.payload, addTopicEnabled: action.payload.length > 0 };
     case ADDED_TOPIC:
-      return { ...state, topic: '' };
+      return { ...state, topic: '', addTopicEnabled: false };
     default:
       return state;
   }

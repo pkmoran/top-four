@@ -1,7 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const GameId = props => <div>Game ID: {props.gameId}</div>;
+import './styles/GameId.css';
+
+const GameId = props => (
+  <div className="GameId">
+    <span>Top Four</span>
+    <span>{props.gameId}</span>
+  </div>
+);
 
 const mapStateToProps = ({ Game }) => ({
   gameId: Game.gameId

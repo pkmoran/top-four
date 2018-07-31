@@ -3,9 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+
+import AddTopicRow from './AddTopicRow';
 import requireGame from './requireGame';
 import GameId from './GameId';
-import { addTopic, topicChanged } from '../actions';
+import { addTopic, topicChanged, deleteTopic } from '../actions';
 
 import './styles/AddTopics.css';
 
@@ -14,7 +16,6 @@ class AddTopicsComponent extends Component {
     super(props);
 
     this.topicChanged = this.topicChanged.bind(this);
-    this.renderTopics = this.renderTopics.bind(this);
   }
 
   topicChanged(event) {
@@ -22,7 +23,12 @@ class AddTopicsComponent extends Component {
   }
 
   renderTopics() {
-    return this.props.topics.map(t => <li key={t.uid}>{t.topic}</li>);
+    return this.props.playerTopics.map(t => (
+      <AddTopicRow
+        key={t.uid}
+        topic={t.topic}
+        onDelete={() => this.props.deleteTopic(t.uid)}
+      />));
   }
 
   render() {
@@ -38,25 +44,46 @@ class AddTopicsComponent extends Component {
             label="Topic"
             placeholder="e.g. Road trips"
           />
-          <Button onClick={() => this.props.addTopic(this.props.topic)}>Add</Button>
+          <Button disabled={!this.props.addTopicEnabled} onClick={() => this.props.addTopic(this.props.topic)}>Add</Button>
         </div>
-        <ul>
+
+        <div className="TopicsContainer">
           {this.renderTopics()}
-        </ul>
+        </div>
+
+        <div className="TopicCountsContainer">
+          <div className="TopicCountContainer">
+            <span>Your Topics</span>
+            <span>{this.props.playerTopics.length}</span>
+          </div>
+
+          <div className="TopicCountContainer">
+            <span>Total # of Topics</span>
+            <span>{this.props.allTopicsCount}</span>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
+const playerTopics = ({ topics, playerUid }) => {
+  const mapped = _.map(topics, (val, uid) => ({ ...val, uid }));
+  return _.filter(mapped, t => t.playerUid === playerUid);
+};
+
 const mapStateToProps = ({ AddTopics, Game }) => ({
   topic: AddTopics.topic,
-  topics: _.map(Game.topics, (val, uid) => ({ ...val, uid }))
+  playerTopics: playerTopics(Game),
+  allTopicsCount: Object.keys(Game.topics || {}).length,
+  addTopicEnabled: AddTopics.addTopicEnabled
 });
 
 export default connect(
   mapStateToProps,
   {
     addTopic,
-    topicChanged
+    topicChanged,
+    deleteTopic
   }
 )(requireGame(AddTopicsComponent));
