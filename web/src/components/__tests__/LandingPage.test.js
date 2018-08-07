@@ -18,33 +18,5 @@ afterEach(() => {
 it('should have a header, two buttons and two text fields', () => {
   expect(wrapped.find('h1').length).toEqual(1);
   expect(wrapped.find(Button).length).toEqual(2);
-  expect(wrapped.find(TextField).length).toEqual(2);
-});
-
-describe('the join game text field', () => {
-  it('can be typed into', () => {
-    wrapped.find(TextField).at(1)
-      .prop('onChange')({ target: { value: 'asdf' } });
-    wrapped.update();
-
-    expect(wrapped.find(TextField).at(1).prop('value')).toEqual('asdf');
-  });
-
-  describe('error', () => {
-    beforeEach(() => {
-      wrapped.find(Button).at(1)
-        .prop('onClick')();
-      wrapped.update();
-    });
-  });
-});
-
-describe('the name text field', () => {
-  it('can be typed into', () => {
-    wrapped.find(TextField).at(1)
-      .prop('onChange')({ target: { value: 'asdf' } });
-    wrapped.update();
-
-    expect(wrapped.find(TextField).at(1).prop('value')).toEqual('asdf');
-  });
+  expect(wrapped.find(TextField).length).toEqual(1);
 });

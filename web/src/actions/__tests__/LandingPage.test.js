@@ -15,8 +15,10 @@ import {
 } from '../types';
 
 it('should return an error when game ID is undefined', () => {
-  const action = joinGame();
-  expect(action.type).toEqual(JOIN_GAME_ERROR);
+  const dispatch = sinon.fake();
+  joinGame()(dispatch);
+  const dispatchedAction = dispatch.firstCall.args[0];
+  expect(dispatchedAction.type).toEqual(JOIN_GAME_ERROR);
 });
 
 it('should return the new game ID', () => {
@@ -40,7 +42,7 @@ describe('startGame', () => {
     getState.returns({ Game: { name: 'andrew' } });
 
     sinon.replace(services, 'startGameService', startGameService);
-    sinon.replace(services, 'addPlayer', addPlayer);
+    sinon.replace(services, 'addPlayerService', addPlayer);
     startGame()(dispatch, getState);
   });
 

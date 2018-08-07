@@ -19,14 +19,3 @@ describe('default behavior', () => {
     expect(newState).toEqual({ test: 3 });
   });
 });
-
-it('adds a new topic', () => {
-  const action = {
-    type: ADD_TOPIC,
-    payload: 'new topic'
-  };
-
-  const newState = AddTopics(undefined, action);
-  expect(newState.topics.length).toEqual(1);
-  expect(newState.topics[0]).toEqual('new topic');
-});

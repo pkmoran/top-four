@@ -52,7 +52,7 @@ describe('game ID changed action', () => {
     };
 
     const newState = LandingPage({ ...INITIAL_STATE, name: 'azs' }, action);
-    expect(newState.joinGameEnabled).toEqual(true);
+    expect(newState.joinEnabled).toEqual(true);
   });
 });
 

@@ -45,6 +45,8 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
       type: JOIN_GAME_ERROR,
       payload: 'Game ID cannot be empty'
     });
+
+    return;
   }
 
   const gameUid = getGameUid(gameId, getState().Game.games);
