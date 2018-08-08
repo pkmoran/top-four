@@ -22,3 +22,8 @@ export const topicChanged = topic => ({
 export const deleteTopic = topicUid => (dispatch, getState) => {
   deleteTopicService(topicUid, getState().Game.gameUid);
 };
+
+export const done = history => (dispatch, getState) => {
+  const { gameId } = getState().Game;
+  history.push(`/${gameId}/homescreen`);
+};

@@ -6,11 +6,13 @@ import Button from '@material-ui/core/Button';
 import Root from '../Root';
 import GameId from '../GameId';
 import Homescreen, { getTeamPlayers } from '../Homescreen';
+import TeamSummary from '../TeamSummary';
 
 let wrapped;
 const INITIAL_STATE = {
   Game: {
     gameId: 'A9',
+    gameUid: 'asdf',
     players: {
       player1: {
         name: 'Player 1',
@@ -60,25 +62,25 @@ describe('the interface', () => {
     expect(wrapped.find(Button).text()).toEqual('I\'m Up!');
   });
 
-  it('should list all the teams', () => {
-    const teams = wrapped.find('.HomescreenTeam');
+  it('should receive the correct name property', () => {
+    const teams = wrapped.find(TeamSummary);
 
     expect(teams.length).toEqual(3);
-    expect(teams.at(0).find('span').text()).toEqual('Team 1');
-    expect(teams.at(1).find('span').text()).toEqual('Team 2');
-    expect(teams.at(2).find('span').text()).toEqual('Team 3');
+    expect(teams.at(0).prop('name')).toEqual('Team 1');
+    expect(teams.at(1).prop('name')).toEqual('Team 2');
+    expect(teams.at(2).prop('name')).toEqual('Team 3');
   });
 
-  it('should list all the players by team', () => {
-    const team1Players = wrapped.find('.HomescreenTeam').at(0).find('.HomescreenPlayer');
-    const team2Players = wrapped.find('.HomescreenTeam').at(1).find('.HomescreenPlayer');
+  it('should receive the correct players property', () => {
+    const team1Players = wrapped.find(TeamSummary).at(0);
+    const team2Players = wrapped.find(TeamSummary).at(1);
 
-    expect(team1Players.length).toEqual(2);
-    expect(team1Players.at(0).text()).toEqual('Player 1');
-    expect(team1Players.at(1).text()).toEqual('Player 2');
+    expect(team1Players.prop('players').length).toEqual(2);
+    expect(team1Players.prop('players')[0].name).toEqual('Player 1');
+    expect(team1Players.prop('players')[1].name).toEqual('Player 2');
 
-    expect(team2Players.length).toEqual(1);
-    expect(team2Players.at(0).text()).toEqual('Player 3');
+    expect(team2Players.prop('players').length).toEqual(1);
+    expect(team2Players.prop('players')[0].name).toEqual('Player 3');
   });
 });
 

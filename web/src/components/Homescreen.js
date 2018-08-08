@@ -4,26 +4,18 @@ import _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
 
+import requireGame from './requireGame';
 import GameId from './GameId';
+import TeamSummary from './TeamSummary';
+
+import './styles/Homescreen.css';
 
 class Homescreen extends Component {
   renderTeams() {
-    const renderPlayers = players => players.map(player => (
-      <li key={player.uid} className="HomescreenPlayer">
-        {player.name}
-      </li>
-    ));
-
     return this.props.teams.map((team) => {
       const players = this.props.teamPlayers[team.uid];
 
-      return (
-        <div key={team.uid} className="HomescreenTeam">
-          <span>{team.name}</span>
-
-          {renderPlayers(players)}
-        </div>
-      );
+      return <TeamSummary key={team.uid} name={team.name} players={players} />;
     });
   }
 
@@ -58,4 +50,4 @@ const mapStateToProps = ({ Game }) => ({
   teamPlayers: getTeamPlayers(Game)
 });
 
-export default connect(mapStateToProps)(Homescreen);
+export default connect(mapStateToProps)(requireGame(Homescreen));

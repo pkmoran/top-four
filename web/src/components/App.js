@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import LandingPage from './LandingPage';
 import PickTeams from './PickTeams';
 import AddTopics from './AddTopics';
+import Homescreen from './Homescreen';
 import { getGames } from '../actions';
 
 import './styles/App.css';
@@ -29,6 +30,7 @@ class App extends Component {
         <Route path="/" exact component={LandingPage} />
         <Route path="/:gameId/pickTeams" component={PickTeams} />
         <Route path="/:gameId/addTopics" component={AddTopics} />
+        <Route path="/:gameId/homescreen" component={Homescreen} />
       </div>
     );
   }

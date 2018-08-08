@@ -86,7 +86,7 @@ class LandingPageComponent extends Component {
   render() {
     return (
       <div className="LandingPage">
-        <h1>Top Four TM v1.1</h1>
+        <h1>Top Four TM v1.2</h1>
 
         <TextField
           onChange={this.nameChanged}

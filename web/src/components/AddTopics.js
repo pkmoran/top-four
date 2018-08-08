@@ -7,7 +7,7 @@ import _ from 'lodash';
 import AddTopicRow from './AddTopicRow';
 import requireGame from './requireGame';
 import GameId from './GameId';
-import { addTopic, topicChanged, deleteTopic } from '../actions';
+import { addTopic, topicChanged, deleteTopic, done } from '../actions';
 
 import './styles/AddTopics.css';
 
@@ -35,7 +35,7 @@ class AddTopicsComponent extends Component {
     return (
       <div className="AddTopics">
         <GameId />
-        <h1>Add Topics</h1>
+        <h1>Add Topics!</h1>
         <div>
           <TextField
             onChange={this.topicChanged}
@@ -44,12 +44,23 @@ class AddTopicsComponent extends Component {
             label="Topic"
             placeholder="e.g. Road trips"
           />
-          <Button disabled={!this.props.addTopicEnabled} onClick={() => this.props.addTopic(this.props.topic)}>Add</Button>
+          <Button
+            disabled={!this.props.addTopicEnabled}
+            onClick={() => this.props.addTopic(this.props.topic)}
+          >
+            Add
+          </Button>
         </div>
 
         <div className="TopicsContainer">
           {this.renderTopics()}
         </div>
+
+        <Button
+          onClick={() => this.props.done(this.props.history)}
+        >
+          Done!
+        </Button>
 
         <div className="TopicCountsContainer">
           <div className="TopicCountContainer">
@@ -84,6 +95,7 @@ export default connect(
   {
     addTopic,
     topicChanged,
-    deleteTopic
+    deleteTopic,
+    done
   }
 )(requireGame(AddTopicsComponent));
