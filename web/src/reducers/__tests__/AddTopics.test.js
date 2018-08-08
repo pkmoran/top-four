@@ -1,7 +1,4 @@
 import AddTopics, { INITIAL_STATE } from '../AddTopics';
-import {
-  ADD_TOPIC
-} from '../../actions/types';
 
 describe('default behavior', () => {
   it('defaults state appropriately', () => {

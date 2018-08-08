@@ -7,12 +7,14 @@ import Root from '../Root';
 import GameId from '../GameId';
 import Homescreen, { getTeamPlayers } from '../Homescreen';
 import TeamSummary from '../TeamSummary';
+import StartRoundDialog from '../StartRoundDialog';
 
 let wrapped;
 const INITIAL_STATE = {
   Game: {
     gameId: 'A9',
     gameUid: 'asdf',
+    playerUid: 'player1',
     players: {
       player1: {
         name: 'Player 1',
@@ -81,6 +83,23 @@ describe('the interface', () => {
 
     expect(team2Players.prop('players').length).toEqual(1);
     expect(team2Players.prop('players')[0].name).toEqual('Player 3');
+  });
+
+  it('should have a start round dialog', () => {
+    expect(wrapped.find(StartRoundDialog).length).toEqual(1);
+  });
+});
+
+describe('the start round dialog', () => {
+  it('should receive the true open prop when the I\'m Up! button is pressed', () => {
+    wrapped.find(Button).prop('onClick')();
+    wrapped.update();
+
+    expect(wrapped.find(StartRoundDialog).prop('open')).toEqual(true);
+  });
+
+  it('should receive the player name property', () => {
+    expect(wrapped.find(StartRoundDialog).prop('playerName')).toEqual('Player 1');
   });
 });
 
