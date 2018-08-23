@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 
 import Root from '../Root';
 import AddTopics from '../AddTopics';
-import * as actions from '../../actions/AddTopics';
 
 let wrapped;
 const INITIAL_STATE = {

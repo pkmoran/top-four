@@ -9,17 +9,17 @@ import GameId from './GameId';
 import TeamSummary from './TeamSummary';
 import StartRoundDialog from './StartRoundDialog';
 
-import { showStartRoundDialog, hideStartRoundDialog } from '../actions';
+import { showStartRoundDialog, hideStartRoundDialog, startRound } from '../actions';
 
 import './styles/Homescreen.css';
 
 class HomescreenComponent extends Component {
   renderTeams() {
-    return this.props.teams.map((team) => {
-      const players = this.props.teamPlayers[team.uid];
-
-      return <TeamSummary key={team.uid} name={team.name} players={players} />;
-    });
+    return this.props.teams.map(({
+      uid, name, score, players
+    }) => (
+      <TeamSummary key={uid} name={name} score={score} players={players} />
+    ));
   }
 
   render() {
@@ -36,7 +36,7 @@ class HomescreenComponent extends Component {
         <StartRoundDialog
           open={this.props.showDialog}
           playerName={this.props.playerName}
-          onYes={this.props.hideStartRoundDialog}
+          onYes={this.props.startRound}
           onNo={this.props.hideStartRoundDialog}
         />
       </div>
@@ -44,28 +44,34 @@ class HomescreenComponent extends Component {
   }
 }
 
-export const getTeamPlayers = ({ teams, players }) => {
-  const teamPlayers = {};
-  _.forEach(teams, (team, uid) => {
-    teamPlayers[uid] = [];
+export const getTeams = ({ teams, players }) => {
+  const teamUidsWithPlayers = _.uniq(_.map(players, ({ teamUid }) => teamUid));
+  const teamsWithPlayers = {};
+
+  _.forEach(teamUidsWithPlayers, (teamUid) => {
+    teamsWithPlayers[teamUid] = { ...teams[teamUid], players: [], score: 0 };
   });
+
   _.forEach(players, (player, uid) => {
-    teamPlayers[player.teamUid].push({ ...player, uid });
+    const team = teamsWithPlayers[player.teamUid];
+    team.players.push({ ...player, uid });
+    team.score += player.score || 0;
   });
-  return teamPlayers;
+
+  return _.map(teamsWithPlayers, (team, uid) => ({ ...team, uid }));
 };
 
 const mapStateToProps = ({ Game, Homescreen }) => ({
-  teams: _.map(Game.teams, (val, uid) => ({ ...val, uid })),
-  teamPlayers: getTeamPlayers(Game),
+  teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
-  playerName: _.find(Game.players, (player, uid) => uid === Game.playerUid).name
+  playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name
 });
 
 export default connect(
   mapStateToProps,
   {
     showStartRoundDialog,
-    hideStartRoundDialog
+    hideStartRoundDialog,
+    startRound
   }
 )(requireGame(HomescreenComponent));

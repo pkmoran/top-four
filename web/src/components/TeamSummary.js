@@ -1,17 +1,19 @@
 import React from 'react';
 import _ from 'lodash';
 
+import PlayerSummary from './PlayerSummary';
+
 import './styles/TeamSummary.css';
 
-const TeamSummary = ({ name, players }) => (
+const TeamSummary = ({ name, score, players }) => (
   <div className="TeamSummary">
-    <span>{name}</span>
-
-    {
-      _.map(players, (player, uid) => (
-        <li key={uid}>{player.name}</li>
-      ))
-    }
+    <div className="TeamSummaryHeader">
+      <span>{name}</span>
+      <span>{score}</span>
+    </div>
+    {_.map(players, (player, uid) => (
+      <PlayerSummary key={uid} player={player} />
+    ))}
   </div>
 );
 
