@@ -9,11 +9,23 @@ import GameId from './GameId';
 import TeamSummary from './TeamSummary';
 import StartRoundDialog from './StartRoundDialog';
 
-import { showStartRoundDialog, hideStartRoundDialog, startRound } from '../actions';
+import { showStartRoundDialog, hideStartRoundDialog, startRound, startRanking } from '../actions';
 
 import './styles/Homescreen.css';
 
 class HomescreenComponent extends Component {
+  componentDidMount() {
+    if (this.props.ranking) {
+      this.props.startRanking(this.props.history);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.ranking) {
+      this.props.startRanking(this.props.history);
+    }
+  }
+
   renderTeams() {
     return this.props.teams.map(({
       uid, name, score, players
@@ -64,7 +76,8 @@ export const getTeams = ({ teams, players }) => {
 const mapStateToProps = ({ Game, Homescreen }) => ({
   teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
-  playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name
+  playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name,
+  ranking: ((Game.games || {})[Game.gameUid] || {}).ranking
 });
 
 export default connect(
@@ -72,6 +85,7 @@ export default connect(
   {
     showStartRoundDialog,
     hideStartRoundDialog,
-    startRound
+    startRound,
+    startRanking
   }
 )(requireGame(HomescreenComponent));

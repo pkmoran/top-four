@@ -15,5 +15,5 @@ afterEach(() => {
 });
 
 it('contains two routes', () => {
-  expect(wrapped.find(Route).length).toEqual(4);
+  expect(wrapped.find(Route).length).toEqual(5);
 });

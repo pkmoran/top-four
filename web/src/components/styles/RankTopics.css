@@ -1,0 +1,11 @@
+.RankTopics {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.RankTopicsTopics {
+  width: 80%;
+  margin-top: 25px;
+}

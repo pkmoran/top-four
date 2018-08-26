@@ -31,7 +31,8 @@ class PickTeamsComponent extends Component {
         playerCount={team.playerCount}
         selected={this.props.selectedTeam === team.uid}
         onClick={() => this.props.selectTeam(team.uid)}
-      />));
+      />
+    ));
   }
 
   renderAddTopicsButton() {
@@ -92,8 +93,14 @@ class PickTeamsComponent extends Component {
 
 const teamsAndPlayerCounts = ({ teams, players }) => {
   const teamCounts = _.countBy(players, 'teamUid');
-  const withPlayerCount = _.reduce(teams, (result, team, teamUid) => (
-    { ...result, [teamUid]: { ...team, playerCount: teamCounts[teamUid] || 0 } }), {});
+  const withPlayerCount = _.reduce(
+    teams,
+    (result, team, teamUid) => ({
+      ...result,
+      [teamUid]: { ...team, playerCount: teamCounts[teamUid] || 0 }
+    }),
+    {}
+  );
 
   return _.map(withPlayerCount, (val, uid) => ({ ...val, uid }));
 };

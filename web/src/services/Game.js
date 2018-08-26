@@ -44,3 +44,10 @@ export const updateTopicsService = (topics, gameUid, onUpdated) => {
       onUpdated();
     });
 };
+
+export const startRoundService = (gameUid) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}`)
+    .update({ ranking: true });
+};

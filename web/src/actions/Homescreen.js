@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { updateTopicsService } from '../services/Game';
+import { updateTopicsService, startRoundService } from '../services/Game';
 
-import { SHOW_START_ROUND_DIALOG, START_ROUND } from './types';
+import { SHOW_START_ROUND_DIALOG } from './types';
 
 export const showStartRoundDialog = () => ({
   type: SHOW_START_ROUND_DIALOG,
@@ -20,6 +20,8 @@ export const randTopics = (topics) => {
 };
 
 export const startRound = () => (dispatch, getState) => {
+  dispatch(hideStartRoundDialog());
+
   const { gameUid, topics } = getState().Game;
   const topicsToUpdate = randTopics(topics);
 
@@ -28,8 +30,12 @@ export const startRound = () => (dispatch, getState) => {
   });
 
   updateTopicsService(topicsToUpdate, gameUid, () => {
-    dispatch({
-      type: START_ROUND
-    });
+    startRoundService(gameUid);
   });
+};
+
+export const startRanking = history => (dispatch, getState) => {
+  console.log('startRanking');
+  const { gameId } = getState().Game;
+  history.push(`/${gameId}/rankTopics`);
 };

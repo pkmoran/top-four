@@ -15,6 +15,11 @@ const INITIAL_STATE = {
     gameId: 'A9',
     gameUid: 'asdf',
     playerUid: 'player1',
+    games: {
+      asdf: {
+        ranking: false
+      }
+    },
     players: {
       player1: {
         name: 'Player 1',

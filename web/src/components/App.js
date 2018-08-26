@@ -9,6 +9,7 @@ import Homescreen from './Homescreen';
 import { getGames } from '../actions';
 
 import './styles/App.css';
+import RankTopics from './RankTopics';
 
 class App extends Component {
   componentDidMount() {
@@ -31,9 +32,13 @@ class App extends Component {
         <Route path="/:gameId/pickTeams" component={PickTeams} />
         <Route path="/:gameId/addTopics" component={AddTopics} />
         <Route path="/:gameId/homescreen" component={Homescreen} />
+        <Route path="/:gameId/rankTopics" component={RankTopics} />
       </div>
     );
   }
 }
 
-export default connect(null, { getGames })(App);
+export default connect(
+  null,
+  { getGames }
+)(App);

@@ -85,11 +85,13 @@ describe('the randTopics action', () => {
 
 describe('the startRound action', () => {
   let updateTopicService;
+  let startRoundService;
   let dispatch;
   let getState;
 
   beforeEach(() => {
     updateTopicService = sinon.fake.yields();
+    startRoundService = sinon.fake();
     dispatch = sinon.fake();
     getState = sinon.fake.returns({
       Game: {
@@ -98,23 +100,29 @@ describe('the startRound action', () => {
     });
 
     sinon.replace(services, 'updateTopicsService', updateTopicService);
+    sinon.replace(services, 'startRoundService', startRoundService);
+
+    startRound(updateTopicService)(dispatch, getState);
   });
 
   afterEach(() => {
     sinon.restore();
   });
 
-  it('should call the update topics service with a plain object', () => {
-    startRound(updateTopicService)(dispatch, getState);
+  it('should dispatch the hide action', () => {
+    const dispatchedAction = dispatch.firstCall.args[0];
 
+    expect(dispatchedAction.type).toEqual(SHOW_START_ROUND_DIALOG);
+    expect(dispatchedAction.payload).toEqual(false);
+  });
+
+  it('should call the update topics service with a plain object', () => {
     const topicsArg = updateTopicService.firstCall.args[0];
 
     expect(_.isPlainObject(topicsArg)).toEqual(true);
   });
 
   it('should update the status of 4 topics', () => {
-    startRound(updateTopicService)(dispatch, getState);
-
     const topicsArg = updateTopicService.firstCall.args[0];
 
     expect(Object.keys(topicsArg).length).toEqual(4);
@@ -123,11 +131,7 @@ describe('the startRound action', () => {
     });
   });
 
-  it('should dispatch a startRound action', () => {
-    startRound(updateTopicService)(dispatch, getState);
-
-    const dispatchedAction = dispatch.firstCall.args[0];
-
-    expect(dispatchedAction.type).toEqual(START_ROUND);
+  it('should call the startRoundService', () => {
+    expect(startRoundService.calledOnce).toEqual(true);
   });
 });
