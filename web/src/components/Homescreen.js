@@ -38,6 +38,18 @@ class HomescreenComponent extends Component {
     return `${this.props.playerName}, you're up! Is the group ready?`;
   }
 
+  renderActionButton() {
+    if (this.props.gameOver) {
+      return (
+        <Button>Game Over!</Button>
+      );
+    }
+
+    return (
+      <Button onClick={this.props.showStartRoundDialog}>I&apos;m Up!</Button>
+    );
+  }
+
   render() {
     return (
       <div className="Homescreen">
@@ -45,7 +57,7 @@ class HomescreenComponent extends Component {
 
         <h1>Who&apos;s Up?</h1>
 
-        <Button onClick={this.props.showStartRoundDialog}>I&apos;m Up!</Button>
+        {this.renderActionButton()}
 
         {this.renderTeams()}
 
@@ -85,7 +97,8 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
   playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name,
-  ranking: !!((Game.games || {})[Game.gameUid] || {}).rankingPlayerUid
+  ranking: !!((Game.games || {})[Game.gameUid] || {}).rankingPlayerUid,
+  gameOver: _.filter(Game.topics, topic => topic.status === 'available').length < 4
 });
 
 export default connect(

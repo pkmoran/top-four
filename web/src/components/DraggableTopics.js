@@ -4,10 +4,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './styles/DraggableTopics.css';
 
 class DraggableTopics extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   getItemStyle(isDragging, draggableStyle, state, topic) {
     let background;
 

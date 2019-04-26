@@ -57,6 +57,7 @@ class AddTopicsComponent extends Component {
         </div>
 
         <Button
+          disabled={this.props.doneDisabled}
           onClick={() => this.props.done(this.props.history)}
         >
           Done!
@@ -87,7 +88,8 @@ const mapStateToProps = ({ AddTopics, Game }) => ({
   topic: AddTopics.topic,
   playerTopics: playerTopics(Game),
   allTopicsCount: Object.keys(Game.topics || {}).length,
-  addTopicEnabled: AddTopics.addTopicEnabled
+  addTopicEnabled: AddTopics.addTopicEnabled,
+  doneDisabled: Object.keys(Game.topics || {}).length < 4
 });
 
 export default connect(
