@@ -8,5 +8,6 @@ cache:
 
 script:
   - cd web
+  - npm install
   - npm run build
   - npm test
