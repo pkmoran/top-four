@@ -11,7 +11,12 @@ const INITIAL_STATE = {
   Game: {
     gameUid: 'asdf',
     playerUid: 'player1',
-    rankingPlayerUid: 'player1',
+    games: {
+      asdf: {
+        rankingPlayerUid: 'player1'
+      }
+    },
+    players: {},
     topics: {
       topic1: {
         playerUid: 'player1',
@@ -106,15 +111,6 @@ describe('getTopics', () => {
     expect(rankedTopics[0].uid).toEqual('topic1');
     expect(rankedTopics[1].uid).toEqual('topic4');
     expect(rankedTopics[2].uid).toEqual('topic3');
-    expect(rankedTopics[3].uid).toEqual('topic5');
-  });
-
-  it('should default the localRanks when they do not exist', () => {
-    const rankedTopics = getTopics(INITIAL_STATE.Game.topics);
-
-    expect(rankedTopics[0].uid).toEqual('topic1');
-    expect(rankedTopics[1].uid).toEqual('topic3');
-    expect(rankedTopics[2].uid).toEqual('topic4');
     expect(rankedTopics[3].uid).toEqual('topic5');
   });
 });

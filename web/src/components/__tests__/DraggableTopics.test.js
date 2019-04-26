@@ -40,14 +40,6 @@ afterEach(() => {
   wrapped.unmount();
 });
 
-it('should display four topics', () => {
-  expect(wrapped.find(Draggable).length).toEqual(4);
-});
-
 it('should have a DragDropContext', () => {
   expect(wrapped.find(DragDropContext).length).toEqual(1);
-});
-
-it('should have a Droppable', () => {
-  expect(wrapped.find(Droppable).length).toEqual(1);
 });

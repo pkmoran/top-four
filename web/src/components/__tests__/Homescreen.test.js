@@ -47,6 +47,12 @@ const INITIAL_STATE = {
       team3: {
         name: 'Team 3'
       }
+    },
+    topics: {
+      topic1: { status: 'available' },
+      topic2: { status: 'available' },
+      topic3: { status: 'available' },
+      topic4: { status: 'available' }
     }
   }
 };
