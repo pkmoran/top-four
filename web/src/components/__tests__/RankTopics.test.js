@@ -10,6 +10,8 @@ let wrapped;
 const INITIAL_STATE = {
   Game: {
     gameUid: 'asdf',
+    playerUid: 'player1',
+    rankingPlayerUid: 'player1',
     topics: {
       topic1: {
         playerUid: 'player1',
@@ -78,6 +80,10 @@ describe('the interface', () => {
 
   it('should have a DraggableTopics', () => {
     expect(wrapped.find(DraggableTopics).length).toEqual(1);
+  });
+
+  it('should display the ranker text', () => {
+    expect(wrapped.find('span').at(2).text()).toEqual('Put the following topics in order from best to worst');
   });
 });
 

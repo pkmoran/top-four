@@ -103,7 +103,7 @@ export const startGame = history => (dispatch, getState) => {
         payload: 'Error starting a new game'
       });
     });
-  }, () => {
+  }, err => {
     dispatch({
       type: START_GAME_ERROR,
       payload: 'Error starting a new game'

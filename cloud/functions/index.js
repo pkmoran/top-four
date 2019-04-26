@@ -47,26 +47,25 @@ exports.startGame = functions.https.onCall((data, context) => {
   });
 });
 
-exports.pruneGames = functions.database.ref('/games/{gameUid}')
-  .onCreate(() => {
-    const db = admin.database();
+exports.pruneGames = functions.https.onCall((data, context) => {
+  const db = admin.database();
 
-    return db.ref('/games').once('value').then(snapshot => {
-      let oldGameIds = [];
-      snapshot.forEach(childSnapshot => {
-        const startDate = moment(childSnapshot.val().startDate);
-        if (startDate < moment().subtract(12, 'hours')) {
-          oldGameIds.push(childSnapshot.key);
-        }
-      });
-
-      oldGameIds.forEach(gameId => {
-        db.ref('/games/' + gameId).remove();
-      });
-
-      return null;
+  return db.ref('/games').once('value').then(snapshot => {
+    let oldGameIds = [];
+    snapshot.forEach(childSnapshot => {
+      const startDate = moment(childSnapshot.val().startDate);
+      if (startDate < moment().subtract(12, 'hours')) {
+        oldGameIds.push(childSnapshot.key);
+      }
     });
+
+    oldGameIds.forEach(gameId => {
+      db.ref('/games/' + gameId).remove();
+    });
+
+    return null;
   });
+});
 
 const gameId = () => {
   return randomLetter() + randomNumber();

@@ -6,25 +6,25 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 
-import './styles/StartRoundDialog.css';
+import './styles/ChoiceDialog.css';
 
-const StartRoundDialog = ({
-  open, playerName, onYes, onNo
+const ChoiceDialog = ({
+  open, titleText, contentText, choiceOneText, onChoiceOne, choiceTwoText, onChoiceTwo, onClose
 }) => (
-  <Dialog onClose={onNo} open={open}>
-    <DialogTitle>Start a new round?</DialogTitle>
+  <Dialog onClose={onClose} open={open}>
+    <DialogTitle>{titleText}</DialogTitle>
     <DialogContent>
       <DialogContentText>
-        {playerName}, you&apos;re up! Is the group ready?
+        {contentText}
       </DialogContentText>
 
-      <div className="StartRoundDialogButtons">
-        <Button onClick={onYes}>Yep!</Button>
+      <div>
+        <Button onClick={onChoiceOne}>{choiceOneText}</Button>
 
-        <Button onClick={onNo}>Nope!</Button>
+        <Button onClick={onChoiceTwo}>{choiceTwoText}</Button>
       </div>
     </DialogContent>
   </Dialog>
 );
 
-export default StartRoundDialog;
+export default ChoiceDialog;

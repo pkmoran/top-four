@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import requireGame from './requireGame';
 import GameId from './GameId';
 import TeamSummary from './TeamSummary';
-import StartRoundDialog from './StartRoundDialog';
+import ChoiceDialog from './ChoiceDialog';
 
 import { showStartRoundDialog, hideStartRoundDialog, startRound, startRanking } from '../actions';
 
@@ -34,6 +34,10 @@ class HomescreenComponent extends Component {
     ));
   }
 
+  dialogContentText() {
+    return `${this.props.playerName}, you're up! Is the group ready?`;
+  }
+
   render() {
     return (
       <div className="Homescreen">
@@ -45,11 +49,15 @@ class HomescreenComponent extends Component {
 
         {this.renderTeams()}
 
-        <StartRoundDialog
+        <ChoiceDialog
           open={this.props.showDialog}
-          playerName={this.props.playerName}
-          onYes={this.props.startRound}
-          onNo={this.props.hideStartRoundDialog}
+          titleText="Start a new round?"
+          contentText={this.dialogContentText()}
+          choiceOneText="Yep!"
+          onChoiceOne={this.props.startRound}
+          choiceTwoText="Nope!"
+          onChoiceTwo={this.props.hideStartRoundDialog}
+          onClose={this.props.hideStartRoundDialog}
         />
       </div>
     );
@@ -77,7 +85,7 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
   playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name,
-  ranking: ((Game.games || {})[Game.gameUid] || {}).ranking
+  ranking: !!((Game.games || {})[Game.gameUid] || {}).rankingPlayerUid
 });
 
 export default connect(

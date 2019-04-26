@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   STARTED_GAME,
   NAME_CHANGED,
@@ -13,6 +15,7 @@ export const INITIAL_STATE = {
   gameUid: '',
   name: '',
   playerUid: '',
+  rankingPlayerUid: '',
   games: [],
   teams: [],
   players: [],

@@ -45,9 +45,30 @@ export const updateTopicsService = (topics, gameUid, onUpdated) => {
     });
 };
 
-export const startRoundService = (gameUid) => {
+export const startRoundService = (gameUid, rankingPlayerUid) => {
   firebase
     .database()
     .ref(`/games/${gameUid}`)
-    .update({ ranking: true });
+    .update({ rankingPlayerUid, state: 'ranking' });
+};
+
+export const setRoundRanked = (gameUid) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}`)
+    .update({ state: 'ranked' });
+};
+
+export const endRoundService = (gameUid) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}`)
+    .update({ rankingPlayerUid: '', state: '' });
+};
+
+export const updatePlayerScoreService = (gameUid, playerUid, score) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/players/${playerUid}`)
+    .update({ score });
 };

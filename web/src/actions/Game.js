@@ -49,7 +49,6 @@ export const getTopics = () => (dispatch, getState) => {
 };
 
 export const getGameData = () => (dispatch) => {
-  dispatch(getGames());
   dispatch(getTeams());
   dispatch(getTopics());
   dispatch(getPlayers());

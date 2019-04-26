@@ -7,7 +7,7 @@ import Root from '../Root';
 import GameId from '../GameId';
 import Homescreen, { getTeams } from '../Homescreen';
 import TeamSummary from '../TeamSummary';
-import StartRoundDialog from '../StartRoundDialog';
+import ChoiceDialog from '../ChoiceDialog';
 
 let wrapped;
 const INITIAL_STATE = {
@@ -99,7 +99,7 @@ describe('the interface', () => {
   });
 
   it('should have a start round dialog', () => {
-    expect(wrapped.find(StartRoundDialog).length).toEqual(1);
+    expect(wrapped.find(ChoiceDialog).length).toEqual(1);
   });
 });
 
@@ -108,11 +108,11 @@ describe('the start round dialog', () => {
     wrapped.find(Button).prop('onClick')();
     wrapped.update();
 
-    expect(wrapped.find(StartRoundDialog).prop('open')).toEqual(true);
+    expect(wrapped.find(ChoiceDialog).prop('open')).toEqual(true);
   });
 
   it('should receive the player name property', () => {
-    expect(wrapped.find(StartRoundDialog).prop('playerName')).toEqual('Player 1');
+    expect(wrapped.find(ChoiceDialog).prop('contentText')).toEqual('Player 1, you\'re up! Is the group ready?');
   });
 });
 

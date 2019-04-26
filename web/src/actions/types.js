@@ -29,3 +29,5 @@ export const START_ROUND = 'start_round';
 
 // rank topics
 export const UPDATE_MY_RANKS = 'update_my_ranks';
+export const SHOW_LOCK_IN_DIALOG = 'show_lock_in_dialog';
+export const RESET_LOCAL_RANKING = 'reset_local_ranking';

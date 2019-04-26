@@ -95,7 +95,9 @@ describe('the startRound action', () => {
     dispatch = sinon.fake();
     getState = sinon.fake.returns({
       Game: {
-        topics
+        topics,
+        gameUid: 'asdf',
+        playerUid: 'player1'
       }
     });
 
@@ -133,5 +135,10 @@ describe('the startRound action', () => {
 
   it('should call the startRoundService', () => {
     expect(startRoundService.calledOnce).toEqual(true);
+  });
+
+  it('should call the startRoundService with the gameUid and the ranking playerUid', () => {
+    expect(startRoundService.firstCall.args[0]).toEqual('asdf');
+    expect(startRoundService.firstCall.args[1]).toEqual('player1');
   });
 });

@@ -22,7 +22,7 @@ export const randTopics = (topics) => {
 export const startRound = () => (dispatch, getState) => {
   dispatch(hideStartRoundDialog());
 
-  const { gameUid, topics } = getState().Game;
+  const { gameUid, topics, playerUid } = getState().Game;
   const topicsToUpdate = randTopics(topics);
 
   _.forEach(topicsToUpdate, (topic) => {
@@ -30,12 +30,11 @@ export const startRound = () => (dispatch, getState) => {
   });
 
   updateTopicsService(topicsToUpdate, gameUid, () => {
-    startRoundService(gameUid);
+    startRoundService(gameUid, playerUid);
   });
 };
 
 export const startRanking = history => (dispatch, getState) => {
-  console.log('startRanking');
   const { gameId } = getState().Game;
   history.push(`/${gameId}/rankTopics`);
 };
