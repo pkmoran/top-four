@@ -13,6 +13,7 @@ script:
   - npm test
 
 deploy:
+  skip_cleanup: true
   provider: firebase
   token:
     secure: $FIREBASE_TOKEN
