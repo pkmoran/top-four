@@ -5,7 +5,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GameId from './GameId';
 import TeamRow from './TeamRow';
-import requireGame from './requireGame';
 
 import './styles/PickTeams.css';
 
