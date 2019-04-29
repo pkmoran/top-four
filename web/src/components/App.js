@@ -6,10 +6,10 @@ import LandingPageContainer from './LandingPage/LandingPageContainer';
 import PickTeamsContainer from './PickTeams/PickTeamsContainer';
 import AddTopicsContainer from './AddTopics/AddTopicsContainer';
 import HomescreenContainer from './Homescreen/HomescreenContainer';
+import RankTopics from './RankTopics/RankTopics';
 import { getGames } from '../actions';
 
 import './styles/App.css';
-import RankTopics from './RankTopics';
 
 class App extends Component {
   componentDidMount() {

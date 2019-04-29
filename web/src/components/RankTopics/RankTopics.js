@@ -4,12 +4,12 @@ import _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
 
-import requireGame from './requireGame';
-import GameId from './GameId';
+import requireGame from '../requireGame';
+import GameId from '../GameId';
 import DraggableTopics from './DraggableTopics';
-import ChoiceDialog from './ChoiceDialog';
+import ChoiceDialog from '../ChoiceDialog';
 
-import { updateMyRanks, showLockInDialog, hideLockInDialog, lockIn, endRound, roundEnded, uploadScore } from '../actions';
+import { updateMyRanks, showLockInDialog, hideLockInDialog, lockIn, endRound, roundEnded, uploadScore } from '../../actions';
 
 import './styles/RankTopics.css';
 

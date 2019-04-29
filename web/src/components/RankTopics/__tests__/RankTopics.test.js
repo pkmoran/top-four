@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Root from '../Root';
+import Root from '../../Root';
 import RankTopics, { getTopics } from '../RankTopics';
-import GameId from '../GameId';
+import GameId from '../../GameId';
 import DraggableTopics from '../DraggableTopics';
 
 let wrapped;
