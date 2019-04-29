@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import Root from '../../Root';
-import RankTopics, { getTopics } from '../RankTopics';
+import RankTopics from '../RankTopics';
 import GameId from '../../GameId';
 import DraggableTopics from '../DraggableTopics';
 
@@ -64,10 +64,42 @@ const INITIAL_STATE = {
   }
 };
 
+const topics = [{
+  uid: 'topic1',
+  playerUid: 'player1',
+  rank: -1,
+  status: 'active',
+  topic: 'topic 1'
+}, {
+  uid: 'topic2',
+  playerUid: 'player1',
+  rank: -1,
+  status: 'active',
+  topic: 'topic 2'
+}, {
+  uid: 'topic3',
+  playerUid: 'player1',
+  rank: -1,
+  status: 'active',
+  topic: 'topic 3'
+}, {
+  uid: 'topic4',
+  playerUid: 'player1',
+  rank: -1,
+  status: 'active',
+  topic: 'topic 4'
+}]
+
 beforeEach(() => {
-  wrapped = mount(<Root initialState={INITIAL_STATE}>
-    <RankTopics />
-                  </Root>);
+  wrapped = mount(
+    <RankTopics
+      { ... {
+        topics,
+        active: true,
+        showDialog: false
+      }}
+    />
+  );
 });
 
 afterEach(() => {
@@ -89,28 +121,5 @@ describe('the interface', () => {
 
   it('should display the ranker text', () => {
     expect(wrapped.find('span').at(2).text()).toEqual('Put the following topics in order from best to worst');
-  });
-});
-
-describe('getTopics', () => {
-  const localRanks = {
-    topic1: 0,
-    topic3: 2,
-    topic4: 1,
-    topic5: 3
-  };
-
-  it('should return the active topics', () => {
-    const activeTopics = getTopics(INITIAL_STATE.Game.topics, localRanks);
-    expect(activeTopics.length).toEqual(4);
-  });
-
-  it('should sort the topics by their local rank', () => {
-    const rankedTopics = getTopics(INITIAL_STATE.Game.topics, localRanks);
-
-    expect(rankedTopics[0].uid).toEqual('topic1');
-    expect(rankedTopics[1].uid).toEqual('topic4');
-    expect(rankedTopics[2].uid).toEqual('topic3');
-    expect(rankedTopics[3].uid).toEqual('topic5');
   });
 });

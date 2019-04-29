@@ -1,0 +1,133 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
+import RankTopics from './RankTopics';
+import requireGame from '../requireGame';
+
+import {
+  updateMyRanks,
+  showLockInDialog,
+  hideLockInDialog,
+  lockIn,
+  endRound,
+  roundEnded,
+  uploadScore
+} from '../../actions';
+
+class RankTopicsContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onDragEnd = this.onDragEnd.bind(this);
+  }
+
+  componentDidUpdate(previousProps) {
+    if (previousProps.state === 'ranking' && this.props.state === 'ranked' && !this.props.active) {
+      this.props.uploadScore(this.props.topics);
+    }
+
+    if (previousProps.state === 'ranked' && this.props.state === '') {
+      this.props.roundEnded(this.props.history);
+    }
+  }
+
+  onDragEnd(result) {
+    if (!result.destination) {
+      return;
+    }
+
+    this.props.updateMyRanks(this.props.topics, result.source.index, result.destination.index);
+  }
+
+  render() {
+    const {
+      gameId,
+      topics,
+      active,
+      activePlayerName,
+      state,
+      showDialog,
+      showLockInDialog,
+      hideLockInDialog,
+      lockIn,
+      endRound
+    } = this.props;
+
+    const {
+      onDragEnd
+    } = this;
+
+    return (
+      <RankTopics
+        {... {
+          gameId,
+          topics,
+          active,
+          activePlayerName,
+          state,
+          showDialog,
+          showLockInDialog,
+          hideLockInDialog,
+          lockIn,
+          endRound,
+          onDragEnd
+        }}
+      />
+    )
+  }
+}
+
+export const getTopics = (topics, optionalLocalRanks) => {
+  // get all 'active' or 'ranked' topics, and map them to an array
+  const activeTopics = _.map(_.pickBy(topics, topic => topic.status === 'active' || topic.status === 'ranked'), (topic, uid) => ({ ...topic, uid }));
+
+  let localRanks;
+  if (Object.keys(optionalLocalRanks).length === 0) {
+    localRanks = _.reduce(
+      activeTopics,
+      (result, value, index) => ({
+        ...result,
+        [value.uid]: index
+      }),
+      {}
+    );
+  } else {
+    localRanks = optionalLocalRanks;
+  }
+
+  const sortedTopics = _.sortBy(activeTopics, [
+    topic => localRanks[topic.uid]
+  ]);
+
+  _.forEach(sortedTopics, (topic, index) => {
+    topic.isCorrect = index === topic.rank;
+    if (!topic.isCorrect) {
+      topic.correctTopic = _.find(activeTopics, (topic) => index === topic.rank);
+    }
+  });
+
+  return sortedTopics;
+};
+
+const mapStateToProps = ({ Game, RankTopics }) => ({
+  gameId: Game.gameId,
+  topics: getTopics(Game.topics, RankTopics.localRanks),
+  active: Game.playerUid === (Game.games[Game.gameUid] || {}).rankingPlayerUid,
+  activePlayerName: (Game.players[(Game.games[Game.gameUid] || {}).rankingPlayerUid] || {}).name,
+  state: (Game.games[Game.gameUid] || {}).state,
+  showDialog: RankTopics.showDialog
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    updateMyRanks,
+    showLockInDialog,
+    hideLockInDialog,
+    lockIn,
+    endRound,
+    roundEnded,
+    uploadScore
+  }
+)(requireGame(RankTopicsContainer));

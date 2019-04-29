@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
+
 import LandingPageContainer from './LandingPage/LandingPageContainer';
 import PickTeamsContainer from './PickTeams/PickTeamsContainer';
 import AddTopicsContainer from './AddTopics/AddTopicsContainer';
 import HomescreenContainer from './Homescreen/HomescreenContainer';
-import RankTopics from './RankTopics/RankTopics';
+import RankTopicsContainer from './RankTopics/RankTopicsContainer';
+
 import { getGames } from '../actions';
 
 import './styles/App.css';
@@ -32,7 +34,7 @@ class App extends Component {
         <Route path="/:gameId/pickTeams" component={PickTeamsContainer} />
         <Route path="/:gameId/addTopics" component={AddTopicsContainer} />
         <Route path="/:gameId/homescreen" component={HomescreenContainer} />
-        <Route path="/:gameId/rankTopics" component={RankTopics} />
+        <Route path="/:gameId/rankTopics" component={RankTopicsContainer} />
       </div>
     );
   }
