@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import LandingPageContainer from './LandingPage/LandingPageContainer';
 import PickTeamsContainer from './PickTeams/PickTeamsContainer';
 import AddTopicsContainer from './AddTopics/AddTopicsContainer';
-import Homescreen from './Homescreen';
+import Homescreen from './Homescreen/Homescreen';
 import { getGames } from '../actions';
 
 import './styles/App.css';

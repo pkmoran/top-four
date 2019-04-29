@@ -4,12 +4,12 @@ import _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
 
-import requireGame from './requireGame';
-import GameId from './GameId';
+import requireGame from '../requireGame';
+import GameId from '../GameId';
 import TeamSummary from './TeamSummary';
-import ChoiceDialog from './ChoiceDialog';
+import ChoiceDialog from '../ChoiceDialog';
 
-import { showStartRoundDialog, hideStartRoundDialog, startRound, startRanking } from '../actions';
+import { showStartRoundDialog, hideStartRoundDialog, startRound, startRanking } from '../../actions';
 
 import './styles/Homescreen.css';
 
