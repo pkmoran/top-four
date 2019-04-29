@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 import Button from '@material-ui/core/Button';
 
-import Root from '../Root';
+import Root from '../../Root';
 import AddTopics from '../AddTopics';
 
 let wrapped;

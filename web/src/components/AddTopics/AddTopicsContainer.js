@@ -1,0 +1,86 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
+import AddTopics from './AddTopics';
+import requireGame from '../requireGame';
+
+import { addTopic, topicChanged, deleteTopic, done } from '../../actions';
+
+class AddTopicsContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.topicChanged = this.topicChanged.bind(this);
+    this.addTopic = this.addTopic.bind(this);
+    this.done = this.done.bind(this);
+  }
+
+  topicChanged(event) {
+    this.props.topicChanged(event.target.value);
+  }
+
+  addTopic() {
+    this.props.addTopic(this.props.topic);
+  }
+
+  done() {
+    this.props.done(this.props.history);
+  }
+
+  render() {
+    const {
+      topic,
+      playerTopics,
+      allTopicsCount,
+      addTopicEnabled,
+      doneDisabled,
+      deleteTopic
+    } = this.props;
+
+    const {
+      topicChanged,
+      addTopic,
+      done
+    } = this;
+
+    return (
+      <AddTopics 
+        { ... {
+          topic,
+          playerTopics,
+          allTopicsCount,
+          addTopicEnabled,
+          doneDisabled,
+          addTopic,
+          topicChanged,
+          deleteTopic,
+          done
+        }}
+      />
+    )
+  }
+}
+
+const playerTopics = ({ topics, playerUid }) => {
+  const mapped = _.map(topics, (val, uid) => ({ ...val, uid }));
+  return _.filter(mapped, t => t.playerUid === playerUid);
+};
+
+const mapStateToProps = ({ AddTopics, Game }) => ({
+  topic: AddTopics.topic,
+  playerTopics: playerTopics(Game),
+  allTopicsCount: Object.keys(Game.topics || {}).length,
+  addTopicEnabled: AddTopics.addTopicEnabled,
+  doneDisabled: Object.keys(Game.topics || {}).length < 4
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    addTopic,
+    topicChanged,
+    deleteTopic,
+    done
+  }
+)(requireGame(AddTopicsContainer));

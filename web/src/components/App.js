@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import { connect } from 'react-redux';
 import LandingPageContainer from './LandingPage/LandingPageContainer';
 import PickTeamsContainer from './PickTeams/PickTeamsContainer';
-import AddTopics from './AddTopics';
+import AddTopicsContainer from './AddTopics/AddTopicsContainer';
 import Homescreen from './Homescreen';
 import { getGames } from '../actions';
 
@@ -30,7 +30,7 @@ class App extends Component {
       <div className="App">
         <Route path="/" exact component={LandingPageContainer} />
         <Route path="/:gameId/pickTeams" component={PickTeamsContainer} />
-        <Route path="/:gameId/addTopics" component={AddTopics} />
+        <Route path="/:gameId/addTopics" component={AddTopicsContainer} />
         <Route path="/:gameId/homescreen" component={Homescreen} />
         <Route path="/:gameId/rankTopics" component={RankTopics} />
       </div>
