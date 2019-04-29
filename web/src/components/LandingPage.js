@@ -2,33 +2,10 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { connect } from 'react-redux';
-import {
-  joinGame,
-  gameIdChanged,
-  startGame,
-  nameChanged,
-  showJoinGameSection
-} from '../actions';
 
 import './styles/LandingPage.css';
 
 class LandingPageComponent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.gameIdChanged = this.gameIdChanged.bind(this);
-    this.nameChanged = this.nameChanged.bind(this);
-  }
-
-  gameIdChanged(event) {
-    this.props.gameIdChanged(event.target.value);
-  }
-
-  nameChanged(event) {
-    this.props.nameChanged(event.target.value);
-  }
-
   renderButtonSection() {
     if (this.props.loading) {
       return <CircularProgress />;
@@ -60,7 +37,7 @@ class LandingPageComponent extends Component {
       return (
         <div>
           <TextField
-            onChange={this.gameIdChanged}
+            onChange={this.props.gameIdChanged}
             value={this.props.gameId}
             id="gameId"
             label="Game ID"
@@ -89,7 +66,7 @@ class LandingPageComponent extends Component {
         <h1>Top Four TM v1.5</h1>
 
         <TextField
-          onChange={this.nameChanged}
+          onChange={this.props.nameChanged}
           value={this.props.name}
           id="name"
           label="Name"
@@ -104,35 +81,4 @@ class LandingPageComponent extends Component {
   }
 }
 
-const mapStateToProps = ({ LandingPage }) => {
-  const {
-    gameId,
-    error,
-    loading,
-    startGameEnabled,
-    joinGameEnabled,
-    joinEnabled,
-    showJoinGame
-  } = LandingPage;
-
-  return {
-    gameId,
-    error,
-    loading,
-    startGameEnabled,
-    joinGameEnabled,
-    joinEnabled,
-    showJoinGame
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    joinGame,
-    gameIdChanged,
-    startGame,
-    nameChanged,
-    showJoinGameSection
-  }
-)(LandingPageComponent);
+export default LandingPageComponent;

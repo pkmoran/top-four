@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import LandingPage from './LandingPage';
+import LandingPageContainer from './LandingPageContainer';
 import PickTeams from './PickTeams';
 import AddTopics from './AddTopics';
 import Homescreen from './Homescreen';
@@ -28,7 +28,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route path="/" exact component={LandingPage} />
+        <Route path="/" exact component={LandingPageContainer} />
         <Route path="/:gameId/pickTeams" component={PickTeams} />
         <Route path="/:gameId/addTopics" component={AddTopics} />
         <Route path="/:gameId/homescreen" component={Homescreen} />
