@@ -1,5 +1,6 @@
 // landing page
 export const STARTING_GAME = 'starting_game';
+export const JOINING_GAME = 'joining_game';
 export const STARTED_GAME = 'started_game';
 export const START_GAME_ERROR = 'start_game_error';
 export const JOIN_GAME = 'join_game';
@@ -15,7 +16,6 @@ export const ADDED_TOPIC = 'added_topic';
 // game
 export const ADDED_PLAYER = 'added_player';
 export const NEW_TEAMS = 'new_teams';
-export const NEW_GAMES = 'new_games';
 export const NEW_TOPICS = 'new_topics';
 export const NEW_PLAYERS = 'new_players';
 

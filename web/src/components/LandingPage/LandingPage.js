@@ -43,13 +43,16 @@ class LandingPageComponent extends Component {
             label="Game ID"
             placeholder="e.g. A9"
           />
-
-          <Button
-            onClick={() => this.props.joinGame()}
-            disabled={!this.props.joinEnabled}
-          >
-            Join
-          </Button>
+          
+          {
+            this.props.loading ? <CircularProgress /> :
+            <Button
+              onClick={() => this.props.joinGame()}
+              disabled={!this.props.joinEnabled}
+            >
+              Join
+            </Button>
+          }
 
         </div>
       );

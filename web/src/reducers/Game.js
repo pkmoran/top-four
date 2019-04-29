@@ -1,7 +1,6 @@
 import {
   STARTED_GAME,
   NAME_CHANGED,
-  NEW_GAMES,
   NEW_TEAMS,
   ADDED_PLAYER,
   NEW_TOPICS,
@@ -22,8 +21,6 @@ export const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case NEW_GAMES:
-      return { ...state, games: action.payload };
     case NAME_CHANGED:
       return { ...state, name: action.payload };
     case STARTED_GAME:

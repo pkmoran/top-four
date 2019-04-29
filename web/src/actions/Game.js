@@ -1,25 +1,14 @@
 import {
-  getGamesService,
   getTeamsService,
   getTopicsService,
   getPlayersService
 } from '../services/Game';
 
 import {
-  NEW_GAMES,
   NEW_TEAMS,
   NEW_TOPICS,
   NEW_PLAYERS
 } from './types';
-
-export const getGames = () => (dispatch) => {
-  getGamesService((games) => {
-    dispatch({
-      type: NEW_GAMES,
-      payload: games
-    });
-  });
-};
 
 export const getTeams = () => (dispatch, getState) => {
   getTeamsService(getState().Game.gameUid, (teams) => {

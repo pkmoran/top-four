@@ -1,12 +1,13 @@
 import firebase from 'firebase';
+import _ from 'lodash';
 
-export const getGamesService = (onGames) => {
-  firebase
+export const getGameUidService = async gameId => {
+  const games = await firebase
     .database()
     .ref('/games')
-    .on('value', (snapshot) => {
-      onGames(snapshot.val());
-    });
+    .once('value');
+
+  return _.findKey(games.val(), { gameId });
 };
 
 export const getTeamsService = (gameUid, onTeams) => {

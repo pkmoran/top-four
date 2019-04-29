@@ -5,7 +5,8 @@ import {
   STARTED_GAME,
   START_GAME_ERROR,
   NAME_CHANGED,
-  SHOW_JOIN_GAME
+  SHOW_JOIN_GAME,
+  JOINING_GAME
 } from '../actions/types';
 
 export const INITIAL_STATE = {
@@ -25,6 +26,8 @@ export default (state = INITIAL_STATE, action) => {
     case SHOW_JOIN_GAME:
       return { ...state, showJoinGame: true };
     case STARTING_GAME:
+      return { ...state, loading: true };
+    case JOINING_GAME:
       return { ...state, loading: true };
     case STARTED_GAME:
       return INITIAL_STATE;
