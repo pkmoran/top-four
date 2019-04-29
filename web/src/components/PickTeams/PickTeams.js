@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import GameId from './GameId';
+import GameId from '../GameId';
 import TeamRow from './TeamRow';
 
 import './styles/PickTeams.css';

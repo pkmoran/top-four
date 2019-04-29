@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import PickTeams from './PickTeams';
-import requireGame from './requireGame';
+import requireGame from '../requireGame';
 
-import { teamNameChanged, addTeam, selectTeam, addTopics } from '../actions';
+import { teamNameChanged, addTeam, selectTeam, addTopics } from '../../actions';
 
 class PickTeamsContainer extends Component {
   constructor(props) {

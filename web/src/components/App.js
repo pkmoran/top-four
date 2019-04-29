@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import LandingPageContainer from './LandingPage/LandingPageContainer';
-import PickTeamsContainer from './PickTeamsContainer';
+import PickTeamsContainer from './PickTeams/PickTeamsContainer';
 import AddTopics from './AddTopics';
 import Homescreen from './Homescreen';
 import { getGames } from '../actions';
