@@ -39,7 +39,7 @@ class PickTeamsComponent extends Component {
   render() {
     return (
       <div className="PickTeams">
-        <GameId />
+        <GameId gameId={this.props.gameId}/>
 
         <h1>Pick Teams!</h1>
 

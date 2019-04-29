@@ -73,7 +73,7 @@ class RankTopicsComponent extends Component {
   render() {
     return (
       <div className="RankTopics">
-        <GameId />
+        <GameId gameId={this.props.gameId}/>
         <h1>{this.headerText()}</h1>
 
         <span>{this.descriptionText()}</span>

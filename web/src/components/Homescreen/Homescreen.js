@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
 
-import requireGame from '../requireGame';
 import GameId from '../GameId';
 import TeamSummary from './TeamSummary';
 import ChoiceDialog from '../ChoiceDialog';
-
-import { showStartRoundDialog, hideStartRoundDialog, startRound, startRanking } from '../../actions';
 
 import './styles/Homescreen.css';
 
 class HomescreenComponent extends Component {
   componentDidMount() {
     if (this.props.ranking) {
-      this.props.startRanking(this.props.history);
+      this.props.startRanking();
     }
   }
 
   componentDidUpdate() {
     if (this.props.ranking) {
-      this.props.startRanking(this.props.history);
+      this.props.startRanking();
     }
   }
 
@@ -53,7 +48,7 @@ class HomescreenComponent extends Component {
   render() {
     return (
       <div className="Homescreen">
-        <GameId />
+        <GameId gameId={this.props.gameId}/>
 
         <h1>Who&apos;s Up?</h1>
 
@@ -76,37 +71,4 @@ class HomescreenComponent extends Component {
   }
 }
 
-export const getTeams = ({ teams, players }) => {
-  const teamUidsWithPlayers = _.uniq(_.map(players, ({ teamUid }) => teamUid));
-  const teamsWithPlayers = {};
-
-  _.forEach(teamUidsWithPlayers, (teamUid) => {
-    teamsWithPlayers[teamUid] = { ...teams[teamUid], players: [], score: 0 };
-  });
-
-  _.forEach(players, (player, uid) => {
-    const team = teamsWithPlayers[player.teamUid];
-    team.players.push({ ...player, uid });
-    team.score += player.score || 0;
-  });
-
-  return _.map(teamsWithPlayers, (team, uid) => ({ ...team, uid }));
-};
-
-const mapStateToProps = ({ Game, Homescreen }) => ({
-  teams: getTeams(Game),
-  showDialog: Homescreen.showDialog,
-  playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name,
-  ranking: !!((Game.games || {})[Game.gameUid] || {}).rankingPlayerUid,
-  gameOver: _.filter(Game.topics, topic => topic.status === 'available').length < 4
-});
-
-export default connect(
-  mapStateToProps,
-  {
-    showStartRoundDialog,
-    hideStartRoundDialog,
-    startRound,
-    startRanking
-  }
-)(requireGame(HomescreenComponent));
+export default HomescreenComponent;

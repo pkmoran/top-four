@@ -30,6 +30,7 @@ class PickTeamsContainer extends Component {
 
   render() {
     const {
+      gameId,
       teamName,
       addTeamEnabled,
       teams,
@@ -47,6 +48,7 @@ class PickTeamsContainer extends Component {
     return (
       <PickTeams 
         { ... {
+          gameId,
           teamName,
           addTeamEnabled,
           teams,
@@ -82,6 +84,7 @@ const selectedTeam = ({ players, playerUid }) => {
 };
 
 const mapStateToProps = ({ PickTeams, Game }) => ({
+  gameId: Game.gameId,
   teamName: PickTeams.teamName,
   addTeamEnabled: PickTeams.teamName,
   teams: teamsAndPlayerCounts(Game),

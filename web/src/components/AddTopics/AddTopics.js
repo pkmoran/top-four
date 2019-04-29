@@ -22,7 +22,7 @@ class AddTopicsComponent extends Component {
   render() {
     return (
       <div className="AddTopics">
-        <GameId />
+        <GameId gameId={this.props.gameId}/>
         <h1>Add Topics!</h1>
         <div>
           <TextField

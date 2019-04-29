@@ -35,7 +35,8 @@ class AddTopicsContainer extends Component {
       allTopicsCount,
       addTopicEnabled,
       doneDisabled,
-      deleteTopic
+      deleteTopic,
+      gameId
     } = this.props;
 
     const {
@@ -47,6 +48,7 @@ class AddTopicsContainer extends Component {
     return (
       <AddTopics 
         { ... {
+          gameId,
           topic,
           playerTopics,
           allTopicsCount,
@@ -68,6 +70,7 @@ const playerTopics = ({ topics, playerUid }) => {
 };
 
 const mapStateToProps = ({ AddTopics, Game }) => ({
+  gameId: Game.gameId,
   topic: AddTopics.topic,
   playerTopics: playerTopics(Game),
   allTopicsCount: Object.keys(Game.topics || {}).length,
