@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import LandingPageContainer from './LandingPageContainer';
+import LandingPageContainer from './LandingPage/LandingPageContainer';
 import PickTeamsContainer from './PickTeamsContainer';
 import AddTopics from './AddTopics';
 import Homescreen from './Homescreen';

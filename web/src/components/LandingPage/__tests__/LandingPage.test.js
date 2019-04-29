@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Root from '../Root';
+import Root from '../../Root';
 import LandingPage from '../LandingPage';
 
 let wrapped;

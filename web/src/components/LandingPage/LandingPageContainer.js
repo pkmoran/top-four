@@ -9,7 +9,7 @@ import {
   startGame,
   nameChanged,
   showJoinGameSection
-} from '../actions';
+} from '../../actions';
 
 class LandingPageContainer extends Component {
   constructor(props) {
