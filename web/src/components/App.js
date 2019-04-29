@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import LandingPageContainer from './LandingPageContainer';
-import PickTeams from './PickTeams';
+import PickTeamsContainer from './PickTeamsContainer';
 import AddTopics from './AddTopics';
 import Homescreen from './Homescreen';
 import { getGames } from '../actions';
@@ -29,7 +29,7 @@ class App extends Component {
     return (
       <div className="App">
         <Route path="/" exact component={LandingPageContainer} />
-        <Route path="/:gameId/pickTeams" component={PickTeams} />
+        <Route path="/:gameId/pickTeams" component={PickTeamsContainer} />
         <Route path="/:gameId/addTopics" component={AddTopics} />
         <Route path="/:gameId/homescreen" component={Homescreen} />
         <Route path="/:gameId/rankTopics" component={RankTopics} />
