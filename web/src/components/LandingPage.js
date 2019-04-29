@@ -14,7 +14,7 @@ class LandingPageComponent extends Component {
     return (
       <div className="ButtonSection">
         <Button
-          onClick={() => this.props.startGame(this.props.history)}
+          onClick={() => this.props.startGame()}
           disabled={!this.props.startGameEnabled}
         >
           Start Game
@@ -45,7 +45,7 @@ class LandingPageComponent extends Component {
           />
 
           <Button
-            onClick={() => this.props.joinGame(this.props.gameId, this.props.history)}
+            onClick={() => this.props.joinGame()}
             disabled={!this.props.joinEnabled}
           >
             Join

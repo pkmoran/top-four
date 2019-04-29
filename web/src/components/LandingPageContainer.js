@@ -17,6 +17,8 @@ class LandingPageContainer extends Component {
 
     this.gameIdChanged = this.gameIdChanged.bind(this);
     this.nameChanged = this.nameChanged.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.joinGame = this.joinGame.bind(this);
   }
 
   gameIdChanged(event) {
@@ -25,6 +27,14 @@ class LandingPageContainer extends Component {
 
   nameChanged(event) {
     this.props.nameChanged(event.target.value);
+  }
+
+  startGame() {
+    this.props.startGame(this.props.history);
+  }
+
+  joinGame() {
+    this.props.joinGame(this.props.gameId, this.props.history);
   }
 
   render() {
@@ -36,25 +46,32 @@ class LandingPageContainer extends Component {
       joinGameEnabled,
       joinEnabled,
       showJoinGame,
-      joinGame,
-      startGame,
       showJoinGameSection
     } = this.props;
 
+    const {
+      gameIdChanged,
+      nameChanged,
+      startGame,
+      joinGame
+    } = this;
+
     return (
       <LandingPage 
-        gameId={gameId}
-        error={error}
-        loading={loading}
-        startGameEnabled={startGameEnabled}
-        joinGameEnabled={joinGameEnabled}
-        joinEnabled={joinEnabled}
-        showJoinGame={showJoinGame}
-        joinGame={joinGame}
-        gameIdChanged={this.gameIdChanged}
-        startGame={startGame}
-        nameChanged={this.nameChanged}
-        showJoinGameSection={showJoinGameSection}
+        { ... { 
+          gameId, 
+          error,
+          loading,
+          startGameEnabled,
+          joinGameEnabled,
+          joinEnabled,
+          showJoinGame,
+          joinGame,
+          gameIdChanged,
+          startGame,
+          nameChanged,
+          showJoinGameSection
+        }}
       />
     )
   }
