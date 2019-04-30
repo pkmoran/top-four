@@ -10,6 +10,15 @@ export const getGameUidService = async gameId => {
   return _.findKey(games.val(), { gameId });
 };
 
+export const getGameService = (gameUid, onGame) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}`)
+    .on('value', snapshot => {
+      onGame(snapshot.val());
+    });
+}
+
 export const getTeamsService = (gameUid, onTeams) => {
   firebase
     .database()

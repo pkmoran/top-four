@@ -49,13 +49,13 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
         payload: { gameId, gameUid }
       });
   
+      dispatch(getGameData(gameUid));
       addPlayerService(gameUid, getState().Game.name, (playerUid) => {
         dispatch({
           type: ADDED_PLAYER,
           payload: playerUid
         });
   
-        dispatch(getGameData());
         history.push(`/${gameId}/pickTeams`);
       }, () => {
         dispatch({
@@ -83,13 +83,13 @@ export const startGame = history => (dispatch, getState) => {
       payload: { gameId, gameUid }
     });
 
+    dispatch(getGameData(gameUid));
     addPlayerService(gameUid, getState().Game.name, (playerUid) => {
       dispatch({
         type: ADDED_PLAYER,
         payload: playerUid
       });
 
-      dispatch(getGameData());
       history.push(`/${gameId}/pickTeams`);
     }, () => {
       dispatch({

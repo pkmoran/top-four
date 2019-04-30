@@ -41,7 +41,7 @@ export const lockIn = () => (dispatch, getState) => {
   const topics = {};
 
   _.forEach(localTopicRanks, (localRank, localUid) => {
-    const topic = _.find(getState().Game.topics, (topic, uid) => uid === localUid);
+    const topic = _.find(getState().Game.topics.map, (topic, uid) => uid === localUid);
     topic.status = 'ranked';
     topic.rank = localRank;
 
@@ -60,7 +60,7 @@ const resetLocalRanking = () => ({
 export const endRound = () => (dispatch, getState) => {
   const { gameUid, topics } = getState().Game;
 
-  const rankedTopics = _.pickBy(topics, topic => topic.status === 'ranked');
+  const rankedTopics = _.pickBy(topics.map, topic => topic.status === 'ranked');
   _.forEach(rankedTopics, topic => {
     topic.status = 'unavailable';
   });
@@ -74,7 +74,7 @@ export const uploadScore = rankedTopics => (dispatch, getState) => {
   const correct = _.filter(rankedTopics, topic => topic.isCorrect).length;
 
   const { players, playerUid, gameUid } = getState().Game;
-  const score = players[playerUid].score;
+  const score = players.map[playerUid].score;
 
   updatePlayerScoreService(gameUid, playerUid, score + correct);
 };

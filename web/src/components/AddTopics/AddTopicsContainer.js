@@ -64,18 +64,17 @@ class AddTopicsContainer extends Component {
   }
 }
 
-const playerTopics = ({ topics, playerUid }) => {
-  const mapped = _.map(topics, (val, uid) => ({ ...val, uid }));
-  return _.filter(mapped, t => t.playerUid === playerUid);
+export const playerTopics = ({ topics, playerUid }) => {
+  return _.filter(topics.array, t => t.playerUid === playerUid);
 };
 
 const mapStateToProps = ({ AddTopics, Game }) => ({
   gameId: Game.gameId,
   topic: AddTopics.topic,
   playerTopics: playerTopics(Game),
-  allTopicsCount: Object.keys(Game.topics || {}).length,
+  allTopicsCount: Game.topics.array.length,
   addTopicEnabled: AddTopics.addTopicEnabled,
-  doneDisabled: Object.keys(Game.topics || {}).length < 4
+  doneDisabled: Game.topics.array.length < 4
 });
 
 export default connect(

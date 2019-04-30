@@ -24,7 +24,23 @@ const Game = {
       name: 'Player 3',
       teamUid: 'team2',
       score: 3
-    }
+    },
+    array: [{
+      uid: 'player1',
+      name: 'Player 1',
+      teamUid: 'team1',
+      score: 1
+    }, {
+      uid: 'player2',
+      name: 'Player 2',
+      teamUid: 'team1',
+      score: 1
+    }, {
+      uid: 'player3',
+      name: 'Player 3',
+      teamUid: 'team2',
+      score: 3
+    }]
   },
   teams: {
     team1: {
@@ -35,7 +51,17 @@ const Game = {
     },
     team3: {
       name: 'Team 3'
-    }
+    },
+    array: [{
+      uid: 'team1',
+      name: 'Team 1'
+    }, {
+      uid: 'team2',
+      name: 'Team 2'
+    }, {
+      uid: 'team3',
+      name: 'Team 3'
+    }]
   },
   topics: {
     topic1: { status: 'available' },

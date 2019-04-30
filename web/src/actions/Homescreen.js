@@ -23,10 +23,10 @@ export const startRound = () => (dispatch, getState) => {
   dispatch(hideStartRoundDialog());
 
   const { gameUid, topics, playerUid } = getState().Game;
-  const topicsToUpdate = randTopics(topics);
+  const topicsToUpdate = randTopics(topics.map);
 
   _.forEach(topicsToUpdate, (topic) => {
-    topic.status = 'active'; // eslint-disable-line no-param-reassign
+    topic.status = 'active';
   });
 
   updateTopicsService(topicsToUpdate, gameUid, () => {

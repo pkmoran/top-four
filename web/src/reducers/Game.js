@@ -1,10 +1,10 @@
+import _ from 'lodash';
+
 import {
   STARTED_GAME,
   NAME_CHANGED,
-  NEW_TEAMS,
   ADDED_PLAYER,
-  NEW_TOPICS,
-  NEW_PLAYERS
+  NEW_GAME_DATA
 } from '../actions/types';
 
 export const INITIAL_STATE = {
@@ -13,10 +13,10 @@ export const INITIAL_STATE = {
   name: '',
   playerUid: '',
   rankingPlayerUid: '',
-  games: [],
-  teams: [],
-  players: [],
-  topics: []
+  state: '',
+  teams: {},
+  players: {},
+  topics: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -31,12 +31,33 @@ export default (state = INITIAL_STATE, action) => {
       };
     case ADDED_PLAYER:
       return { ...state, playerUid: action.payload };
-    case NEW_TEAMS:
-      return { ...state, teams: action.payload };
-    case NEW_PLAYERS:
-      return { ...state, players: action.payload };
-    case NEW_TOPICS:
-      return { ...state, topics: action.payload };
+    case NEW_GAME_DATA:
+      const {
+        gameId,
+        rankingPlayerUid,
+        teams,
+        players,
+        topics
+      } = action.payload;
+
+      return {
+        ...state,
+        gameId,
+        rankingPlayerUid,
+        state: action.payload.state,
+        teams: {
+          map: { ...teams },
+          array: _.map(teams, (team, uid) => ({ ...team, uid }))
+        },
+        topics: {
+          map: { ...topics },
+          array: _.map(topics, (topic, uid) => ({ ...topic, uid }))
+        },
+        players: {
+          map: { ...players },
+          array: _.map(players, (player, uid) => ({ ...player, uid }))
+        }
+      }
     default:
       return state;
   }

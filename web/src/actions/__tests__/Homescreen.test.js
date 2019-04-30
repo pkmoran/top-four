@@ -95,7 +95,7 @@ describe('the startRound action', () => {
     dispatch = sinon.fake();
     getState = sinon.fake.returns({
       Game: {
-        topics,
+        topics: { map: { ...topics }},
         gameUid: 'asdf',
         playerUid: 'player1'
       }

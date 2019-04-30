@@ -41,8 +41,8 @@ class HomeScreenContainer extends Component {
     } = this;
 
     return (
-      <Homescreen 
-        { ... {
+      <Homescreen
+        {... {
           gameId,
           teams,
           showDialog,
@@ -60,29 +60,28 @@ class HomeScreenContainer extends Component {
 }
 
 export const getTeams = ({ teams, players }) => {
-  const teamUidsWithPlayers = _.uniq(_.map(players, ({ teamUid }) => teamUid));
-  const teamsWithPlayers = {};
+  return _.reduce(teams.array, (result, team) => {
+    const teamPlayers = _.filter(players.array, { 'teamUid': team.uid });
 
-  _.forEach(teamUidsWithPlayers, (teamUid) => {
-    teamsWithPlayers[teamUid] = { ...teams[teamUid], players: [], score: 0 };
-  });
+    if (teamPlayers.length > 0) {
+      result.push({
+        ...team,
+        players: teamPlayers,
+        score: _.reduce(teamPlayers, (sum, player) => sum + player.score, 0)
+      });
+    }
 
-  _.forEach(players, (player, uid) => {
-    const team = teamsWithPlayers[player.teamUid];
-    team.players.push({ ...player, uid });
-    team.score += player.score || 0;
-  });
-
-  return _.map(teamsWithPlayers, (team, uid) => ({ ...team, uid }));
+    return result;
+  }, []);
 };
 
 const mapStateToProps = ({ Game, Homescreen }) => ({
   gameId: Game.gameId,
   teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
-  playerName: (_.find(Game.players, (player, uid) => uid === Game.playerUid) || {}).name,
-  ranking: !!((Game.games || {})[Game.gameUid] || {}).rankingPlayerUid,
-  gameOver: _.filter(Game.topics, topic => topic.status === 'available').length < 4
+  playerName: (_.find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}).name,
+  ranking: !!Game.rankingPlayerUid,
+  gameOver: _.filter(Game.topics.array, topic => topic.status === 'available').length < 4
 });
 
 export default connect(

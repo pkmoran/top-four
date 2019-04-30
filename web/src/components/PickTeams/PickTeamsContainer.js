@@ -64,22 +64,14 @@ class PickTeamsContainer extends Component {
   }
 }
 
-const teamsAndPlayerCounts = ({ teams, players }) => {
-  const teamCounts = _.countBy(players, 'teamUid');
-  const withPlayerCount = _.reduce(
-    teams,
-    (result, team, teamUid) => ({
-      ...result,
-      [teamUid]: { ...team, playerCount: teamCounts[teamUid] || 0 }
-    }),
-    {}
-  );
-
-  return _.map(withPlayerCount, (val, uid) => ({ ...val, uid }));
+export const teamsAndPlayerCounts = ({ teams, players }) => {
+  const teamCounts = _.countBy(players.map, 'teamUid');
+  
+  return _.map(teams.array, team => ({ ...team, playerCount: teamCounts[team.uid] || 0 }));
 };
 
 const selectedTeam = ({ players, playerUid }) => {
-  const currentPlayer = players[playerUid];
+  const currentPlayer = players.map[playerUid];
   return (currentPlayer || {}).teamUid;
 };
 

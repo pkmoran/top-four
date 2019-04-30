@@ -11,48 +11,93 @@ const INITIAL_STATE = {
     },
     players: {},
     topics: {
-      topic1: {
+      map: {
+        topic1: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'active',
+          topic: 'topic 1'
+        },
+        topic2: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'available',
+          topic: 'topic 2'
+        },
+        topic3: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'active',
+          topic: 'topic 3'
+        },
+        topic4: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'active',
+          topic: 'topic 4'
+        },
+        topic5: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'active',
+          topic: 'topic 5'
+        },
+        topic6: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'available',
+          topic: 'topic 6'
+        },
+        topic7: {
+          playerUid: 'player1',
+          rank: -1,
+          status: 'used',
+          topic: 'topic 7'
+        }
+      },
+      array: [{
+        uid: 'topic1',
         playerUid: 'player1',
         rank: -1,
         status: 'active',
         topic: 'topic 1'
-      },
-      topic2: {
+      }, {
+        uid: 'topic2',
         playerUid: 'player1',
         rank: -1,
         status: 'available',
         topic: 'topic 2'
-      },
-      topic3: {
+      }, {
+        uid: 'topic3',
         playerUid: 'player1',
         rank: -1,
         status: 'active',
         topic: 'topic 3'
-      },
-      topic4: {
+      }, {
+        uid: 'topic4',
         playerUid: 'player1',
         rank: -1,
         status: 'active',
         topic: 'topic 4'
-      },
-      topic5: {
+      }, {
+        uid: 'topic5',
         playerUid: 'player1',
         rank: -1,
         status: 'active',
         topic: 'topic 5'
-      },
-      topic6: {
+      }, {
+        uid: 'topic6',
         playerUid: 'player1',
         rank: -1,
         status: 'available',
         topic: 'topic 6'
-      },
-      topic7: {
+      }, {
+        uid: 'topic7',
         playerUid: 'player1',
         rank: -1,
         status: 'used',
         topic: 'topic 7'
-      }
+      }]
     }
   }
 };

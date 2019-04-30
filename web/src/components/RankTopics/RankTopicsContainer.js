@@ -79,8 +79,7 @@ class RankTopicsContainer extends Component {
 }
 
 export const getTopics = (topics, optionalLocalRanks) => {
-  // get all 'active' or 'ranked' topics, and map them to an array
-  const activeTopics = _.map(_.pickBy(topics, topic => topic.status === 'active' || topic.status === 'ranked'), (topic, uid) => ({ ...topic, uid }));
+  const activeTopics = _.filter(topics.array, topic => topic.status === 'active' || topic.status === 'ranked');
 
   let localRanks;
   if (Object.keys(optionalLocalRanks).length === 0) {
@@ -113,9 +112,9 @@ export const getTopics = (topics, optionalLocalRanks) => {
 const mapStateToProps = ({ Game, RankTopics }) => ({
   gameId: Game.gameId,
   topics: getTopics(Game.topics, RankTopics.localRanks),
-  active: Game.playerUid === (Game.games[Game.gameUid] || {}).rankingPlayerUid,
-  activePlayerName: (Game.players[(Game.games[Game.gameUid] || {}).rankingPlayerUid] || {}).name,
-  state: (Game.games[Game.gameUid] || {}).state,
+  active: Game.playerUid === Game.rankingPlayerUid,
+  activePlayerName: (Game.players[Game.rankingPlayerUid] || {}).name,
+  state: Game.state,
   showDialog: RankTopics.showDialog
 });
 
