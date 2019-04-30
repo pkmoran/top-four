@@ -8,7 +8,10 @@ import {
   gameIdChanged,
   startGame,
   nameChanged,
-  showJoinGameSection
+  showJoinGameSection,
+  showStartGameDialog,
+  hideStartGameDialog,
+  teamNumberChanged
 } from '../../actions';
 
 class LandingPageContainer extends Component {
@@ -17,6 +20,7 @@ class LandingPageContainer extends Component {
 
     this.gameIdChanged = this.gameIdChanged.bind(this);
     this.nameChanged = this.nameChanged.bind(this);
+    this.teamNumberChanged = this.teamNumberChanged.bind(this);
     this.startGame = this.startGame.bind(this);
     this.joinGame = this.joinGame.bind(this);
   }
@@ -29,8 +33,13 @@ class LandingPageContainer extends Component {
     this.props.nameChanged(event.target.value);
   }
 
+  teamNumberChanged(event) {
+    console.log(event.target.value);
+    this.props.teamNumberChanged(event.target.value);
+  }
+
   startGame() {
-    this.props.startGame(this.props.history);
+    this.props.startGame(this.props.numberOfTeams, this.props.history);
   }
 
   joinGame() {
@@ -46,14 +55,18 @@ class LandingPageContainer extends Component {
       joinGameEnabled,
       joinEnabled,
       showJoinGame,
-      showJoinGameSection
+      showJoinGameSection,
+      showDialog,
+      showStartGameDialog,
+      hideStartGameDialog
     } = this.props;
 
     const {
       gameIdChanged,
       nameChanged,
       startGame,
-      joinGame
+      joinGame,
+      teamNumberChanged
     } = this;
 
     return (
@@ -70,7 +83,11 @@ class LandingPageContainer extends Component {
           gameIdChanged,
           startGame,
           nameChanged,
-          showJoinGameSection
+          showJoinGameSection,
+          showDialog,
+          teamNumberChanged,
+          showStartGameDialog,
+          hideStartGameDialog
         }}
       />
     )
@@ -84,7 +101,9 @@ const mapStateToProps = ({ LandingPage }) => ({
   startGameEnabled: LandingPage.startGameEnabled,
   joinGameEnabled: LandingPage.joinGameEnabled,
   joinEnabled: LandingPage.joinEnabled,
-  showJoinGame: LandingPage.showJoinGame
+  showJoinGame: LandingPage.showJoinGame,
+  showDialog: LandingPage.showDialog,
+  numberOfTeams: LandingPage.numberOfTeams
 });
 
 export default connect(
@@ -94,6 +113,9 @@ export default connect(
     gameIdChanged,
     startGame,
     nameChanged,
-    showJoinGameSection
+    showJoinGameSection,
+    showStartGameDialog,
+    hideStartGameDialog,
+    teamNumberChanged
   }
 )(LandingPageContainer);

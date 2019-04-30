@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
-export const startGameService = (onSuccess, onFail) => {
-  firebase.functions().httpsCallable('startGame')()
+export const startGameService = (numberOfTeams, onSuccess, onFail) => {
+  firebase.functions().httpsCallable('startGame')({ numberOfTeams })
     .then(({ data }) => {
       pruneGamesService();
       onSuccess(data);

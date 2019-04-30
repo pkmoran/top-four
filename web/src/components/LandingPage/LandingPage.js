@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import StartGameDialog from './StartGameDialog';
+
 import './styles/LandingPage.css';
 
 class LandingPageComponent extends Component {
@@ -14,7 +16,7 @@ class LandingPageComponent extends Component {
     return (
       <div className="ButtonSection">
         <Button
-          onClick={() => this.props.startGame()}
+          onClick={() => this.props.showStartGameDialog()}
           disabled={!this.props.startGameEnabled}
         >
           Start Game
@@ -79,6 +81,14 @@ class LandingPageComponent extends Component {
         {this.renderButtonSection()}
 
         {this.renderJoinGameSection()}
+
+        <StartGameDialog 
+          open={this.props.showDialog}
+          onClose={this.props.hideStartGameDialog}
+          onOk={this.props.startGame}
+          value={this.props.numberOfTeams}
+          onTeamNumberChange={this.props.teamNumberChanged}
+        />
       </div>
     );
   }

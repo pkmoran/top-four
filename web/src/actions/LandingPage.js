@@ -11,7 +11,9 @@ import {
   NAME_CHANGED,
   SHOW_JOIN_GAME,
   ADDED_PLAYER,
-  JOINING_GAME
+  JOINING_GAME,
+  TEAM_NUMBER_CHANGED,
+  SHOW_START_GAME_DIALOG
 } from './types';
 
 export const gameIdChanged = gameId => ({
@@ -26,6 +28,21 @@ export const nameChanged = name => ({
 
 export const showJoinGameSection = () => ({
   type: SHOW_JOIN_GAME
+});
+
+export const teamNumberChanged = numberOfTeams => ({
+  type: TEAM_NUMBER_CHANGED,
+  payload: numberOfTeams
+});
+
+export const showStartGameDialog = () => ({
+  type: SHOW_START_GAME_DIALOG,
+  payload: true
+});
+
+export const hideStartGameDialog = () => ({
+  type: SHOW_START_GAME_DIALOG,
+  payload: false
 });
 
 export const joinGame = (gameId, history) => (dispatch, getState) => {
@@ -72,12 +89,12 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
   });  
 };
 
-export const startGame = history => (dispatch, getState) => {
+export const startGame = (numberOfTeams, history) => (dispatch, getState) => {
   dispatch({
     type: STARTING_GAME
   });
 
-  startGameService(({ gameId, gameUid }) => {
+  startGameService(numberOfTeams, ({ gameId, gameUid }) => {
     dispatch({
       type: STARTED_GAME,
       payload: { gameId, gameUid }

@@ -18,13 +18,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "serve": "npm run build && npm run clean-server && npm run copy-build && npm run deploy",
     "build": "react-scripts build",
     "test": "REACT_APP_TESTING=true react-scripts test",
     "eject": "react-scripts eject",
-    "clean-server": "rm -rf ../serve/public/*",
-    "copy-build": "cp -R build/. ../serve/public/",
-    "deploy": "cd ../serve && firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -17,15 +17,15 @@ const onChoiceTwo = sinon.fake();
 const onClose = sinon.fake();
 
 beforeEach(() => {
-  wrapped = mount(<ChoiceDialog 
-    open 
+  wrapped = mount(<ChoiceDialog
+    open
     titleText="Title Text"
-    contentText="Content Text" 
+    contentText="Content Text"
     choiceOneText="Choice 1"
     onChoiceOne={onChoiceOne}
     choiceTwoText="Choice 2"
     onChoiceTwo={onChoiceTwo}
-    onClose={onClose}/>);
+    onClose={onClose} />);
 });
 
 afterEach(() => {
