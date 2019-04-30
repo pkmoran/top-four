@@ -72,7 +72,7 @@ const gameId = () => {
 };
 
 const randomLetter = () => {
-  return randomFromPossible('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+  return randomFromPossible('ACDEFGHJKLMNPQRTUVWXY');
 };
 
 const randomNumber = () => {
