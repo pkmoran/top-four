@@ -57,7 +57,7 @@ describe('startGame', () => {
   });
 
   it('should start a new game', () => {
-    startGameService.callArgWith(0, { gameId: 'B9', gameUid: 'asdf' });
+    startGameService.callArgWith(1, { gameId: 'B9', gameUid: 'asdf' });
 
     const dispatchedAction = dispatch.secondCall.args[0];
 
@@ -67,7 +67,7 @@ describe('startGame', () => {
   });
 
   it('should dispatch an error', () => {
-    startGameService.callArg(1);
+    startGameService.callArg(2);
 
     const dispatchedAction = dispatch.secondCall.args[0];
 
@@ -75,7 +75,7 @@ describe('startGame', () => {
   });
 
   it('should call addPlayer', () => {
-    startGameService.callArgWith(0, { gameId: 'B9', gameUid: 'asdf' });
+    startGameService.callArgWith(1, { gameId: 'B9', gameUid: 'asdf' });
 
     const gameUid = addPlayer.firstCall.args[0];
     const name = addPlayer.firstCall.args[1];

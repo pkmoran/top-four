@@ -8,7 +8,7 @@ import LandingPage from '../LandingPage';
 let wrapped;
 
 beforeEach(() => {
-  wrapped = mount(<Root><LandingPage /></Root>);
+  wrapped = mount(<LandingPage showDialog={false}/>);
 });
 
 afterEach(() => {
