@@ -16,55 +16,63 @@ exports.putOne = functions.https.onRequest((req, res) => {
   });
 });
 
-exports.startGame = functions.https.onCall((data, context) => {
+exports.startGame = functions.https.onCall(async (data, context) => {
   const db = admin.database();
 
-  return db.ref('/games').once('value').then(snapshot => {
-    let gameIds = [];
-    snapshot.forEach(childSnapshot => {
-      gameIds.push(childSnapshot.val().gameId);
-    });
+  const { numberOfTeams } = data;
+  const games = await db.ref('/games').once('value');
 
-    let newGameId = gameId();
+  let gameIds = [];
+  games.forEach(game => {
+    gameIds.push(game.val().gameId);
+  });
 
-    while (gameIds.includes(newGameId)) {
-      newGameId = gameId();
-    }
+  let newGameId = gameId();
 
-    const game = {
-      gameId: newGameId,
-      startDate: moment().format()
+  while (gameIds.includes(newGameId)) {
+    newGameId = gameId();
+  }
+
+  const newGame = db.ref('/games').push({
+    gameId: newGameId,
+    startDate: moment().format(),
+    teams: {}
+  });
+
+  var i;
+  for (i = 0; i < numberOfTeams; i++) {
+    const team = {
+      name: `Team ${i + 1}`
     };
 
-    return db.ref('/games').push(game).then(snapshot => {
-      return db.ref(snapshot.ref).once('value').then(snapshot => {
-        return {
-          gameId: snapshot.val().gameId,
-          gameUid: snapshot.key
-        };
-      });
-    });
-  });
+    newGame.child(`/teams`).push(team);
+  }
+
+  return {
+    gameUid: newGame.key,
+    gameId: newGameId
+  }
 });
 
-exports.pruneGames = functions.https.onCall((data, context) => {
+exports.pruneGames = functions.https.onCall(async () => {
   const db = admin.database();
 
-  return db.ref('/games').once('value').then(snapshot => {
-    let oldGameIds = [];
-    snapshot.forEach(childSnapshot => {
-      const startDate = moment(childSnapshot.val().startDate);
-      if (startDate < moment().subtract(12, 'hours')) {
-        oldGameIds.push(childSnapshot.key);
-      }
-    });
+  const games = await db.ref('/games').once('value');
 
-    oldGameIds.forEach(gameId => {
-      db.ref('/games/' + gameId).remove();
-    });
+  let oldGameIds = [];
+  games.forEach(game => {
+    const startDate = moment(game.val().startDate);
 
-    return null;
+    if (startDate < moment().subtract(12, 'hours')) {
+      oldGameIds.push(game.key);
+    }
   });
+
+  oldGameIds.forEach(gameId => {
+    db.ref(`/games/${gameId}`).remove();
+  });
+
+  return null;
 });
 
 const gameId = () => {
