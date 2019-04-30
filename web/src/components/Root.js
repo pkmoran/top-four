@@ -1,26 +1,63 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import reducers from '../reducers';
 
-const Root = ({ children, initialState = {} }) => {
-  let store;
-  if (process.env.REACT_APP_TESTING) {
-    store = createStore(reducers, initialState, applyMiddleware(thunk));
-  } else {
-    store = createStore(reducers, initialState, applyMiddleware(thunk, logger));
+import reducers from '../reducers';
+import { loadState, saveState } from '../services/localStorage';
+
+class Root extends Component {
+  store;
+
+  constructor(props) {
+    super(props);
+
+    this.saveStoreState = this.saveStoreState.bind(this);
   }
 
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        {children}
-      </BrowserRouter>
-    </Provider>
-  );
-};
+  saveStoreState() {
+    saveState(this.store.getState());
+  }
+
+  componentWillMount() {
+    const { initialState = {} } = this.props;
+
+    let state;
+
+    if (Object.keys(initialState).length > 0 || window.location.pathname === '/') {
+      state = initialState;
+    } else {
+      state = loadState() || {};
+    }
+
+    // keep state in localStorage clean
+    // remove it whenever at the root path or it was just loaded
+    saveState({});
+
+    if (process.env.REACT_APP_TESTING) {
+      this.store = createStore(reducers, state, applyMiddleware(thunk));
+    } else {
+      this.store = createStore(reducers, state, applyMiddleware(thunk, logger));
+    }
+
+    window.addEventListener('beforeunload', this.saveStoreState);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.saveStoreState);
+  }
+
+  render() {
+    return (
+      <Provider store={this.store}>
+        <BrowserRouter>
+          {this.props.children}
+        </BrowserRouter>
+      </Provider>
+    );
+  }
+}
 
 export default Root;

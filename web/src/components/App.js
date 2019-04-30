@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import firebase from 'firebase';
+import { connect } from 'react-redux';
 
 import LandingPageContainer from './LandingPage/LandingPageContainer';
 import PickTeamsContainer from './PickTeams/PickTeamsContainer';
 import AddTopicsContainer from './AddTopics/AddTopicsContainer';
 import HomescreenContainer from './Homescreen/HomescreenContainer';
 import RankTopicsContainer from './RankTopics/RankTopicsContainer';
+
+import { getGameData } from '../actions';
 
 import './styles/App.css';
 
@@ -20,6 +23,10 @@ class App extends Component {
       storageBucket: '',
       messagingSenderId: '120019969623'
     });
+
+    if (this.props.gameUid) {
+      this.props.getGameData(this.props.gameUid);
+    }
   }
 
   render() {
@@ -35,4 +42,8 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = ({ Game }) => ({
+  gameUid: Game.gameUid
+});
+
+export default connect(mapStateToProps, { getGameData })(App);
