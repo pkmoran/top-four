@@ -39,10 +39,10 @@ class PickTeamsComponent extends Component {
         <div className="PickTeamsAddTopicsButton">
           <Button
             variant="contained"
-            onClick={() => this.props.addTopics()}
-            disabled={!this.props.addTopicsEnabled}
+            onClick={() => this.props.actionButtonClicked()}
+            disabled={!this.props.actionButtonEnabled}
           >
-            Next, Add Topics!
+            {this.props.actionButtonTitle}
           </Button>
         </div>
       </div>

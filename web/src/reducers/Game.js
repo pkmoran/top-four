@@ -39,6 +39,7 @@ export default (state = INITIAL_STATE, action) => {
       const {
         gameId,
         rankingPlayerUid,
+        topicPack,
         teams,
         players,
         topics
@@ -48,6 +49,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         gameId,
         rankingPlayerUid,
+        topicPack,
         state: action.payload.state,
         teams: {
           map: { ...teams },

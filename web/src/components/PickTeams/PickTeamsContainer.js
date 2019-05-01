@@ -5,17 +5,23 @@ import _ from 'lodash';
 import PickTeams from './PickTeams';
 import requireGame from '../requireGame';
 
-import { selectTeam, addTopics } from '../../actions';
+import { selectTeam, addTopics, done } from '../../actions';
 
 class PickTeamsContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.addTopics = this.addTopics.bind(this);
+    this.actionButtonClicked = this.actionButtonClicked.bind(this);
   }
 
-  addTopics() {
-    this.props.addTopics(this.props.history);
+  actionButtonClicked() {
+    const { topicPack, addTopics, done, history } = this.props;
+
+    if (topicPack) {
+      done(history);
+    } else {
+      addTopics(history);
+    }
   }
 
   render() {
@@ -23,13 +29,16 @@ class PickTeamsContainer extends Component {
       gameId,
       teams,
       selectedTeam,
-      addTopicsEnabled,
-      selectTeam
+      actionButtonEnabled,
+      selectTeam,
+      topicPack
     } = this.props;
 
     const {
-      addTopics
+      actionButtonClicked
     } = this;
+
+    const actionButtonTitle = topicPack ? 'Done!' : 'Next, Add Topics!';
 
     return (
       <PickTeams 
@@ -37,9 +46,10 @@ class PickTeamsContainer extends Component {
           gameId,
           teams,
           selectedTeam,
-          addTopicsEnabled,
+          actionButtonEnabled,
           selectTeam,
-          addTopics
+          actionButtonTitle,
+          actionButtonClicked
         }}
       />
     )
@@ -61,13 +71,15 @@ const mapStateToProps = ({ Game }) => ({
   gameId: Game.gameId,
   teams: teamsAndPlayerCounts(Game),
   selectedTeam: selectedTeam(Game),
-  addTopicsEnabled: !!selectedTeam(Game)
+  actionButtonEnabled: !!selectedTeam(Game),
+  topicPack: Game.topicPack
 });
 
 export default connect(
   mapStateToProps,
   {
     selectTeam,
-    addTopics
+    addTopics,
+    done
   }
 )(requireGame(PickTeamsContainer));
