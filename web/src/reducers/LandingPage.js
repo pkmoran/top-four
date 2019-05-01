@@ -30,7 +30,7 @@ export default (state = INITIAL_STATE, action) => {
     case SHOW_JOIN_GAME:
       return { ...state, showJoinGame: true };
     case STARTING_GAME:
-      return { ...state, loading: true };
+      return { ...state, loading: true, showDialog: false };
     case JOINING_GAME:
       return { ...state, loading: true };
     case STARTED_GAME:
