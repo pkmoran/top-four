@@ -19,7 +19,7 @@ exports.putOne = functions.https.onRequest((req, res) => {
 exports.startGame = functions.https.onCall(async (data, context) => {
   const db = admin.database();
 
-  const { numberOfTeams } = data;
+  const { numberOfTeams, topicPackUid } = data;
   const games = await db.ref('/games').once('value');
 
   let gameIds = [];
@@ -36,7 +36,8 @@ exports.startGame = functions.https.onCall(async (data, context) => {
   const newGame = db.ref('/games').push({
     gameId: newGameId,
     startDate: moment().format(),
-    teams: {}
+    teams: {},
+    topicPack: !!topicPackUid
   });
 
   var i;
@@ -45,7 +46,19 @@ exports.startGame = functions.https.onCall(async (data, context) => {
       name: `Team ${i + 1}`
     };
 
-    newGame.child(`/teams`).push(team);
+    newGame.child('/teams').push(team);
+  }
+
+  if (topicPackUid) {
+    const topics = await db.ref(`/topicPacks/${topicPackUid}/topics`).once('value');
+
+    topics.forEach(topic => {
+      newGame.child('/topics').push({
+        rank: -1,
+        status: 'available',
+        topic: topic.val().topic
+      });
+    });
   }
 
   return {
