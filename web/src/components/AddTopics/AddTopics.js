@@ -22,7 +22,7 @@ class AddTopicsComponent extends Component {
   render() {
     return (
       <div className="AddTopics">
-        <GameId gameId={this.props.gameId}/>
+        <GameId gameId={this.props.gameId} />
         <h1>Add Topics!</h1>
         <div>
           <TextField
@@ -44,13 +44,6 @@ class AddTopicsComponent extends Component {
           {this.renderTopics()}
         </div>
 
-        <Button
-          disabled={this.props.doneDisabled}
-          onClick={() => this.props.done()}
-        >
-          Done!
-        </Button>
-
         <div className="TopicCountsContainer">
           <div className="TopicCountContainer">
             <span>Your Topics</span>
@@ -61,6 +54,16 @@ class AddTopicsComponent extends Component {
             <span>Total # of Topics</span>
             <span>{this.props.allTopicsCount}</span>
           </div>
+        </div>
+
+        <div className="AddTopicsDoneButton">
+          <Button
+            variant="contained"
+            disabled={this.props.doneDisabled}
+            onClick={() => this.props.done()}
+          >
+            Done!
+          </Button>
         </div>
       </div>
     );

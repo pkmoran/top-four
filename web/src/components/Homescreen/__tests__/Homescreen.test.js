@@ -57,7 +57,7 @@ describe('the interface', () => {
   });
 
   it('should have a header', () => {
-    expect(wrapped.find('h1').text()).toEqual("Who's Up?");
+    expect(wrapped.find('h1').text()).toEqual("Scoreboard");
   });
 
   it("should have a button called I'm up!", () => {

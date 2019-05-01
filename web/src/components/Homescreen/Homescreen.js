@@ -25,8 +25,8 @@ class HomescreenComponent extends Component {
     return this.props.teams.map(({
       uid, name, score, players
     }) => (
-      <TeamSummary key={uid} name={name} score={score} players={players} />
-    ));
+        <TeamSummary key={uid} name={name} score={score} players={players} />
+      ));
   }
 
   dialogContentText() {
@@ -36,25 +36,30 @@ class HomescreenComponent extends Component {
   renderActionButton() {
     if (this.props.gameOver) {
       return (
-        <Button>Game Over!</Button>
+        <Button variant="contained">Game Over!</Button>
       );
     }
 
     return (
-      <Button onClick={this.props.showStartRoundDialog}>I&apos;m Up!</Button>
+      <Button variant="contained" onClick={this.props.showStartRoundDialog}>I&apos;m Up!</Button>
     );
   }
 
   render() {
     return (
       <div className="Homescreen">
-        <GameId gameId={this.props.gameId}/>
+        <GameId gameId={this.props.gameId} />
 
-        <h1>Who&apos;s Up?</h1>
+        <h1>Scoreboard</h1>
 
-        {this.renderActionButton()}
+        <div className="HomescreenTeams">
+          {this.renderTeams()}
+        </div>
 
-        {this.renderTeams()}
+        <div className="HomescreenActionButton">
+          Who&apos;s up?
+          {this.renderActionButton()}
+        </div>
 
         <ChoiceDialog
           open={this.props.showDialog}

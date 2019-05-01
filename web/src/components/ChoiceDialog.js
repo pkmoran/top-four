@@ -20,9 +20,9 @@ const ChoiceDialog = ({
         </DialogContentText>
 
         <DialogActions>
-          <Button onClick={onChoiceOne}>{choiceOneText}</Button>
+          <Button variant="outlined" onClick={onChoiceOne}>{choiceOneText}</Button>
 
-          <Button onClick={onChoiceTwo}>{choiceTwoText}</Button>
+          <Button variant="outlined" onClick={onChoiceTwo}>{choiceTwoText}</Button>
         </DialogActions>
       </DialogContent>
     </Dialog>

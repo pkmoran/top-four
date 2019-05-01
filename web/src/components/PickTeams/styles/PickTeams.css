@@ -17,7 +17,6 @@
   flex-shrink: 0;
 }
 
-.Or {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.PickTeamsAddTopicsButton {
+  margin-bottom: 25px;
 }

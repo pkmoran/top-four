@@ -16,6 +16,7 @@ class LandingPageComponent extends Component {
     return (
       <div className="ButtonSection">
         <Button
+          variant="contained"
           onClick={() => this.props.showStartGameDialog()}
           disabled={!this.props.startGameEnabled}
         >
@@ -25,6 +26,7 @@ class LandingPageComponent extends Component {
         <span>OR</span>
 
         <Button
+          variant="contained"
           onClick={() => this.props.showJoinGameSection()}
           disabled={!this.props.joinGameEnabled}
         >
@@ -49,6 +51,7 @@ class LandingPageComponent extends Component {
           {
             this.props.loading ? <CircularProgress /> :
             <Button
+              variant="contained"
               onClick={() => this.props.joinGame()}
               disabled={!this.props.joinEnabled}
             >

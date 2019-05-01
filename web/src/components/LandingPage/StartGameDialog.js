@@ -38,10 +38,10 @@ const StartGameDialog = ({
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose}>
+        <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={onOk}>
+        <Button variant="outlined" onClick={onOk}>
           Ok
         </Button>
       </DialogActions>

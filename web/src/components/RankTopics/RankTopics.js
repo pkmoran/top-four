@@ -30,12 +30,12 @@ class RankTopicsComponent extends Component {
     if (this.props.active) {
       if (this.props.state === 'ranking') {
         return (
-          <Button onClick={this.props.showLockInDialog}>Lock In!</Button>
+          <Button variant="contained" onClick={this.props.showLockInDialog}>Lock In!</Button>
         );
       }
 
       return (
-        <Button onClick={this.props.endRound}>End Round!</Button>
+        <Button variant="contained" onClick={this.props.endRound}>End Round!</Button>
       )
     }
   }
@@ -43,7 +43,7 @@ class RankTopicsComponent extends Component {
   render() {
     return (
       <div className="RankTopics">
-        <GameId gameId={this.props.gameId}/>
+        <GameId gameId={this.props.gameId} />
         <h1>{this.headerText()}</h1>
 
         <span>{this.descriptionText()}</span>
@@ -52,7 +52,9 @@ class RankTopicsComponent extends Component {
           <DraggableTopics state={this.props.state} topics={this.props.topics} onDragEnd={this.props.onDragEnd} />
         </div>
 
-        {this.renderActionButton()}
+        <div className="RankTopicsActionButton">
+          {this.renderActionButton()}
+        </div>
 
         <ChoiceDialog
           open={this.props.showDialog}

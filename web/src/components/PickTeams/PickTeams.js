@@ -36,12 +36,15 @@ class PickTeamsComponent extends Component {
           {this.renderTeams()}
         </div>
 
-        <Button
-          onClick={() => this.props.addTopics()}
-          disabled={!this.props.addTopicsEnabled}
-        >
-          Next, Add Topics!
-        </Button>
+        <div className="PickTeamsAddTopicsButton">
+          <Button
+            variant="contained"
+            onClick={() => this.props.addTopics()}
+            disabled={!this.props.addTopicsEnabled}
+          >
+            Next, Add Topics!
+          </Button>
+        </div>
       </div>
     );
   }
