@@ -5,34 +5,22 @@ import _ from 'lodash';
 import PickTeams from './PickTeams';
 import requireGame from '../requireGame';
 
-import { teamNameChanged, addTeam, selectTeam, addTopics } from '../../actions';
+import { selectTeam, addTopics } from '../../actions';
 
 class PickTeamsContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.teamNameChanged = this.teamNameChanged.bind(this);
     this.addTopics = this.addTopics.bind(this);
-    this.addTeam = this.addTeam.bind(this);
-  }
-
-  teamNameChanged(event) {
-    this.props.teamNameChanged(event.target.value);
   }
 
   addTopics() {
     this.props.addTopics(this.props.history);
   }
 
-  addTeam() {
-    this.props.addTeam(this.props.teamName);
-  }
-
   render() {
     const {
       gameId,
-      teamName,
-      addTeamEnabled,
       teams,
       selectedTeam,
       addTopicsEnabled,
@@ -40,22 +28,16 @@ class PickTeamsContainer extends Component {
     } = this.props;
 
     const {
-      teamNameChanged,
-      addTopics,
-      addTeam
+      addTopics
     } = this;
 
     return (
       <PickTeams 
         { ... {
           gameId,
-          teamName,
-          addTeamEnabled,
           teams,
           selectedTeam,
           addTopicsEnabled,
-          teamNameChanged,
-          addTeam,
           selectTeam,
           addTopics
         }}
@@ -75,10 +57,8 @@ const selectedTeam = ({ players, playerUid }) => {
   return (currentPlayer || {}).teamUid;
 };
 
-const mapStateToProps = ({ PickTeams, Game }) => ({
+const mapStateToProps = ({ Game }) => ({
   gameId: Game.gameId,
-  teamName: PickTeams.teamName,
-  addTeamEnabled: PickTeams.teamName,
   teams: teamsAndPlayerCounts(Game),
   selectedTeam: selectedTeam(Game),
   addTopicsEnabled: !!selectedTeam(Game)
@@ -87,8 +67,6 @@ const mapStateToProps = ({ PickTeams, Game }) => ({
 export default connect(
   mapStateToProps,
   {
-    teamNameChanged,
-    addTeam,
     selectTeam,
     addTopics
   }

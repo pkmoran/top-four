@@ -19,10 +19,6 @@ export const ADDED_TOPIC = 'added_topic';
 export const ADDED_PLAYER = 'added_player';
 export const NEW_GAME_DATA = 'new_game_data';
 
-// pick teams
-export const TEAM_NAME_CHANGED = 'team_name_changed';
-export const ADDED_TEAM = 'added_team';
-
 // homescreen
 export const SHOW_START_ROUND_DIALOG = 'show_start_round_dialog';
 export const START_ROUND = 'start_round';

@@ -17,4 +17,4 @@ export const addPlayerService = (gameUid, name, onSuccess) => {
 
 const pruneGamesService = () => {
   firebase.functions().httpsCallable('pruneGames')();
-}
+};

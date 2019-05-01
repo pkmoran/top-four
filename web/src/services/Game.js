@@ -19,31 +19,9 @@ export const getGameService = (gameUid, onGame) => {
     });
 }
 
-export const getTeamsService = (gameUid, onTeams) => {
-  firebase
-    .database()
-    .ref(`/games/${gameUid}/teams`)
-    .on('value', (snapshot) => {
-      onTeams(snapshot.val());
-    });
-};
-
-export const getPlayersService = (gameUid, onPlayers) => {
-  firebase
-    .database()
-    .ref(`/games/${gameUid}/players`)
-    .on('value', (snapshot) => {
-      onPlayers(snapshot.val());
-    });
-};
-
-export const getTopicsService = (gameUid, onTopics) => {
-  firebase
-    .database()
-    .ref(`/games/${gameUid}/topics`)
-    .on('value', (snapshot) => {
-      onTopics(snapshot.val());
-    });
+export const joinTeamService = (teamUid, playerUid, gameUid) => {
+  firebase.database().ref(`/games/${gameUid}/players/${playerUid}`)
+    .update({ teamUid });
 };
 
 export const updateTopicsService = (topics, gameUid, onUpdated) => {
