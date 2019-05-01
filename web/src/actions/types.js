@@ -10,6 +10,10 @@ export const NAME_CHANGED = 'name_changed';
 export const SHOW_JOIN_GAME = 'show_join_game';
 export const TEAM_NUMBER_CHANGED = 'team_number_changed';
 export const SHOW_START_GAME_DIALOG = 'show_start_game_dialog';
+export const LOADING_TOPIC_PACKS = 'loading_topic_packs';
+export const TOPIC_PACKS = 'topic_packs';
+export const START_GAME_STEP = 'start_game_step';
+export const TOPIC_PACK_CHANGED = 'topic_pack_changed';
 
 // add topics
 export const TOPIC_CHANGED = 'topic_changed';

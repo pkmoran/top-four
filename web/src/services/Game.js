@@ -17,7 +17,16 @@ export const getGameService = (gameUid, onGame) => {
     .on('value', snapshot => {
       onGame(snapshot.val());
     });
-}
+};
+
+export const getPacksService = async () => {
+  const topicPacks = await firebase
+    .database()
+    .ref('/topicPacks')
+    .once('value');
+
+  return topicPacks.val();
+};
 
 export const joinTeamService = (teamUid, playerUid, gameUid) => {
   firebase

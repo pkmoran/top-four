@@ -1,10 +1,13 @@
 import _ from 'lodash';
 
+import { WRITE_OUR_OWN_UID } from '../constants';
+
 import {
   STARTED_GAME,
   NAME_CHANGED,
   ADDED_PLAYER,
-  NEW_GAME_DATA
+  NEW_GAME_DATA,
+  TOPIC_PACKS
 } from '../actions/types';
 
 export const INITIAL_STATE = {
@@ -16,7 +19,8 @@ export const INITIAL_STATE = {
   state: '',
   teams: {},
   players: {},
-  topics: {}
+  topics: {},
+  topicPacks: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -57,6 +61,14 @@ export default (state = INITIAL_STATE, action) => {
           map: { ...players },
           array: _.map(players, (player, uid) => ({ ...player, uid }))
         }
+      }
+    case TOPIC_PACKS:
+      const topicPacks = _.map(action.payload, (topic, uid) => ({ name: topic.name, uid }));
+      topicPacks.unshift({ name: 'Write our own!', uid: WRITE_OUR_OWN_UID })
+
+      return {
+        ...state,
+        topicPacks
       }
     default:
       return state;

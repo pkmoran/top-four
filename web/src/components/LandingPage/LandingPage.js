@@ -88,9 +88,15 @@ class LandingPageComponent extends Component {
         <StartGameDialog 
           open={this.props.showDialog}
           onClose={this.props.hideStartGameDialog}
+          onBack={this.props.onBack}
+          onNext={this.props.onNext}
           onOk={this.props.startGame}
           value={this.props.numberOfTeams}
           onTeamNumberChange={this.props.teamNumberChanged}
+          startGameStep={this.props.startGameStep}
+          topicPacks={this.props.topicPacks}
+          topicPackUid={this.props.topicPackUid}
+          onTopicPackChange={this.props.topicPackChanged}
         />
       </div>
     );
