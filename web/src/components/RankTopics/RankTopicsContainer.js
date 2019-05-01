@@ -20,6 +20,7 @@ class RankTopicsContainer extends Component {
     super(props);
 
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.lockIn = this.lockIn.bind(this);
   }
 
   componentDidUpdate(previousProps) {
@@ -40,6 +41,12 @@ class RankTopicsContainer extends Component {
     this.props.updateMyRanks(this.props.topics, result.source.index, result.destination.index);
   }
 
+  lockIn() {
+    // force ranks to update in case they never have
+    this.props.updateMyRanks(this.props.topics, 0, 0);
+    this.props.lockIn();
+  }
+
   render() {
     const {
       gameId,
@@ -50,12 +57,12 @@ class RankTopicsContainer extends Component {
       showDialog,
       showLockInDialog,
       hideLockInDialog,
-      lockIn,
       endRound
     } = this.props;
 
     const {
-      onDragEnd
+      onDragEnd,
+      lockIn
     } = this;
 
     return (
