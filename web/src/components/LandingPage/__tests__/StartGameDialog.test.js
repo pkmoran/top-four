@@ -11,6 +11,7 @@ let wrapped;
 beforeEach(() => {
   wrapped = mount(<StartGameDialog
     open
+    startGameStep='pickTeams'
   />);
 });
 
