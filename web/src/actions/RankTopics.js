@@ -72,7 +72,7 @@ export const lockIn = () => (dispatch, getState) => {
 export const reveal = force => (dispatch, getState) => {
   const { players } = getState().Game;
 
-  const allLockedIn = _.filter(players.array, { lockedIn: true }) === players.array.length;
+  const allLockedIn = _.filter(players.array, { lockedIn: true }).length === players.array.length;
 
   if (allLockedIn || force) {
     if (getState().RankTopics.showRevealDialog) {
