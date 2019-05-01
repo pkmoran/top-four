@@ -96,7 +96,8 @@ beforeEach(() => {
       { ... {
         topics,
         active: true,
-        showDialog: false
+        showDialog: false,
+        showRevealDialog: false
       }}
     />
   );
