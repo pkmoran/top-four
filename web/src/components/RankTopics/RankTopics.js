@@ -63,7 +63,7 @@ class RankTopicsComponent extends Component {
           choiceOneText="Yep!"
           onChoiceOne={this.props.lockIn}
           choiceTwoText="Nope!"
-          onChoiceTwo={this.props.hideLockInDialogDialog}
+          onChoiceTwo={this.props.hideLockInDialog}
           onClose={this.props.hideLockInDialog}
         />
       </div>
