@@ -113,7 +113,7 @@ const mapStateToProps = ({ Game, RankTopics }) => ({
   gameId: Game.gameId,
   topics: getTopics(Game.topics, RankTopics.localRanks),
   active: Game.playerUid === Game.rankingPlayerUid,
-  activePlayerName: (Game.players[Game.rankingPlayerUid] || {}).name,
+  activePlayerName: (Game.players.map[Game.rankingPlayerUid] || {}).name,
   state: Game.state,
   showDialog: RankTopics.showDialog
 });
