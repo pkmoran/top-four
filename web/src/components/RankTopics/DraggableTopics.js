@@ -49,7 +49,7 @@ class DraggableTopics extends Component {
             {provided => (
               <div ref={provided.innerRef}>
                 {this.props.topics.map((topic, index) => (
-                  <Draggable isDragDisabled={this.props.state === 'ranked'} key={topic.uid} draggableId={topic.uid} index={index}>
+                  <Draggable isDragDisabled={this.props.isDragDisabled} key={topic.uid} draggableId={topic.uid} index={index}>
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}

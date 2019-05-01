@@ -27,3 +27,5 @@ export const START_ROUND = 'start_round';
 export const UPDATE_MY_RANKS = 'update_my_ranks';
 export const SHOW_LOCK_IN_DIALOG = 'show_lock_in_dialog';
 export const RESET_LOCAL_RANKING = 'reset_local_ranking';
+export const LOCKED_IN = 'locked_in';
+export const SHOW_REVEAL_DIALOG = 'show_reveal_dialog';

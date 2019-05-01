@@ -1,7 +1,19 @@
 import _ from 'lodash';
-import { updateTopicsService, endRoundService, setRoundRanked, updatePlayerScoreService } from '../services/Game';
+import {
+  updateTopicsService,
+  endRoundService,
+  setRoundRankedService,
+  updatePlayerScoreService,
+  setPlayerLockedInService
+} from '../services/Game';
 
-import { UPDATE_MY_RANKS, SHOW_LOCK_IN_DIALOG, RESET_LOCAL_RANKING } from './types';
+import {
+  UPDATE_MY_RANKS,
+  SHOW_LOCK_IN_DIALOG,
+  RESET_LOCAL_RANKING,
+  SHOW_REVEAL_DIALOG,
+  LOCKED_IN
+} from './types';
 
 export const updateMyRanks = (topics, sourceIndex, destinationIndex) => {
   const reorderedTopics = Array.from(topics);
@@ -33,14 +45,52 @@ export const hideLockInDialog = () => ({
   payload: false
 });
 
+const lockedIn = () => ({
+  type: LOCKED_IN
+});
+
+const showRevealDialog = () => ({
+  type: SHOW_REVEAL_DIALOG,
+  payload: true
+});
+
+export const hideRevealDialog = () => ({
+  type: SHOW_REVEAL_DIALOG,
+  payload: false
+})
+
 export const lockIn = () => (dispatch, getState) => {
   dispatch(hideLockInDialog());
 
+  const { gameUid, playerUid } = getState().Game;
+
+  setPlayerLockedInService(gameUid, playerUid, true, () => {
+    dispatch(lockedIn());
+  });
+};
+
+export const reveal = force => (dispatch, getState) => {
+  const { players } = getState().Game;
+
+  const allLockedIn = _.filter(players.array, { lockedIn: true }) === players.array.length;
+
+  if (allLockedIn || force) {
+    if (getState().RankTopics.showRevealDialog) {
+      dispatch(hideRevealDialog());
+    }
+
+    setRoundRanked(getState);
+  } else {
+    dispatch(showRevealDialog());
+  }
+};
+
+const setRoundRanked = getState => {
   const { gameUid } = getState().Game;
-  const localTopicRanks = getState().RankTopics.localRanks;
+  const { localRanks } = getState().RankTopics;
   const topics = {};
 
-  _.forEach(localTopicRanks, (localRank, localUid) => {
+  _.forEach(localRanks, (localRank, localUid) => {
     const topic = _.find(getState().Game.topics.map, (topic, uid) => uid === localUid);
     topic.status = 'ranked';
     topic.rank = localRank;
@@ -49,7 +99,7 @@ export const lockIn = () => (dispatch, getState) => {
   });
 
   updateTopicsService(topics, gameUid, () => {
-    setRoundRanked(gameUid);
+    setRoundRankedService(gameUid);
   });
 };
 
@@ -58,7 +108,7 @@ const resetLocalRanking = () => ({
 });
 
 export const endRound = () => (dispatch, getState) => {
-  const { gameUid, topics } = getState().Game;
+  const { gameUid, playerUid, topics } = getState().Game;
 
   const rankedTopics = _.pickBy(topics.map, topic => topic.status === 'ranked');
   _.forEach(rankedTopics, topic => {
@@ -66,6 +116,7 @@ export const endRound = () => (dispatch, getState) => {
   });
 
   updateTopicsService(rankedTopics, gameUid, () => {
+    setPlayerLockedInService(gameUid, playerUid, false);
     endRoundService(gameUid);
   });
 };
@@ -79,7 +130,11 @@ export const uploadScore = rankedTopics => (dispatch, getState) => {
   updatePlayerScoreService(gameUid, playerUid, score + correct);
 };
 
-export const roundEnded = history => (dispatch) => {
+export const roundEnded = history => (dispatch, getState) => {
+  const { gameUid, playerUid } = getState().Game;
+
   dispatch(resetLocalRanking());
+  setPlayerLockedInService(gameUid, playerUid, false);
+
   history.goBack();
 };

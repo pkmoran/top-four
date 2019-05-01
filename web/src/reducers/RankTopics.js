@@ -1,8 +1,16 @@
-import { UPDATE_MY_RANKS, SHOW_LOCK_IN_DIALOG, RESET_LOCAL_RANKING } from '../actions/types';
+import {
+  UPDATE_MY_RANKS,
+  SHOW_LOCK_IN_DIALOG,
+  RESET_LOCAL_RANKING,
+  LOCKED_IN,
+  SHOW_REVEAL_DIALOG
+} from '../actions/types';
 
 const INITIAL_STATE = {
   localRanks: {},
-  showDialog: false
+  showDialog: false,
+  lockedIn: false,
+  showRevealDialog: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -13,6 +21,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, showDialog: action.payload };
     case RESET_LOCAL_RANKING:
       return INITIAL_STATE;
+    case LOCKED_IN:
+      return { ...state, lockedIn: true };
+    case SHOW_REVEAL_DIALOG:
+      return { ...state, showRevealDialog: action.payload };
     default:
       return state;
   }

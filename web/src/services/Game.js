@@ -20,7 +20,9 @@ export const getGameService = (gameUid, onGame) => {
 }
 
 export const joinTeamService = (teamUid, playerUid, gameUid) => {
-  firebase.database().ref(`/games/${gameUid}/players/${playerUid}`)
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/players/${playerUid}`)
     .update({ teamUid });
 };
 
@@ -40,14 +42,14 @@ export const startRoundService = (gameUid, rankingPlayerUid) => {
     .update({ rankingPlayerUid, state: 'ranking' });
 };
 
-export const setRoundRanked = (gameUid) => {
+export const setRoundRankedService = (gameUid) => {
   firebase
     .database()
     .ref(`/games/${gameUid}`)
     .update({ state: 'ranked' });
 };
 
-export const endRoundService = (gameUid) => {
+export const endRoundService = gameUid => {
   firebase
     .database()
     .ref(`/games/${gameUid}`)
@@ -60,3 +62,10 @@ export const updatePlayerScoreService = (gameUid, playerUid, score) => {
     .ref(`/games/${gameUid}/players/${playerUid}`)
     .update({ score });
 };
+
+export const setPlayerLockedInService = (gameUid, playerUid, lockedIn, onUpdated) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/players/${playerUid}`)
+    .update({ lockedIn }, onUpdated);
+}

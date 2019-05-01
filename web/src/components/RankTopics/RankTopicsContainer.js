@@ -12,7 +12,9 @@ import {
   lockIn,
   endRound,
   roundEnded,
-  uploadScore
+  uploadScore,
+  hideRevealDialog,
+  reveal
 } from '../../actions';
 
 class RankTopicsContainer extends Component {
@@ -21,6 +23,8 @@ class RankTopicsContainer extends Component {
 
     this.onDragEnd = this.onDragEnd.bind(this);
     this.lockIn = this.lockIn.bind(this);
+    this.reveal = this.reveal.bind(this);
+    this.forceReveal = this.forceReveal.bind(this);
   }
 
   componentDidUpdate(previousProps) {
@@ -47,6 +51,14 @@ class RankTopicsContainer extends Component {
     this.props.lockIn();
   }
 
+  reveal() {
+    this.props.reveal(false);
+  }
+
+  forceReveal() {
+    this.props.reveal(true);
+  }
+
   render() {
     const {
       gameId,
@@ -57,12 +69,19 @@ class RankTopicsContainer extends Component {
       showDialog,
       showLockInDialog,
       hideLockInDialog,
-      endRound
+      endRound,
+      numPlayersLockedIn,
+      numTotalPlayers,
+      showRevealDialog,
+      hideRevealDialog,
+      lockedIn
     } = this.props;
 
     const {
       onDragEnd,
-      lockIn
+      lockIn,
+      reveal,
+      forceReveal
     } = this;
 
     return (
@@ -78,7 +97,14 @@ class RankTopicsContainer extends Component {
           hideLockInDialog,
           lockIn,
           endRound,
-          onDragEnd
+          onDragEnd,
+          numPlayersLockedIn,
+          numTotalPlayers,
+          showRevealDialog,
+          hideRevealDialog,
+          reveal,
+          forceReveal,
+          lockedIn
         }}
       />
     )
@@ -122,7 +148,11 @@ const mapStateToProps = ({ Game, RankTopics }) => ({
   active: Game.playerUid === Game.rankingPlayerUid,
   activePlayerName: (Game.players.map[Game.rankingPlayerUid] || {}).name,
   state: Game.state,
-  showDialog: RankTopics.showDialog
+  showDialog: RankTopics.showDialog,
+  numPlayersLockedIn: _.filter(Game.players.array, { lockedIn: true }).length,
+  numTotalPlayers: Game.players.array.length,
+  lockedIn: RankTopics.lockedIn,
+  showRevealDialog: RankTopics.showRevealDialog
 });
 
 export default connect(
@@ -134,6 +164,8 @@ export default connect(
     lockIn,
     endRound,
     roundEnded,
-    uploadScore
+    uploadScore,
+    hideRevealDialog,
+    reveal
   }
 )(requireGame(RankTopicsContainer));

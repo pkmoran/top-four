@@ -26,18 +26,70 @@ class RankTopicsComponent extends Component {
     return `How would ${this.props.activePlayerName} rank the following topics?`;
   }
 
+  lockInButton() {
+    return (
+      <Button variant="contained" onClick={this.props.showLockInDialog}>Lock In!</Button>
+    );
+  }
+
+  revealButton() {
+    return (
+      <Button variant="contained" onClick={this.props.reveal}>Reveal!</Button>
+    );
+  }
+
+  endRoundButton() {
+    return (
+      <Button variant="contained" onClick={this.props.endRound}>End Round!</Button>
+    );
+  }
+
+  renderInactiveActionButton() {
+    const { lockedIn, state } = this.props;
+
+    if (!lockedIn && state === 'ranking') {
+      return this.lockInButton();
+    }
+  }
+
+  renderActiveActionButton() {
+    const { lockedIn, state } = this.props;
+
+    if (!lockedIn) {
+      return this.lockInButton();
+    } else if (state === 'ranking') {
+      return this.revealButton();
+    }
+
+    return this.endRoundButton();
+  }
+
   renderActionButton() {
     if (this.props.active) {
-      if (this.props.state === 'ranking') {
-        return (
-          <Button variant="contained" onClick={this.props.showLockInDialog}>Lock In!</Button>
-        );
+      return this.renderActiveActionButton();
+    }
+
+    return this.renderInactiveActionButton();
+  }
+
+  renderLockedInPlayers() {
+    if (this.props.state === 'ranking') {
+      const { numPlayersLockedIn, numTotalPlayers } = this.props;
+      const waitingOn = numTotalPlayers - numPlayersLockedIn;
+
+      if (waitingOn > 0) {
+        const playerText = waitingOn === 1 ? 'player' : 'players';
+
+        return `Waiting on ${waitingOn} ${playerText} to lock in.`;
       }
 
-      return (
-        <Button variant="contained" onClick={this.props.endRound}>End Round!</Button>
-      )
+      return 'All players locked in!';
     }
+  }
+
+  isDragDisabled() {
+    const { lockedIn, state } = this.props;
+    return lockedIn || state === 'ranked';
   }
 
   render() {
@@ -49,8 +101,15 @@ class RankTopicsComponent extends Component {
         <span>{this.descriptionText()}</span>
 
         <div className="RankTopicsTopics">
-          <DraggableTopics state={this.props.state} topics={this.props.topics} onDragEnd={this.props.onDragEnd} />
+          <DraggableTopics
+            state={this.props.state}
+            topics={this.props.topics}
+            onDragEnd={this.props.onDragEnd}
+            isDragDisabled={this.isDragDisabled()}
+          />
         </div>
+
+        {this.renderLockedInPlayers()}
 
         <div className="RankTopicsActionButton">
           {this.renderActionButton()}
@@ -59,12 +118,23 @@ class RankTopicsComponent extends Component {
         <ChoiceDialog
           open={this.props.showDialog}
           titleText="Lock in your ranking?"
-          contentText="Is the group done guessing your ranks?"
+          contentText="You won't be able to change them after you lock in!"
           choiceOneText="Yep!"
           onChoiceOne={this.props.lockIn}
           choiceTwoText="Nope!"
           onChoiceTwo={this.props.hideLockInDialog}
           onClose={this.props.hideLockInDialog}
+        />
+
+        <ChoiceDialog
+          open={this.props.showRevealDialog}
+          titleText="Are you sure you want to reveal?"
+          contentText="Not all players have locked in there guesses yet!"
+          choiceOneText="Yep!"
+          onChoiceOne={this.props.forceReveal}
+          choiceTwoText="Nope!"
+          onChoiceTwo={this.props.hideRevealDialog}
+          onClose={this.props.hideRevealDialog}
         />
       </div>
     );

@@ -11,7 +11,7 @@ export const startGameService = (numberOfTeams, onSuccess, onFail) => {
 
 export const addPlayerService = (gameUid, name, onSuccess) => {
   firebase.database().ref(`/games/${gameUid}/players`)
-    .push({ name, score: 0 })
+    .push({ name, score: 0, lockedIn: false })
     .then(ref => onSuccess(ref.key));
 };
 
