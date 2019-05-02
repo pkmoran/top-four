@@ -12,7 +12,8 @@ import {
   SHOW_LOCK_IN_DIALOG,
   RESET_LOCAL_RANKING,
   SHOW_REVEAL_DIALOG,
-  LOCKED_IN
+  LOCKED_IN,
+  HIDE_REVEAL_DIALOG
 } from './types';
 
 export const updateMyRanks = (topics, sourceIndex, destinationIndex) => {
@@ -49,14 +50,13 @@ const lockedIn = () => ({
   type: LOCKED_IN
 });
 
-const showRevealDialog = () => ({
+const showRevealDialog = pendingRevealAction => ({
   type: SHOW_REVEAL_DIALOG,
-  payload: true
+  payload: pendingRevealAction
 });
 
 export const hideRevealDialog = () => ({
-  type: SHOW_REVEAL_DIALOG,
-  payload: false
+  type: HIDE_REVEAL_DIALOG
 })
 
 export const lockIn = () => (dispatch, getState) => {
@@ -69,37 +69,64 @@ export const lockIn = () => (dispatch, getState) => {
   });
 };
 
-export const reveal = force => (dispatch, getState) => {
-  const { players } = getState().Game;
+export const allPlayersLockedIn = players => {
+  return _.filter(players, { lockedIn: true }).length === players.length;
+}
 
-  const allLockedIn = _.filter(players.array, { lockedIn: true }).length === players.array.length;
+export const reveal = (topic, force) => (dispatch, getState) => {
+  const { players, topics, gameUid, state } = getState().Game;
+
+  const allLockedIn = allPlayersLockedIn(players.array);
+
+  if (allLockedIn || force || state === 'ranked') {
+    if (getState().RankTopics.showRevealDialog) {
+      dispatch(hideRevealDialog());
+    }
+
+    setRoundRanked(
+      { [topic.uid]: getState().RankTopics.localRanks[topic.uid] },
+      topics.map,
+      gameUid,
+      state
+    );
+  } else {
+    const pendingRevealAction = () => dispatch(reveal(topic, true));
+    dispatch(showRevealDialog(pendingRevealAction));
+  }
+};
+
+export const revealAll = force => (dispatch, getState) => {
+  const { players, topics, gameUid, state } = getState().Game;
+
+  const allLockedIn = allPlayersLockedIn(players.array);
 
   if (allLockedIn || force) {
     if (getState().RankTopics.showRevealDialog) {
       dispatch(hideRevealDialog());
     }
 
-    setRoundRanked(getState);
+    setRoundRanked(getState().RankTopics.localRanks, topics.map, gameUid, state);
   } else {
-    dispatch(showRevealDialog());
+    const pendingRevealAction = () => dispatch(revealAll(true));
+    dispatch(showRevealDialog(pendingRevealAction));
   }
 };
 
-const setRoundRanked = getState => {
-  const { gameUid } = getState().Game;
-  const { localRanks } = getState().RankTopics;
-  const topics = {};
+const setRoundRanked = (localRanks, topics, gameUid, state) => {
+  const topicsToUpdate = {};
 
   _.forEach(localRanks, (localRank, localUid) => {
-    const topic = _.find(getState().Game.topics.map, (topic, uid) => uid === localUid);
+    const topic = _.find(topics, (topic, uid) => uid === localUid);
     topic.status = 'ranked';
     topic.rank = localRank;
 
-    topics[localUid] = topic;
+    topicsToUpdate[localUid] = topic;
   });
 
-  updateTopicsService(topics, gameUid, () => {
-    setRoundRankedService(gameUid);
+  updateTopicsService(topicsToUpdate, gameUid, () => {
+    if (state !== 'ranked') {
+      setRoundRankedService(gameUid);
+    }
   });
 };
 

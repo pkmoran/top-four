@@ -3,14 +3,16 @@ import {
   SHOW_LOCK_IN_DIALOG,
   RESET_LOCAL_RANKING,
   LOCKED_IN,
-  SHOW_REVEAL_DIALOG
+  SHOW_REVEAL_DIALOG,
+  HIDE_REVEAL_DIALOG
 } from '../actions/types';
 
 const INITIAL_STATE = {
   localRanks: {},
   showDialog: false,
   lockedIn: false,
-  showRevealDialog: false
+  showRevealDialog: false,
+  pendingRevealAction: () => { }
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -24,7 +26,13 @@ export default (state = INITIAL_STATE, action) => {
     case LOCKED_IN:
       return { ...state, lockedIn: true };
     case SHOW_REVEAL_DIALOG:
-      return { ...state, showRevealDialog: action.payload };
+      return { ...state, showRevealDialog: true, pendingRevealAction: action.payload };
+    case HIDE_REVEAL_DIALOG:
+      return {
+        ...state,
+        showRevealDialog: false,
+        pendingRevealAction: INITIAL_STATE.pendingRevealAction
+      }
     default:
       return state;
   }

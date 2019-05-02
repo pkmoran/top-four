@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import Button from '@material-ui/core/Button';
+import _ from 'lodash';
 
 import GameId from '../GameId';
 import DraggableTopics from './DraggableTopics';
@@ -34,7 +34,7 @@ class RankTopicsComponent extends Component {
 
   revealButton() {
     return (
-      <Button variant="contained" onClick={this.props.reveal}>Reveal!</Button>
+      <Button variant="contained" onClick={this.props.revealAll}>Reveal All!</Button>
     );
   }
 
@@ -53,11 +53,14 @@ class RankTopicsComponent extends Component {
   }
 
   renderActiveActionButton() {
-    const { lockedIn, state } = this.props;
+    const { lockedIn, state, topics } = this.props;
+
+    debugger;
 
     if (!lockedIn) {
       return this.lockInButton();
-    } else if (state === 'ranking') {
+    } else if (state === 'ranking'
+      || (state === 'ranked' && _.find(topics, { status: 'active' }) !== undefined)) {
       return this.revealButton();
     }
 
@@ -87,11 +90,6 @@ class RankTopicsComponent extends Component {
     }
   }
 
-  isDragDisabled() {
-    const { lockedIn, state } = this.props;
-    return lockedIn || state === 'ranked';
-  }
-
   render() {
     return (
       <div className="RankTopics">
@@ -105,7 +103,10 @@ class RankTopicsComponent extends Component {
             state={this.props.state}
             topics={this.props.topics}
             onDragEnd={this.props.onDragEnd}
-            isDragDisabled={this.isDragDisabled()}
+            isDragDisabled={this.props.lockedIn || this.props.state === 'ranked'}
+            active={this.props.active}
+            lockedIn={this.props.lockedIn}
+            reveal={this.props.reveal}
           />
         </div>
 
@@ -133,7 +134,7 @@ class RankTopicsComponent extends Component {
           choiceOneText="Nope!"
           onChoiceOne={this.props.hideRevealDialog}
           choiceTwoText="Reveal!"
-          onChoiceTwo={this.props.forceReveal}
+          onChoiceTwo={this.props.confirmReveal}
           onClose={this.props.hideRevealDialog}
         />
       </div>

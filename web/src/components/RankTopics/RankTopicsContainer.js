@@ -14,7 +14,8 @@ import {
   roundEnded,
   uploadScore,
   hideRevealDialog,
-  reveal
+  reveal,
+  revealAll
 } from '../../actions';
 
 class RankTopicsContainer extends Component {
@@ -24,7 +25,8 @@ class RankTopicsContainer extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.lockIn = this.lockIn.bind(this);
     this.reveal = this.reveal.bind(this);
-    this.forceReveal = this.forceReveal.bind(this);
+    this.revealAll = this.revealAll.bind(this);
+    this.confirmReveal = this.confirmReveal.bind(this);
   }
 
   componentDidUpdate(previousProps) {
@@ -51,12 +53,16 @@ class RankTopicsContainer extends Component {
     this.props.lockIn();
   }
 
-  reveal() {
-    this.props.reveal(false);
+  reveal(topic) {
+    this.props.reveal(topic, false);
   }
 
-  forceReveal() {
-    this.props.reveal(true);
+  revealAll() {
+    this.props.revealAll(false);
+  }
+
+  confirmReveal() {
+    this.props.pendingRevealAction();
   }
 
   render() {
@@ -81,7 +87,8 @@ class RankTopicsContainer extends Component {
       onDragEnd,
       lockIn,
       reveal,
-      forceReveal
+      revealAll,
+      confirmReveal
     } = this;
 
     return (
@@ -103,7 +110,8 @@ class RankTopicsContainer extends Component {
           showRevealDialog,
           hideRevealDialog,
           reveal,
-          forceReveal,
+          revealAll,
+          confirmReveal,
           lockedIn
         }}
       />
@@ -134,9 +142,7 @@ export const getTopics = (topics, optionalLocalRanks) => {
 
   _.forEach(sortedTopics, (topic, index) => {
     topic.isCorrect = index === topic.rank;
-    if (!topic.isCorrect) {
-      topic.correctTopic = _.find(activeTopics, (topic) => index === topic.rank);
-    }
+    topic.correctTopic = _.find(activeTopics, (topic) => index === topic.rank);
   });
 
   return sortedTopics;
@@ -152,7 +158,8 @@ const mapStateToProps = ({ Game, RankTopics }) => ({
   numPlayersLockedIn: _.filter(Game.players.array, { lockedIn: true }).length,
   numTotalPlayers: Game.players.array.length,
   lockedIn: RankTopics.lockedIn,
-  showRevealDialog: RankTopics.showRevealDialog
+  showRevealDialog: RankTopics.showRevealDialog,
+  pendingRevealAction: RankTopics.pendingRevealAction
 });
 
 export default connect(
@@ -166,6 +173,7 @@ export default connect(
     roundEnded,
     uploadScore,
     hideRevealDialog,
-    reveal
+    reveal,
+    revealAll
   }
 )(requireGame(RankTopicsContainer));

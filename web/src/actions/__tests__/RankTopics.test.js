@@ -1,4 +1,4 @@
-import { updateMyRanks } from '../RankTopics';
+import { updateMyRanks, reveal } from '../RankTopics';
 import { UPDATE_MY_RANKS } from '../types';
 
 const topics = [
@@ -37,4 +37,26 @@ it('should update local ranks', () => {
   expect(localRanks.topic2).toEqual(1);
   expect(localRanks.topic3).toEqual(3);
   expect(localRanks.topic4).toEqual(2);
+});
+
+describe('allPlayersLockedIn', () => {
+  it('should return false if there are any players not locked in', () => {
+    const players = [{
+      lockedIn: true
+    }, {
+      lockedIn: false
+    }];
+
+    expect(require('../RankTopics').allPlayersLockedIn(players)).toBe(false);
+  });
+
+  it('should return true if all players are locked in', () => {
+    const players = [{
+      lockedIn: true
+    }, {
+      lockedIn: true
+    }];
+
+    expect(require('../RankTopics').allPlayersLockedIn(players)).toBe(true);
+  });
 });
