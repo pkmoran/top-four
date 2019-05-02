@@ -33,7 +33,8 @@ class HomeScreenContainer extends Component {
       gameOver,
       showStartRoundDialog,
       hideStartRoundDialog,
-      startRound
+      startRound,
+      remainingRounds
     } = this.props;
 
     const {
@@ -52,7 +53,8 @@ class HomeScreenContainer extends Component {
           showStartRoundDialog,
           hideStartRoundDialog,
           startRound,
-          startRanking
+          startRanking,
+          remainingRounds
         }}
       />
     )
@@ -81,7 +83,8 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   showDialog: Homescreen.showDialog,
   playerName: (_.find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}).name,
   ranking: !!Game.rankingPlayerUid,
-  gameOver: _.filter(Game.topics.array, topic => topic.status === 'available').length < 4
+  gameOver: _.filter(Game.topics.array, { status: 'available' }).length < 4,
+  remainingRounds: Math.floor(_.filter(Game.topics.array, { status: 'available' }).length / 4)
 });
 
 export default connect(

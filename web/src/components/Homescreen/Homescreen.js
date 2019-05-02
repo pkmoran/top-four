@@ -45,7 +45,17 @@ class HomescreenComponent extends Component {
     );
   }
 
+  renderRemainingRounds() {
+    const { gameOver, remainingRounds } = this.props;
+
+    if (!gameOver) {
+      return `${remainingRounds} round${remainingRounds > 1 ? 's' : ''} remaining!`
+    }
+  }
+
   render() {
+    const { remainingRounds } = this.props;
+
     return (
       <div className="Homescreen">
         <GameId gameId={this.props.gameId} />
@@ -55,6 +65,8 @@ class HomescreenComponent extends Component {
         <div className="HomescreenTeams">
           {this.renderTeams()}
         </div>
+
+        {this.renderRemainingRounds()}
 
         <div className="HomescreenActionButton">
           Who&apos;s up?
