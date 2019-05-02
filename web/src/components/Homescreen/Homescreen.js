@@ -65,10 +65,10 @@ class HomescreenComponent extends Component {
           open={this.props.showDialog}
           titleText="Start a new round?"
           contentText={this.dialogContentText()}
-          choiceOneText="Yep!"
-          onChoiceOne={this.props.startRound}
-          choiceTwoText="Nope!"
-          onChoiceTwo={this.props.hideStartRoundDialog}
+          choiceOneText="Nope!"
+          onChoiceOne={this.props.hideStartRoundDialog}
+          choiceTwoText="Start round!"
+          onChoiceTwo={this.props.startRound}
           onClose={this.props.hideStartRoundDialog}
         />
       </div>

@@ -89,7 +89,7 @@ class StartGameDialog extends Component {
           </Button>
 
           <Button variant="outlined" onClick={onOk}>
-            Ok
+            Start Game!
           </Button>
         </DialogActions>
       </Dialog>

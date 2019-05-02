@@ -119,10 +119,10 @@ class RankTopicsComponent extends Component {
           open={this.props.showDialog}
           titleText="Lock in your ranking?"
           contentText="You won't be able to change them after you lock in!"
-          choiceOneText="Yep!"
-          onChoiceOne={this.props.lockIn}
-          choiceTwoText="Nope!"
-          onChoiceTwo={this.props.hideLockInDialog}
+          choiceOneText="Nope!"
+          onChoiceOne={this.props.hideLockInDialog}
+          choiceTwoText="Lock in!"
+          onChoiceTwo={this.props.lockIn}
           onClose={this.props.hideLockInDialog}
         />
 
@@ -130,10 +130,10 @@ class RankTopicsComponent extends Component {
           open={this.props.showRevealDialog}
           titleText="Are you sure you want to reveal?"
           contentText="Not all players have locked in there guesses yet!"
-          choiceOneText="Yep!"
-          onChoiceOne={this.props.forceReveal}
-          choiceTwoText="Nope!"
-          onChoiceTwo={this.props.hideRevealDialog}
+          choiceOneText="Nope!"
+          onChoiceOne={this.props.hideRevealDialog}
+          choiceTwoText="Reveal!"
+          onChoiceTwo={this.props.forceReveal}
           onClose={this.props.hideRevealDialog}
         />
       </div>
