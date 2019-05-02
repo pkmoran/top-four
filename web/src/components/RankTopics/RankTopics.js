@@ -55,8 +55,6 @@ class RankTopicsComponent extends Component {
   renderActiveActionButton() {
     const { lockedIn, state, topics } = this.props;
 
-    debugger;
-
     if (!lockedIn) {
       return this.lockInButton();
     } else if (state === 'ranking'

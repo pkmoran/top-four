@@ -54,8 +54,6 @@ class HomescreenComponent extends Component {
   }
 
   render() {
-    const { remainingRounds } = this.props;
-
     return (
       <div className="Homescreen">
         <GameId gameId={this.props.gameId} />
