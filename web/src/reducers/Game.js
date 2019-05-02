@@ -65,7 +65,7 @@ export default (state = INITIAL_STATE, action) => {
         }
       }
     case TOPIC_PACKS:
-      const topicPacks = _.map(action.payload, (topic, uid) => ({ name: topic.name, uid }));
+      const topicPacks = _.map(action.payload, (topicPack, uid) => ({ name: `${topicPack.name} (${Object.keys(topicPack.topics).length})`, uid }));
       topicPacks.unshift({ name: 'Write our own!', uid: WRITE_OUR_OWN_UID })
 
       return {
