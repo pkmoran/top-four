@@ -36,7 +36,7 @@ class Root extends Component {
     // remove it whenever at the root path or it was just loaded
     saveState({});
 
-    if (process.env.REACT_APP_TESTING) {
+    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
       this.store = createStore(reducers, state, applyMiddleware(thunk));
     } else {
       this.store = createStore(reducers, state, applyMiddleware(thunk, logger));
