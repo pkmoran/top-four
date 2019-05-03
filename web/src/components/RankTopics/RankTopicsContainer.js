@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import filter from 'lodash/filter';
 
 import RankTopics from './RankTopics';
 import requireGame from '../requireGame';
@@ -121,7 +121,7 @@ const mapStateToProps = ({ Game, RankTopics }) => ({
   activePlayerName: (Game.players.map[Game.rankingPlayerUid] || {}).name,
   state: Game.state,
   showDialog: RankTopics.showDialog,
-  numPlayersLockedIn: _.filter(Game.players.array, { lockedIn: true }).length,
+  numPlayersLockedIn: filter(Game.players.array, { lockedIn: true }).length,
   numTotalPlayers: Game.players.array.length,
   lockedIn: RankTopics.lockedIn,
   showRevealDialog: RankTopics.showRevealDialog,

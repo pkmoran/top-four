@@ -1,9 +1,7 @@
-import _ from 'lodash';
-import sinon from 'sinon';
+import forEach from 'lodash/forEach';
 
-import { showStartRoundDialog, hideStartRoundDialog, randTopicIds, startRound } from '../Homescreen';
-import { SHOW_START_ROUND_DIALOG, START_ROUND } from '../types';
-import * as services from '../../services/Game';
+import { showStartRoundDialog, hideStartRoundDialog, randTopicIds } from '../Homescreen';
+import { SHOW_START_ROUND_DIALOG } from '../types';
 
 let topics;
 
@@ -72,7 +70,7 @@ describe('the randTopics action', () => {
     const expectedTopicIds = Object.keys(topics);
 
     expect(topicIds.length).toEqual(4);
-    _.forEach(topicIds, (id) => {
+    forEach(topicIds, (id) => {
       expect(expectedTopicIds.includes(id)).toEqual(true);
     });
   });

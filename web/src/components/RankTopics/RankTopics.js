@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import _ from 'lodash';
+import find from 'lodash/find';
 
 import GameId from '../GameId';
 import DraggableTopics from './DraggableTopics';
@@ -58,7 +58,7 @@ class RankTopicsComponent extends Component {
     if (!lockedIn) {
       return this.lockInButton();
     } else if (state === 'ranking'
-      || (state === 'ranked' && _.find(topics, { status: 'active' }) !== undefined)) {
+      || (state === 'ranked' && find(topics, { status: 'active' }) !== undefined)) {
       return this.revealButton();
     }
 

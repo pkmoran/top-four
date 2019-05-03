@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import map from 'lodash/map';
 
 import { WRITE_OUR_OWN_UID } from '../constants';
 
@@ -53,19 +53,19 @@ export default (state = INITIAL_STATE, action) => {
         state: action.payload.state,
         teams: {
           map: { ...teams },
-          array: _.map(teams, (team, uid) => ({ ...team, uid }))
+          array: map(teams, (team, uid) => ({ ...team, uid }))
         },
         topics: {
           map: { ...topics },
-          array: _.map(topics, (topic, uid) => ({ ...topic, uid }))
+          array: map(topics, (topic, uid) => ({ ...topic, uid }))
         },
         players: {
           map: { ...players },
-          array: _.map(players, (player, uid) => ({ ...player, uid }))
+          array: map(players, (player, uid) => ({ ...player, uid }))
         }
       }
     case TOPIC_PACKS:
-      const topicPacks = _.map(action.payload, (topicPack, uid) => ({ name: `${topicPack.name} (${Object.keys(topicPack.topics).length})`, uid }));
+      const topicPacks = map(action.payload, (topicPack, uid) => ({ name: `${topicPack.name} (${Object.keys(topicPack.topics).length})`, uid }));
       topicPacks.unshift({ name: 'Write our own!', uid: WRITE_OUR_OWN_UID })
 
       return {

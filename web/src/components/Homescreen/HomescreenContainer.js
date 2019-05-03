@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import reduce from 'lodash/reduce';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
 
 import Homescreen from './Homescreen';
 import requireGame from '../requireGame';
@@ -62,14 +64,14 @@ class HomeScreenContainer extends Component {
 }
 
 export const getTeams = ({ teams, players }) => {
-  return _.reduce(teams.array, (result, team) => {
-    const teamPlayers = _.filter(players.array, { 'teamUid': team.uid });
+  return reduce(teams.array, (result, team) => {
+    const teamPlayers = filter(players.array, { 'teamUid': team.uid });
 
     if (teamPlayers.length > 0) {
       result.push({
         ...team,
         players: teamPlayers,
-        score: _.reduce(teamPlayers, (sum, player) => sum + player.score, 0)
+        score: reduce(teamPlayers, (sum, player) => sum + player.score, 0)
       });
     }
 
@@ -81,10 +83,10 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   gameId: Game.gameId,
   teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
-  playerName: (_.find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}).name,
+  playerName: (find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}).name,
   ranking: !!Game.rankingPlayerUid,
-  gameOver: _.filter(Game.topics.array, { status: 'available' }).length < 4,
-  remainingRounds: Math.floor(_.filter(Game.topics.array, { status: 'available' }).length / 4)
+  gameOver: filter(Game.topics.array, { status: 'available' }).length < 4,
+  remainingRounds: Math.floor(filter(Game.topics.array, { status: 'available' }).length / 4)
 });
 
 export default connect(

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import filter from 'lodash/filter';
 
 import AddTopics from './AddTopics';
 import requireGame from '../requireGame';
@@ -65,7 +65,7 @@ class AddTopicsContainer extends Component {
 }
 
 export const playerTopics = ({ topics, playerUid }) => {
-  return _.filter(topics.array, t => t.playerUid === playerUid);
+  return filter(topics.array, t => t.playerUid === playerUid);
 };
 
 const mapStateToProps = ({ AddTopics, Game }) => ({

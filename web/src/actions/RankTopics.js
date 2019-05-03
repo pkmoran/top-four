@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import reduce from 'lodash/reduce';
+import filter from 'lodash/filter';
+import forEach from 'lodash/forEach';
 import {
   setPlayerLockedInService,
   updateGameService
@@ -19,7 +21,7 @@ export const updateMyRanks = (topics, sourceIndex, destinationIndex) => {
   const [removed] = reorderedTopics.splice(sourceIndex, 1);
   reorderedTopics.splice(destinationIndex, 0, removed);
 
-  const localRanks = _.reduce(
+  const localRanks = reduce(
     reorderedTopics,
     (result, value, index) => ({
       ...result,
@@ -68,7 +70,7 @@ export const lockIn = () => (dispatch, getState) => {
 };
 
 export const allPlayersLockedIn = players => {
-  return _.filter(players, { lockedIn: true }).length === players.length;
+  return filter(players, { lockedIn: true }).length === players.length;
 }
 
 export const reveal = (topic, force) => (dispatch, getState) => {
@@ -110,7 +112,7 @@ export const revealAll = force => (dispatch, getState) => {
 };
 
 const setRoundRanked = (localRanks, topics, gameUid) => {
-  _.forEach(localRanks, (localRank, localUid) => {
+  forEach(localRanks, (localRank, localUid) => {
     topics[localUid].status = 'ranked';
     topics[localUid].rank = localRank;
   });
@@ -130,7 +132,7 @@ const resetLocalRanking = () => ({
 export const endRound = () => (dispatch, getState) => {
   const { gameUid, playerUid, topics, players } = getState().Game;
 
-  _.forEach(topics.map, topic => {
+  forEach(topics.map, topic => {
     if (topic.status === 'ranked') {
       topic.status = 'unavailable';
     }

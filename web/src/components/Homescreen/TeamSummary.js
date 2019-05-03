@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import map from 'lodash/map';
 
 import PlayerSummary from './PlayerSummary';
 
@@ -11,7 +11,7 @@ const TeamSummary = ({ name, score, players }) => (
       <span>{name}</span>
       <span>{score}</span>
     </div>
-    {_.map(players, (player, uid) => (
+    {map(players, (player, uid) => (
       <PlayerSummary key={uid} player={player} />
     ))}
   </div>

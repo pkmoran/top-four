@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import countBy from 'lodash/countBy';
+import map from 'lodash/map';
 
 import PickTeams from './PickTeams';
 import requireGame from '../requireGame';
@@ -57,9 +58,9 @@ class PickTeamsContainer extends Component {
 }
 
 export const teamsAndPlayerCounts = ({ teams, players }) => {
-  const teamCounts = _.countBy(players.map, 'teamUid');
+  const teamCounts = countBy(players.map, 'teamUid');
   
-  return _.map(teams.array, team => ({ ...team, playerCount: teamCounts[team.uid] || 0 }));
+  return map(teams.array, team => ({ ...team, playerCount: teamCounts[team.uid] || 0 }));
 };
 
 const selectedTeam = ({ players, playerUid }) => {

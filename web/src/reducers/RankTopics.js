@@ -1,4 +1,9 @@
-import _ from 'lodash';
+import map from 'lodash/map';
+import filter from 'lodash/filter';
+import reduce from 'lodash/reduce';
+import sortBy from 'lodash/sortBy';
+import forEach from 'lodash/forEach';
+import find from 'lodash/find';
 
 import {
   UPDATE_MY_RANKS,
@@ -49,17 +54,17 @@ export default (state = INITIAL_STATE, action) => {
         return state;
       }
 
-      const topics = _.map(action.payload.topics, (topic, uid) => ({ ...topic, uid }));
-      const activeTopics = _.filter(topics, topic => topic.status === 'active' || topic.status === 'ranked');
+      const topics = map(action.payload.topics, (topic, uid) => ({ ...topic, uid }));
+      const activeTopics = filter(topics, topic => topic.status === 'active' || topic.status === 'ranked');
 
       let localRanks = state.localRanks;
 
       if (!localRanks) {
-        localRanks = _.reduce(activeTopics, (result, value, index) => ({ ...result, [value.uid]: index }), {});
+        localRanks = reduce(activeTopics, (result, value, index) => ({ ...result, [value.uid]: index }), {});
       }
 
       const sortedAndCorrectedTopics = sortAndCorrectTopics(activeTopics, localRanks);
-      const roundScore = _.filter(sortedAndCorrectedTopics, { isCorrect: true }).length;
+      const roundScore = filter(sortedAndCorrectedTopics, { isCorrect: true }).length;
 
       return {
         ...state,
@@ -78,13 +83,13 @@ export default (state = INITIAL_STATE, action) => {
 };
 
 const sortAndCorrectTopics = (topics, localRanks) => {
-  const sortedTopics = _.sortBy(topics, [
+  const sortedTopics = sortBy(topics, [
     topic => localRanks[topic.uid]
   ]);
 
-  _.forEach(sortedTopics, (topic, index) => {
+  forEach(sortedTopics, (topic, index) => {
     topic.isCorrect = index === topic.rank;
-    topic.correctTopic = _.find(topics, topic => index === topic.rank);
+    topic.correctTopic = find(topics, topic => index === topic.rank);
   })
 
   return sortedTopics;
