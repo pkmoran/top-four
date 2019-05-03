@@ -1,7 +1,11 @@
 import pickBy from 'lodash/pickBy';
 import sampleSize from 'lodash/sampleSize';
 import forEach from 'lodash/forEach';
-import { updateGameService } from '../services/Game';
+import {
+  updateGameService,
+  watchGameStateService,
+  stopWatchingGameStateService
+} from '../services/Game';
 
 import { SHOW_START_ROUND_DIALOG } from './types';
 
@@ -42,3 +46,22 @@ export const startRanking = history => (dispatch, getState) => {
   const { gameId } = getState().Game;
   history.push(`/${gameId}/rankTopics`);
 };
+
+export const watchGameStateForHomescreen = history => (dispatch, getState) => {
+  const { gameUid, gameId } = getState().Game;
+  let locked = false;
+
+  watchGameStateService(gameUid, newState => {
+    if (newState === 'ranking' && !locked) {
+      locked = true;
+
+      stopWatchingGameStateService(gameUid);
+
+      history.push(`/${gameId}/rankTopics`);
+    }
+  });
+};
+
+export const stopWatchingGameStateForHomescreen = () => (dispatch, getState) => {
+  stopWatchingGameStateService(getState().Game.gameUid);
+}

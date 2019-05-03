@@ -11,18 +11,18 @@ import {
   showStartRoundDialog,
   hideStartRoundDialog,
   startRound,
-  startRanking
+  watchGameStateForHomescreen,
+  stopWatchingGameStateForHomescreen
 } from '../../actions';
 
 class HomeScreenContainer extends Component {
-  constructor(props) {
-    super(props);
 
-    this.startRanking = this.startRanking.bind(this);
+  componentDidMount() {
+    this.props.watchGameStateForHomescreen(this.props.history);
   }
 
-  startRanking() {
-    this.props.startRanking(this.props.history);
+  componentWillUnmount() {
+    this.props.stopWatchingGameStateForHomescreen();
   }
 
   render() {
@@ -39,10 +39,6 @@ class HomeScreenContainer extends Component {
       remainingRounds
     } = this.props;
 
-    const {
-      startRanking
-    } = this;
-
     return (
       <Homescreen
         {... {
@@ -55,7 +51,6 @@ class HomeScreenContainer extends Component {
           showStartRoundDialog,
           hideStartRoundDialog,
           startRound,
-          startRanking,
           remainingRounds
         }}
       />
@@ -95,6 +90,7 @@ export default connect(
     showStartRoundDialog,
     hideStartRoundDialog,
     startRound,
-    startRanking
+    watchGameStateForHomescreen,
+    stopWatchingGameStateForHomescreen
   }
 )(requireGame(HomeScreenContainer));

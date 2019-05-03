@@ -14,7 +14,9 @@ import {
   roundEnded,
   hideRevealDialog,
   reveal,
-  revealAll
+  revealAll,
+  watchGameStateForRankTopics,
+  stopWatchingGameStateForRankTopics
 } from '../../actions';
 
 class RankTopicsContainer extends Component {
@@ -28,12 +30,12 @@ class RankTopicsContainer extends Component {
     this.confirmReveal = this.confirmReveal.bind(this);
   }
 
-  componentDidUpdate(previousProps) {
-    const { history } = this.props;
+  componentDidMount() {
+    this.props.watchGameStateForRankTopics(this.props.history);
+  }
 
-    if (previousProps.state === 'ranked' && this.props.state === '') {
-      this.props.roundEnded(history);
-    }
+  componentWillUnmount() {
+    this.props.stopWatchingGameStateForRankTopics();
   }
 
   onDragEnd(result) {
@@ -139,6 +141,8 @@ export default connect(
     roundEnded,
     hideRevealDialog,
     reveal,
-    revealAll
+    revealAll,
+    watchGameStateForRankTopics,
+    stopWatchingGameStateForRankTopics
   }
 )(requireGame(RankTopicsContainer));

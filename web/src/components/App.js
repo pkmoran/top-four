@@ -14,7 +14,9 @@ import { getGameData } from '../actions';
 import './styles/App.css';
 
 class App extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     firebase.initializeApp({
       apiKey: 'AIzaSyCRM0-Xupt1ZvlTTt-FPYY6bieCnxTgMhI',
       authDomain: 'top-four-cca25.firebaseapp.com',
@@ -23,7 +25,9 @@ class App extends Component {
       storageBucket: '',
       messagingSenderId: '120019969623'
     });
+  }
 
+  componentDidMount() {
     if (this.props.gameUid) {
       this.props.getGameData(this.props.gameUid);
     }

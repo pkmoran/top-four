@@ -9,17 +9,6 @@ import ChoiceDialog from '../ChoiceDialog';
 import './styles/Homescreen.css';
 
 class HomescreenComponent extends Component {
-  componentDidMount() {
-    if (this.props.ranking) {
-      this.props.startRanking();
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.ranking) {
-      this.props.startRanking();
-    }
-  }
 
   renderTeams() {
     return this.props.teams.map(({

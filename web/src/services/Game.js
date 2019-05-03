@@ -48,3 +48,26 @@ export const updateGameService = (game, gameUid, then) => {
     .ref(`/games/${gameUid}`)
     .update(game, then);
 };
+
+export const updatePlayerService = (player, playerUid, gameUid, then) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/players/${playerUid}`)
+    .update(player, then);
+}
+
+export const watchGameStateService = (gameUid, onStateChange) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/state`)
+    .on('value', state => {
+      onStateChange(state.val());
+    });
+}
+
+export const stopWatchingGameStateService = (gameUid) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/state`)
+    .off('value');
+}

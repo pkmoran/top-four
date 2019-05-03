@@ -3,7 +3,10 @@ import filter from 'lodash/filter';
 import forEach from 'lodash/forEach';
 import {
   setPlayerLockedInService,
-  updateGameService
+  updateGameService,
+  watchGameStateService,
+  stopWatchingGameStateService,
+  updatePlayerService
 } from '../services/Game';
 
 import {
@@ -159,17 +162,34 @@ export const roundEnded = history => (dispatch, getState) => {
     dispatch(resetLocalRanking());
     history.goBack();
   } else {
-    players.map[playerUid].score += roundScore;
-    players.map[playerUid].lockedIn = false
+    const player = {
+      score: players.map[playerUid].score + roundScore,
+      lockedIn: false
+    }
 
-    const game = {
-      players: players.map
-    };
-
-    updateGameService(game, gameUid, () => {
+    updatePlayerService(player, playerUid, gameUid, () => {
       dispatch(resetLocalRanking());
 
       history.goBack();
     });
   }
 };
+
+export const watchGameStateForRankTopics = history => (dispatch, getState) => {
+  const { gameUid } = getState().Game;
+  let locked = false;
+
+  watchGameStateService(gameUid, newState => {
+    if (newState === '' && !locked) {
+      locked = true;
+
+      stopWatchingGameStateService(gameUid);
+
+      dispatch(roundEnded(history));
+    }
+  });
+};
+
+export const stopWatchingGameStateForRankTopics = () => (dispatch, getState) => {
+  stopWatchingGameStateService(getState().Game.gameUid);
+}

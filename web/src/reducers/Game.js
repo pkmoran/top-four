@@ -17,9 +17,9 @@ export const INITIAL_STATE = {
   playerUid: '',
   rankingPlayerUid: '',
   state: '',
-  teams: {},
-  players: {},
-  topics: {},
+  teams: { map: {}, array: [] },
+  players: { map: {}, array: [] },
+  topics: { map: {}, array: [] },
   topicPacks: []
 };
 
