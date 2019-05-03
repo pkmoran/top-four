@@ -1,10 +1,7 @@
 import _ from 'lodash';
 import {
-  updateTopicsService,
-  endRoundService,
-  setRoundRankedService,
-  updatePlayerScoreService,
-  setPlayerLockedInService
+  setPlayerLockedInService,
+  updateGameService
 } from '../services/Game';
 
 import {
@@ -13,7 +10,8 @@ import {
   RESET_LOCAL_RANKING,
   SHOW_REVEAL_DIALOG,
   LOCKED_IN,
-  HIDE_REVEAL_DIALOG
+  HIDE_REVEAL_DIALOG,
+  SKIP_SCORE
 } from './types';
 
 export const updateMyRanks = (topics, sourceIndex, destinationIndex) => {
@@ -86,8 +84,7 @@ export const reveal = (topic, force) => (dispatch, getState) => {
     setRoundRanked(
       { [topic.uid]: getState().RankTopics.localRanks[topic.uid] },
       topics.map,
-      gameUid,
-      state
+      gameUid
     );
   } else {
     const pendingRevealAction = () => dispatch(reveal(topic, true));
@@ -96,7 +93,7 @@ export const reveal = (topic, force) => (dispatch, getState) => {
 };
 
 export const revealAll = force => (dispatch, getState) => {
-  const { players, topics, gameUid, state } = getState().Game;
+  const { players, topics, gameUid } = getState().Game;
 
   const allLockedIn = allPlayersLockedIn(players.array);
 
@@ -105,29 +102,25 @@ export const revealAll = force => (dispatch, getState) => {
       dispatch(hideRevealDialog());
     }
 
-    setRoundRanked(getState().RankTopics.localRanks, topics.map, gameUid, state);
+    setRoundRanked(getState().RankTopics.localRanks, topics.map, gameUid);
   } else {
     const pendingRevealAction = () => dispatch(revealAll(true));
     dispatch(showRevealDialog(pendingRevealAction));
   }
 };
 
-const setRoundRanked = (localRanks, topics, gameUid, state) => {
-  const topicsToUpdate = {};
-
+const setRoundRanked = (localRanks, topics, gameUid) => {
   _.forEach(localRanks, (localRank, localUid) => {
-    const topic = _.find(topics, (topic, uid) => uid === localUid);
-    topic.status = 'ranked';
-    topic.rank = localRank;
-
-    topicsToUpdate[localUid] = topic;
+    topics[localUid].status = 'ranked';
+    topics[localUid].rank = localRank;
   });
 
-  updateTopicsService(topicsToUpdate, gameUid, () => {
-    if (state !== 'ranked') {
-      setRoundRankedService(gameUid);
-    }
-  });
+  const game = {
+    state: 'ranked',
+    topics
+  };
+
+  updateGameService(game, gameUid);
 };
 
 const resetLocalRanking = () => ({
@@ -135,33 +128,46 @@ const resetLocalRanking = () => ({
 });
 
 export const endRound = () => (dispatch, getState) => {
-  const { gameUid, playerUid, topics } = getState().Game;
+  const { gameUid, playerUid, topics, players } = getState().Game;
 
-  const rankedTopics = _.pickBy(topics.map, topic => topic.status === 'ranked');
-  _.forEach(rankedTopics, topic => {
-    topic.status = 'unavailable';
+  _.forEach(topics.map, topic => {
+    if (topic.status === 'ranked') {
+      topic.status = 'unavailable';
+    }
   });
 
-  updateTopicsService(rankedTopics, gameUid, () => {
-    setPlayerLockedInService(gameUid, playerUid, false);
-    endRoundService(gameUid);
-  });
-};
+  players.map[playerUid].lockedIn = false;
 
-export const uploadScore = rankedTopics => (dispatch, getState) => {
-  const correct = _.filter(rankedTopics, topic => topic.isCorrect).length;
+  const game = {
+    state: '',
+    rankingPlayerUid: '',
+    topics: topics.map,
+    players: players.map
+  };
 
-  const { players, playerUid, gameUid } = getState().Game;
-  const score = players.map[playerUid].score;
-
-  updatePlayerScoreService(gameUid, playerUid, score + correct);
+  dispatch({ type: SKIP_SCORE });
+  updateGameService(game, gameUid);
 };
 
 export const roundEnded = history => (dispatch, getState) => {
-  const { gameUid, playerUid } = getState().Game;
+  const { players, gameUid, playerUid } = getState().Game;
+  const { roundScore, skipScore } = getState().RankTopics;
 
-  dispatch(resetLocalRanking());
-  setPlayerLockedInService(gameUid, playerUid, false);
+  if (skipScore) {
+    dispatch(resetLocalRanking());
+    history.goBack();
+  } else {
+    players.map[playerUid].score += roundScore;
+    players.map[playerUid].lockedIn = false
 
-  history.goBack();
+    const game = {
+      players: players.map
+    };
+
+    updateGameService(game, gameUid, () => {
+      dispatch(resetLocalRanking());
+
+      history.goBack();
+    });
+  }
 };

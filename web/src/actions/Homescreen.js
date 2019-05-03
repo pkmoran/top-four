@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { updateTopicsService, startRoundService } from '../services/Game';
+import { updateGameService } from '../services/Game';
 
 import { SHOW_START_ROUND_DIALOG } from './types';
 
@@ -13,25 +13,27 @@ export const hideStartRoundDialog = () => ({
   payload: false
 });
 
-export const randTopics = (topics) => {
+export const randTopicIds = (topics) => {
   const availableTopics = _.pickBy(topics, topic => topic.status === 'available');
-  const randTopicIds = _.sampleSize(Object.keys(availableTopics), 4);
-  return _.pick(availableTopics, randTopicIds);
+  return _.sampleSize(Object.keys(availableTopics), 4);
 };
 
 export const startRound = () => (dispatch, getState) => {
   dispatch(hideStartRoundDialog());
 
   const { gameUid, topics, playerUid } = getState().Game;
-  const topicsToUpdate = randTopics(topics.map);
 
-  _.forEach(topicsToUpdate, (topic) => {
-    topic.status = 'active';
+  _.forEach(randTopicIds(topics.map), topicId => {
+    topics.map[topicId].status = 'active';
   });
 
-  updateTopicsService(topicsToUpdate, gameUid, () => {
-    startRoundService(gameUid, playerUid);
-  });
+  const game = {
+    rankingPlayerUid: playerUid,
+    state: 'ranking',
+    topics: topics.map
+  };
+
+  updateGameService(game, gameUid);
 };
 
 export const startRanking = history => (dispatch, getState) => {

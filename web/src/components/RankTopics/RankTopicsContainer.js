@@ -12,7 +12,6 @@ import {
   lockIn,
   endRound,
   roundEnded,
-  uploadScore,
   hideRevealDialog,
   reveal,
   revealAll
@@ -30,12 +29,10 @@ class RankTopicsContainer extends Component {
   }
 
   componentDidUpdate(previousProps) {
-    if (previousProps.state === 'ranking' && this.props.state === 'ranked' && !this.props.active) {
-      this.props.uploadScore(this.props.topics);
-    }
+    const { history } = this.props;
 
     if (previousProps.state === 'ranked' && this.props.state === '') {
-      this.props.roundEnded(this.props.history);
+      this.props.roundEnded(history);
     }
   }
 
@@ -48,8 +45,6 @@ class RankTopicsContainer extends Component {
   }
 
   lockIn() {
-    // force ranks to update in case they never have
-    this.props.updateMyRanks(this.props.topics, 0, 0);
     this.props.lockIn();
   }
 
@@ -75,12 +70,12 @@ class RankTopicsContainer extends Component {
       showDialog,
       showLockInDialog,
       hideLockInDialog,
-      endRound,
       numPlayersLockedIn,
       numTotalPlayers,
       showRevealDialog,
       hideRevealDialog,
-      lockedIn
+      lockedIn,
+      endRound
     } = this.props;
 
     const {
@@ -119,38 +114,9 @@ class RankTopicsContainer extends Component {
   }
 }
 
-export const getTopics = (topics, optionalLocalRanks) => {
-  const activeTopics = _.filter(topics.array, topic => topic.status === 'active' || topic.status === 'ranked');
-
-  let localRanks;
-  if (Object.keys(optionalLocalRanks).length === 0) {
-    localRanks = _.reduce(
-      activeTopics,
-      (result, value, index) => ({
-        ...result,
-        [value.uid]: index
-      }),
-      {}
-    );
-  } else {
-    localRanks = optionalLocalRanks;
-  }
-
-  const sortedTopics = _.sortBy(activeTopics, [
-    topic => localRanks[topic.uid]
-  ]);
-
-  _.forEach(sortedTopics, (topic, index) => {
-    topic.isCorrect = index === topic.rank;
-    topic.correctTopic = _.find(activeTopics, (topic) => index === topic.rank);
-  });
-
-  return sortedTopics;
-};
-
 const mapStateToProps = ({ Game, RankTopics }) => ({
   gameId: Game.gameId,
-  topics: getTopics(Game.topics, RankTopics.localRanks),
+  topics: RankTopics.topics,
   active: Game.playerUid === Game.rankingPlayerUid,
   activePlayerName: (Game.players.map[Game.rankingPlayerUid] || {}).name,
   state: Game.state,
@@ -171,7 +137,6 @@ export default connect(
     lockIn,
     endRound,
     roundEnded,
-    uploadScore,
     hideRevealDialog,
     reveal,
     revealAll

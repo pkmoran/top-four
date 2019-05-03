@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import sinon from 'sinon';
 
-import { showStartRoundDialog, hideStartRoundDialog, randTopics, startRound } from '../Homescreen';
+import { showStartRoundDialog, hideStartRoundDialog, randTopicIds, startRound } from '../Homescreen';
 import { SHOW_START_ROUND_DIALOG, START_ROUND } from '../types';
 import * as services from '../../services/Game';
 
@@ -67,78 +67,13 @@ it('should dispatch a hide action', () => {
 });
 
 describe('the randTopics action', () => {
-  it('should return a dictionary with four topics', () => {
-    const topicIds = Object.keys(randTopics(topics));
+  it('should return an array with 4 ids', () => {
+    const topicIds = randTopicIds(topics);
     const expectedTopicIds = Object.keys(topics);
 
     expect(topicIds.length).toEqual(4);
     _.forEach(topicIds, (id) => {
       expect(expectedTopicIds.includes(id)).toEqual(true);
     });
-  });
-
-  it('should only return topics that are available', () => {
-    const usedTopics = _.find(randTopics(topics), topic => topic.status === 'used');
-    expect(usedTopics).toEqual(undefined);
-  });
-});
-
-describe('the startRound action', () => {
-  let updateTopicService;
-  let startRoundService;
-  let dispatch;
-  let getState;
-
-  beforeEach(() => {
-    updateTopicService = sinon.fake.yields();
-    startRoundService = sinon.fake();
-    dispatch = sinon.fake();
-    getState = sinon.fake.returns({
-      Game: {
-        topics: { map: { ...topics }},
-        gameUid: 'asdf',
-        playerUid: 'player1'
-      }
-    });
-
-    sinon.replace(services, 'updateTopicsService', updateTopicService);
-    sinon.replace(services, 'startRoundService', startRoundService);
-
-    startRound(updateTopicService)(dispatch, getState);
-  });
-
-  afterEach(() => {
-    sinon.restore();
-  });
-
-  it('should dispatch the hide action', () => {
-    const dispatchedAction = dispatch.firstCall.args[0];
-
-    expect(dispatchedAction.type).toEqual(SHOW_START_ROUND_DIALOG);
-    expect(dispatchedAction.payload).toEqual(false);
-  });
-
-  it('should call the update topics service with a plain object', () => {
-    const topicsArg = updateTopicService.firstCall.args[0];
-
-    expect(_.isPlainObject(topicsArg)).toEqual(true);
-  });
-
-  it('should update the status of 4 topics', () => {
-    const topicsArg = updateTopicService.firstCall.args[0];
-
-    expect(Object.keys(topicsArg).length).toEqual(4);
-    _.forEach(topicsArg, (topic) => {
-      expect(topic.status === 'active');
-    });
-  });
-
-  it('should call the startRoundService', () => {
-    expect(startRoundService.calledOnce).toEqual(true);
-  });
-
-  it('should call the startRoundService with the gameUid and the ranking playerUid', () => {
-    expect(startRoundService.firstCall.args[0]).toEqual('asdf');
-    expect(startRoundService.firstCall.args[1]).toEqual('player1');
   });
 });
