@@ -36,7 +36,8 @@ class HomeScreenContainer extends Component {
       showStartRoundDialog,
       hideStartRoundDialog,
       startRound,
-      remainingRounds
+      remainingRounds,
+      roundsPlayed
     } = this.props;
 
     return (
@@ -51,22 +52,34 @@ class HomeScreenContainer extends Component {
           showStartRoundDialog,
           hideStartRoundDialog,
           startRound,
-          remainingRounds
+          remainingRounds,
+          roundsPlayed
         }}
       />
     )
   }
 }
 
-export const getTeams = ({ teams, players }) => {
+export const getTeams = ({ teams, players, topics }) => {
+  const numRounds = filter(topics.array, { status: 'unavailable' }).length / 4;
+
   return reduce(teams.array, (result, team) => {
     const teamPlayers = filter(players.array, { 'teamUid': team.uid });
 
     if (teamPlayers.length > 0) {
+      let score;
+
+      if (numRounds > 0) {
+        const averageScore = reduce(teamPlayers, (sum, player) => sum + player.score, 0) / numRounds;
+        score = Math.round(averageScore * 100) / 100;
+      } else {
+        score = 0;
+      }
+
       result.push({
         ...team,
         players: teamPlayers,
-        score: reduce(teamPlayers, (sum, player) => sum + player.score, 0)
+        score
       });
     }
 
@@ -81,7 +94,8 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   playerName: (find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}).name,
   ranking: !!Game.rankingPlayerUid,
   gameOver: filter(Game.topics.array, { status: 'available' }).length < 4,
-  remainingRounds: Math.floor(filter(Game.topics.array, { status: 'available' }).length / 4)
+  remainingRounds: Math.floor(filter(Game.topics.array, { status: 'available' }).length / 4),
+  roundsPlayed: filter(Game.topics.array, { status: 'unavailable' }).length / 4
 });
 
 export default connect(

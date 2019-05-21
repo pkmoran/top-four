@@ -49,6 +49,8 @@ class HomescreenComponent extends Component {
 
         <h1>Scoreboard</h1>
 
+        <span>{this.props.roundsPlayed} rounds played!</span>
+
         <div className="HomescreenTeams">
           {this.renderTeams()}
         </div>

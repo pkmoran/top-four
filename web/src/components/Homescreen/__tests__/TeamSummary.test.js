@@ -43,7 +43,7 @@ it('should display the team name', () => {
   expect(wrapped
     .find('span')
     .at(0)
-    .text()).toEqual('Team 1');
+    .text()).toEqual('Team 1 average score');
 });
 
 it('should display all the players', () => {

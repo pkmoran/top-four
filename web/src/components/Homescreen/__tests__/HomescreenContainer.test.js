@@ -25,22 +25,26 @@ const Game = {
       teamUid: 'team2',
       score: 3
     },
-    array: [{
-      uid: 'player1',
-      name: 'Player 1',
-      teamUid: 'team1',
-      score: 1
-    }, {
-      uid: 'player2',
-      name: 'Player 2',
-      teamUid: 'team1',
-      score: 1
-    }, {
-      uid: 'player3',
-      name: 'Player 3',
-      teamUid: 'team2',
-      score: 3
-    }]
+    array: [
+      {
+        uid: 'player1',
+        name: 'Player 1',
+        teamUid: 'team1',
+        score: 1
+      },
+      {
+        uid: 'player2',
+        name: 'Player 2',
+        teamUid: 'team1',
+        score: 1
+      },
+      {
+        uid: 'player3',
+        name: 'Player 3',
+        teamUid: 'team2',
+        score: 3
+      }
+    ]
   },
   teams: {
     team1: {
@@ -52,22 +56,36 @@ const Game = {
     team3: {
       name: 'Team 3'
     },
-    array: [{
-      uid: 'team1',
-      name: 'Team 1'
-    }, {
-      uid: 'team2',
-      name: 'Team 2'
-    }, {
-      uid: 'team3',
-      name: 'Team 3'
-    }]
+    array: [
+      {
+        uid: 'team1',
+        name: 'Team 1'
+      },
+      {
+        uid: 'team2',
+        name: 'Team 2'
+      },
+      {
+        uid: 'team3',
+        name: 'Team 3'
+      }
+    ]
   },
   topics: {
     topic1: { status: 'available' },
     topic2: { status: 'available' },
     topic3: { status: 'available' },
-    topic4: { status: 'available' }
+    topic4: { status: 'available' },
+    array: [
+      { status: 'unavailable' },
+      { status: 'unavailable' },
+      { status: 'unavailable' },
+      { status: 'unavailable' },
+      { status: 'unavailable' },
+      { status: 'unavailable' },
+      { status: 'unavailable' },
+      { status: 'unavailable' }
+    ]
   }
 };
 
@@ -86,10 +104,10 @@ describe('getTeams', () => {
     expect(teams[1].players[0].uid).toEqual('player3');
   });
 
-  it('should calculate the team aggregate score', () => {
+  it('should calculate the team average score', () => {
     const teams = getTeams(Game);
 
-    expect(teams[0].score).toEqual(2);
-    expect(teams[1].score).toEqual(3);
+    expect(teams[0].score).toEqual(1);
+    expect(teams[1].score).toEqual(1.5);
   });
 });

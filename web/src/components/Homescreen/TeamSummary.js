@@ -8,7 +8,7 @@ import './styles/TeamSummary.css';
 const TeamSummary = ({ name, score, players }) => (
   <div className="TeamSummary">
     <div className="TeamSummaryHeader">
-      <span>{name}</span>
+      <span>{name} average score</span>
       <span>{score}</span>
     </div>
     {map(players, (player, uid) => (
