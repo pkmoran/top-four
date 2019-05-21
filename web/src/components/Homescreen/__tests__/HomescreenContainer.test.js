@@ -108,6 +108,6 @@ describe('getTeams', () => {
     const teams = getTeams(Game);
 
     expect(teams[0].score).toEqual(1);
-    expect(teams[1].score).toEqual(1.5);
+    expect(teams[1].score).toEqual(3);
   });
 });

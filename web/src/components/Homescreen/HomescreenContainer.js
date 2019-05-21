@@ -16,7 +16,6 @@ import {
 } from '../../actions';
 
 class HomeScreenContainer extends Component {
-
   componentDidMount() {
     this.props.watchGameStateForHomescreen(this.props.history);
   }
@@ -42,7 +41,7 @@ class HomeScreenContainer extends Component {
 
     return (
       <Homescreen
-        {... {
+        {...{
           gameId,
           teams,
           showDialog,
@@ -56,45 +55,51 @@ class HomeScreenContainer extends Component {
           roundsPlayed
         }}
       />
-    )
+    );
   }
 }
 
-export const getTeams = ({ teams, players, topics }) => {
-  const numRounds = filter(topics.array, { status: 'unavailable' }).length / 4;
+export const getTeams = ({ teams, players }) => {
+  return reduce(
+    teams.array,
+    (result, team) => {
+      const teamPlayers = filter(players.array, { teamUid: team.uid });
+      const numPlayers = teamPlayers.length;
 
-  return reduce(teams.array, (result, team) => {
-    const teamPlayers = filter(players.array, { 'teamUid': team.uid });
+      if (numPlayers > 0) {
+        const totalScore = reduce(
+          teamPlayers,
+          (sum, player) => sum + player.score,
+          0
+        );
+        const averageScore = totalScore / numPlayers;
+        const score = Math.round(averageScore * 100) / 100;
 
-    if (teamPlayers.length > 0) {
-      let score;
-
-      if (numRounds > 0) {
-        const averageScore = reduce(teamPlayers, (sum, player) => sum + player.score, 0) / numRounds;
-        score = Math.round(averageScore * 100) / 100;
-      } else {
-        score = 0;
+        result.push({
+          ...team,
+          players: teamPlayers,
+          score
+        });
       }
 
-      result.push({
-        ...team,
-        players: teamPlayers,
-        score
-      });
-    }
-
-    return result;
-  }, []);
+      return result;
+    },
+    []
+  );
 };
 
 const mapStateToProps = ({ Game, Homescreen }) => ({
   gameId: Game.gameId,
   teams: getTeams(Game),
   showDialog: Homescreen.showDialog,
-  playerName: (find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}).name,
+  playerName: (
+    find(Game.players.map, (player, uid) => uid === Game.playerUid) || {}
+  ).name,
   ranking: !!Game.rankingPlayerUid,
   gameOver: filter(Game.topics.array, { status: 'available' }).length < 4,
-  remainingRounds: Math.floor(filter(Game.topics.array, { status: 'available' }).length / 4),
+  remainingRounds: Math.floor(
+    filter(Game.topics.array, { status: 'available' }).length / 4
+  ),
   roundsPlayed: filter(Game.topics.array, { status: 'unavailable' }).length / 4
 });
 
