@@ -1,40 +1,36 @@
-Iron Man
-Captain America
-Thor
-Black Widow
-Hawkeye
-The Hulk
-Nick Fury
 Agent Coulson
-Pepper Potts
-Valkeryie
-Spider-Man
-Black Panther
-Dr. Strange
 Ant-Man
-The Wasp
-Falcon
-Scarlette Witch
-Vision
-Loki
-Thanos
-Luke Cage
-Jessica Jones
-Dare Devil
-Iron Fist
-Happy
-Star Lord
-Gamora
-Rocket
+Black Panther
+Black Widow
 Bucky
-Bruce Banner
-The Winter Soldier
+Captain America
+Captain Marvel
+Dr. Strange
+Drax
+Falcon
+Gamora
 Groot
-The Collector
-Ego
-Obediah Stain
-Red Skull
-War Monger
+Happy Hogan
+Hawkeye
+Hulk
+Iron Man
+Loki
+Mantis
+Nebula
+Nick Fury
+Okoye
+Pepper Potts
+Quicksilver
+Rocket Raccoon
+Scarlet Witch
+Shuri
+Spider-Man
+Star Lord
+Thanos
+Thor
 Ultron
-Dor Mamu
-Whiplash
+Valkyrie
+Vision
+War Machine
+Wasp
+Wong
