@@ -8,34 +8,6 @@ import StartGameDialog from './StartGameDialog';
 import './styles/LandingPage.css';
 
 class LandingPageComponent extends Component {
-  renderButtonSection() {
-    if (this.props.loading) {
-      return <CircularProgress />;
-    }
-
-    return (
-      <div className="ButtonSection">
-        <Button
-          variant="contained"
-          onClick={() => this.props.showStartGameDialog()}
-          disabled={!this.props.startGameEnabled}
-        >
-          Start Game
-        </Button>
-
-        <span>OR</span>
-
-        <Button
-          variant="contained"
-          onClick={() => this.props.showJoinGameSection()}
-          disabled={!this.props.joinGameEnabled}
-        >
-          Join Game
-        </Button>
-      </div>
-    );
-  }
-
   render() {
     return (
       <div className="LandingPage">

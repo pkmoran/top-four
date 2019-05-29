@@ -7,7 +7,6 @@ import {
   STARTED_GAME,
   START_GAME_ERROR,
   NAME_CHANGED,
-  SHOW_JOIN_GAME,
   JOINING_GAME,
   TEAM_NUMBER_CHANGED,
   SHOW_START_GAME_DIALOG,
@@ -23,9 +22,7 @@ export const INITIAL_STATE = {
   loading: false,
   name: '',
   startGameEnabled: false,
-  joinGameEnabled: false,
   joinEnabled: false,
-  showJoinGame: false,
   showDialog: false,
   numberOfTeams: 2,
   startGameStep: 'pickTeams',
@@ -34,8 +31,6 @@ export const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SHOW_JOIN_GAME:
-      return { ...state, showJoinGame: true };
     case STARTING_GAME:
       return { ...state, loading: true, showDialog: false };
     case JOINING_GAME:
@@ -58,7 +53,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         name: action.payload,
         startGameEnabled: !!action.payload,
-        joinGameEnabled: !!action.payload,
         error: ''
       };
     case TEAM_NUMBER_CHANGED:

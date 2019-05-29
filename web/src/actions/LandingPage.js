@@ -11,7 +11,6 @@ import {
   STARTED_GAME,
   START_GAME_ERROR,
   NAME_CHANGED,
-  SHOW_JOIN_GAME,
   ADDED_PLAYER,
   JOINING_GAME,
   TEAM_NUMBER_CHANGED,
@@ -30,10 +29,6 @@ export const gameIdChanged = gameId => ({
 export const nameChanged = name => ({
   type: NAME_CHANGED,
   payload: name
-});
-
-export const showJoinGameSection = () => ({
-  type: SHOW_JOIN_GAME
 });
 
 const loadingTopicPacks = loading => ({

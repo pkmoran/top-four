@@ -7,7 +7,6 @@ export const JOIN_GAME = 'join_game';
 export const JOIN_GAME_ERROR = 'join_game_error';
 export const GAME_ID_CHANGED = 'game_id_changed';
 export const NAME_CHANGED = 'name_changed';
-export const SHOW_JOIN_GAME = 'show_join_game';
 export const TEAM_NUMBER_CHANGED = 'team_number_changed';
 export const SHOW_START_GAME_DIALOG = 'show_start_game_dialog';
 export const LOADING_TOPIC_PACKS = 'loading_topic_packs';
