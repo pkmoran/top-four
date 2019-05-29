@@ -8,6 +8,11 @@ export const getGameFromIdService = async gameId => {
     .once('value');
 
   const gameUid = findKey(games.val(), { gameId });
+
+  if (!gameUid) {
+    throw new Error('gameUid does not exist');
+  }
+
   return games[gameUid];
 };
 

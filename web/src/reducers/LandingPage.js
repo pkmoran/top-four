@@ -40,7 +40,7 @@ export default (state = INITIAL_STATE, action) => {
     case START_GAME_ERROR:
       return { ...state, loading: false, error: action.payload };
     case JOIN_GAME_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, loading: false, gameId: '', error: action.payload };
     case GAME_ID_CHANGED:
       return {
         ...state,

@@ -122,6 +122,11 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
       type: JOIN_GAME_ERROR,
       payload: 'Game ID does not exist'
     });
+  }).catch(() => {
+    dispatch({
+      type: JOIN_GAME_ERROR,
+      payload: 'Game ID does not exist'
+    });
   });
 };
 
