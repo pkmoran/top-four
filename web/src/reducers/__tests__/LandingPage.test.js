@@ -81,16 +81,6 @@ describe('name changed action', () => {
     newState = LandingPage(newState, action);
     expect(newState.startGameEnabled).toEqual(false);
   });
-
-  it('enables the join game prop', () => {
-    const action = {
-      type: NAME_CHANGED,
-      payload: 'new name'
-    };
-
-    const newState = LandingPage({ gameId: 'A9' }, action);
-    expect(newState.joinGameEnabled).toEqual(true);
-  });
 });
 
 it('sets loading when starting a game', () => {

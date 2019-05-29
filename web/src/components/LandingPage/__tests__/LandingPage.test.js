@@ -17,5 +17,5 @@ afterEach(() => {
 it('should have a header, two buttons and two text fields', () => {
   expect(wrapped.find('h1').length).toEqual(1);
   expect(wrapped.find(Button).length).toEqual(2);
-  expect(wrapped.find(TextField).length).toEqual(1);
+  expect(wrapped.find(TextField).length).toEqual(2);
 });
