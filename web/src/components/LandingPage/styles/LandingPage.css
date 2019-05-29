@@ -3,13 +3,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.ButtonSection {
-  height: 20%;
+.LandingPage__join-game-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  height: 25%;
+  margin-top: 5%;
+}
+
+.LandingPage__join-game-input {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.LandingPage__start-game-button {
+  margin-bottom: 5%;
 }

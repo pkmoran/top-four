@@ -36,56 +36,57 @@ class LandingPageComponent extends Component {
     );
   }
 
-  renderJoinGameSection() {
-    if (this.props.showJoinGame) {
-      return (
-        <div>
-          <TextField
-            onChange={this.props.gameIdChanged}
-            value={this.props.gameId}
-            id="gameId"
-            label="Game ID"
-            placeholder="e.g. A9"
-          />
-          
-          {
-            this.props.loading ? <CircularProgress /> :
-            <Button
-              variant="contained"
-              onClick={() => this.props.joinGame()}
-              disabled={!this.props.joinEnabled}
-            >
-              Join
-            </Button>
-          }
-
-        </div>
-      );
-    }
-
-    return (
-      <br />
-    );
-  }
-
   render() {
     return (
       <div className="LandingPage">
-        <h1>Top Four TM v1.10.4</h1>
+        <div className="LandingPage__join-game-container">
+          <h1>Top Four TM v1.10.4</h1>
 
-        <TextField
-          onChange={this.props.nameChanged}
-          value={this.props.name}
-          id="name"
-          label="Name"
-          placeholder="e.g. Harry Grundle"
-        />
+          <TextField
+            onChange={this.props.nameChanged}
+            value={this.props.name}
+            id="name"
+            label="Name"
+            placeholder="e.g. Harry Grundle"
+          />
 
-        {this.renderButtonSection()}
+          <span className="LandingPage__join-game-input">
+            <TextField
+              onChange={this.props.gameIdChanged}
+              value={this.props.gameId}
+              label="Game ID"
+              placeholder="A9"
+            />
 
-        {this.renderJoinGameSection()}
+            {this.props.loading ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => this.props.joinGame()}
+                disabled={!this.props.joinEnabled}
+              >
+                Play!
+              </Button>
+            )}
+          </span>
+        </div>
 
-        <StartGameDialog 
+        <div className="LandingPage__start-game-button">
+          {this.props.loading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => this.props.showStartGameDialog()}
+              disabled={!this.props.startGameEnabled}
+            >
+              Start New Game
+            </Button>
+          )}
+        </div>
+
+        <StartGameDialog
           open={this.props.showDialog}
           onClose={this.props.hideStartGameDialog}
           onBack={this.props.onBack}
