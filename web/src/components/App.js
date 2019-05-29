@@ -18,7 +18,7 @@ class App extends Component {
     super(props);
 
     firebase.initializeApp({
-      apiKey: 'AIzaSyCRM0-Xupt1ZvlTTt-FPYY6bieCnxTgMhI',
+      apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
       authDomain: 'top-four-cca25.firebaseapp.com',
       databaseURL: 'https://top-four-cca25.firebaseio.com',
       projectId: 'top-four-cca25',
