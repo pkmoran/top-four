@@ -6,8 +6,13 @@
   justify-content: space-between;
 }
 
+.LandingPage h1 span {
+  font-size: .75rem;
+}
+
 .LandingPage__join-game-container {
   display: flex;
+  text-align: center;
   flex-direction: column;
   justify-content: space-between;
   height: 25%;
