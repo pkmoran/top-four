@@ -42,7 +42,7 @@ describe('game ID changed action', () => {
     };
 
     const newState = LandingPage(undefined, action);
-    expect(newState.gameId).toEqual('new id');
+    expect(newState.gameId).toEqual('NEW ID');
   });
 
   it('enables the join game prop', () => {

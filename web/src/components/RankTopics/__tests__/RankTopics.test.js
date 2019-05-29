@@ -121,6 +121,6 @@ describe('the interface', () => {
   });
 
   it('should display the ranker text', () => {
-    expect(wrapped.find('span').at(2).text()).toEqual('Put the following topics in order from best to worst');
+    expect(wrapped.find('span').at(2).text()).toEqual('Rank the following topics!');
   });
 });
