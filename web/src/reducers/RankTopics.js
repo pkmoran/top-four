@@ -89,7 +89,7 @@ const sortAndCorrectTopics = (topics, localRanks) => {
 
   forEach(sortedTopics, (topic, index) => {
     topic.isCorrect = index === topic.rank;
-    topic.correctTopic = find(topics, topic => index === topic.rank);
+    topic.correctTopic = Object.assign({}, find(topics, topic => index === topic.rank));
   })
 
   return sortedTopics;

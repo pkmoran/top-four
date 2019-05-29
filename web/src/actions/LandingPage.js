@@ -1,5 +1,5 @@
 import { startGameService, addPlayerService } from '../services/LandingPage';
-import { getGameFromIdService, getPacksService } from '../services/Game';
+import { getGameUidService, getPacksService } from '../services/Game';
 import { getGameData } from './';
 
 import { WRITE_OUR_OWN_UID } from '../constants';
@@ -93,9 +93,8 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
     type: JOINING_GAME
   });
 
-  getGameFromIdService(gameId).then(game => {
-    if (game) {
-      const { gameUid } = game;
+  getGameUidService(gameId).then(gameUid => {
+    if (gameUid) {
 
       dispatch({
         type: STARTED_GAME,

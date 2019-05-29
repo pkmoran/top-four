@@ -13,7 +13,6 @@ export const LOADING_TOPIC_PACKS = 'loading_topic_packs';
 export const TOPIC_PACKS = 'topic_packs';
 export const START_GAME_STEP = 'start_game_step';
 export const TOPIC_PACK_CHANGED = 'topic_pack_changed';
-export const SHOW_REJOIN_DIALOG = 'show_rejoin_dialog';
 
 // add topics
 export const TOPIC_CHANGED = 'topic_changed';

@@ -1,19 +1,13 @@
 import firebase from 'firebase';
 import findKey from 'lodash/findKey';
 
-export const getGameFromIdService = async gameId => {
+export const getGameUidService = async gameId => {
   const games = await firebase
     .database()
     .ref('/games')
     .once('value');
 
-  const gameUid = findKey(games.val(), { gameId });
-
-  if (!gameUid) {
-    throw new Error('gameUid does not exist');
-  }
-
-  return games[gameUid];
+  return findKey(games.val(), { gameId });
 };
 
 export const getGameService = (gameUid, onGame) => {
