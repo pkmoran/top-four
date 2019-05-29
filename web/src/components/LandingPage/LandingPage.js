@@ -38,7 +38,7 @@ class LandingPageComponent extends Component {
                 onClick={() => this.props.joinGame()}
                 disabled={!this.props.joinEnabled}
               >
-                Play!
+                Let's Play!
               </Button>
             )}
           </span>
@@ -49,11 +49,11 @@ class LandingPageComponent extends Component {
             <CircularProgress />
           ) : (
             <Button
-              variant="contained"
+              variant="outlined"
               onClick={() => this.props.showStartGameDialog()}
               disabled={!this.props.startGameEnabled}
             >
-              Start New Game
+              Create a New Game
             </Button>
           )}
         </div>

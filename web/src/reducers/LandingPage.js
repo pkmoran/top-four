@@ -44,7 +44,7 @@ export default (state = INITIAL_STATE, action) => {
     case GAME_ID_CHANGED:
       return {
         ...state,
-        gameId: action.payload,
+        gameId: action.payload.toUpperCase(),
         joinEnabled: action.payload.length === 2,
         error: ''
       };
