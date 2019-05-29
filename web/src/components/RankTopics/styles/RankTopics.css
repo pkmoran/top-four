@@ -5,9 +5,36 @@
   align-items: center; 
 }
 
-.RankTopicsTopics {
+.RankTopics__description-text {
+  text-align: center;
+  width: 80%;
+}
+
+.RankTopics__topics-container {
+  display: flex;
   width: 80%;
   margin: 25px 0px 25px 0px;
+}
+
+.RankTopics__instructions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+.RankTopics__instructions span:last-child {
+  height: 1rem;
+}
+
+.RankTopics__instructions--arrow {
+  font-size: 3rem;
+}
+
+.RankTopics__topics {
+  flex-grow: 1;
 }
 
 .RankTopicsActionButton {

@@ -9,38 +9,45 @@ import ChoiceDialog from '../ChoiceDialog';
 import './styles/RankTopics.css';
 
 class RankTopicsComponent extends Component {
-
   headerText() {
     if (this.props.active) {
-      return 'Let\'s Rank!';
+      return "Let's Rank!";
     }
 
-    return 'Let\'s Guess!';
+    return "Let's Guess!";
   }
 
   descriptionText() {
     if (this.props.active) {
-      return 'Put the following topics in order from best to worst';
+      return 'Rank the following topics!';
     }
 
-    return `How would ${this.props.activePlayerName} rank the following topics?`;
+    return `How would ${
+      this.props.activePlayerName
+    } rank the following topics?`;
   }
 
   lockInButton() {
     return (
-      <Button variant="contained" onClick={this.props.showLockInDialog}>Lock In!</Button>
+      <Button variant="contained" onClick={this.props.showLockInDialog}>
+        Lock In!
+      </Button>
     );
   }
 
   revealButton() {
     return (
-      <Button variant="contained" onClick={this.props.revealAll}>Reveal All!</Button>
+      <Button variant="contained" onClick={this.props.revealAll}>
+        Reveal All!
+      </Button>
     );
   }
 
   endRoundButton() {
     return (
-      <Button variant="contained" onClick={this.props.endRound}>End Round!</Button>
+      <Button variant="contained" onClick={this.props.endRound}>
+        End Round!
+      </Button>
     );
   }
 
@@ -57,8 +64,10 @@ class RankTopicsComponent extends Component {
 
     if (!lockedIn) {
       return this.lockInButton();
-    } else if (state === 'ranking'
-      || (state === 'ranked' && find(topics, { status: 'active' }) !== undefined)) {
+    } else if (
+      state === 'ranking' ||
+      (state === 'ranked' && find(topics, { status: 'active' }) !== undefined)
+    ) {
       return this.revealButton();
     }
 
@@ -94,18 +103,31 @@ class RankTopicsComponent extends Component {
         <GameId gameId={this.props.gameId} />
         <h1>{this.headerText()}</h1>
 
-        <span>{this.descriptionText()}</span>
+        <span className="RankTopics__description-text">
+          {this.descriptionText()}
+        </span>
 
-        <div className="RankTopicsTopics">
-          <DraggableTopics
-            state={this.props.state}
-            topics={this.props.topics}
-            onDragEnd={this.props.onDragEnd}
-            isDragDisabled={this.props.lockedIn || this.props.state === 'ranked'}
-            active={this.props.active}
-            lockedIn={this.props.lockedIn}
-            reveal={this.props.reveal}
-          />
+        <div className="RankTopics__topics-container">
+          <div className="RankTopics__instructions">
+            <span>Best</span>
+            <span className="RankTopics__instructions--arrow">&uarr;</span>
+            <span className="RankTopics__instructions--arrow">&darr;</span>
+            <span>Worst</span>
+          </div>
+
+          <div className="RankTopics__topics">
+            <DraggableTopics
+              state={this.props.state}
+              topics={this.props.topics}
+              onDragEnd={this.props.onDragEnd}
+              isDragDisabled={
+                this.props.lockedIn || this.props.state === 'ranked'
+              }
+              active={this.props.active}
+              lockedIn={this.props.lockedIn}
+              reveal={this.props.reveal}
+            />
+          </div>
         </div>
 
         {this.renderLockedInPlayers()}
