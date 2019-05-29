@@ -9,7 +9,7 @@ const TeamRow = ({
     <div className="TeamRow">
       <Button
         className="TeamRowButton"
-        variant={selected ? 'contained' : 'text'}
+        variant={selected ? 'contained' : 'outlined'}
         onClick={onClick}
       >
         {name}
