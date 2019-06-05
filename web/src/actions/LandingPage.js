@@ -59,20 +59,42 @@ export const showStartGameDialog = () => (dispatch, getState) => {
   });
 };
 
-export const showPickTeams = () => ({
-  type: START_GAME_STEP,
-  payload: 'pickTeams'
-});
+export const onBack = startGameStep => {
+  if (startGameStep === 'pickTeams') {
+    return {
+      type: START_GAME_STEP,
+      payload: 'yourName'
+    };
+  }
 
-export const showPickTopicPacks = () => ({
-  type: START_GAME_STEP,
-  payload: 'pickTopicPacks'
-});
+  if (startGameStep === 'pickTopicPacks') {
+    return {
+      type: START_GAME_STEP,
+      payload: 'pickTeams'
+    };
+  }
+};
+
+export const onNext = startGameStep => {
+  if (startGameStep === 'yourName') {
+    return {
+      type: START_GAME_STEP,
+      payload: 'pickTeams'
+    };
+  }
+
+  if (startGameStep === 'pickTeams') {
+    return {
+      type: START_GAME_STEP,
+      payload: 'pickTopicPacks'
+    };
+  }
+};
 
 export const topicPackChanged = topicPackUid => ({
   type: TOPIC_PACK_CHANGED,
   payload: topicPackUid
-})
+});
 
 export const hideStartGameDialog = () => ({
   type: SHOW_START_GAME_DIALOG,
@@ -93,48 +115,58 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
     type: JOINING_GAME
   });
 
-  getGameUidService(gameId).then(gameUid => {
-    if (gameUid) {
+  getGameUidService(gameId)
+    .then(gameUid => {
+      if (gameUid) {
+        dispatch({
+          type: STARTED_GAME,
+          payload: { gameId, gameUid }
+        });
+
+        dispatch(getGameData(gameUid));
+        addPlayerService(
+          gameUid,
+          getState().Game.name,
+          playerUid => {
+            dispatch({
+              type: ADDED_PLAYER,
+              payload: playerUid
+            });
+
+            history.push(`/${gameId}/pickTeams`);
+          },
+          () => {
+            dispatch({
+              type: JOIN_GAME_ERROR,
+              payload: 'Could not join game'
+            });
+          }
+        );
+      }
 
       dispatch({
-        type: STARTED_GAME,
-        payload: { gameId, gameUid }
+        type: JOIN_GAME_ERROR,
+        payload: 'Game ID does not exist'
       });
-
-      dispatch(getGameData(gameUid));
-      addPlayerService(gameUid, getState().Game.name, (playerUid) => {
-        dispatch({
-          type: ADDED_PLAYER,
-          payload: playerUid
-        });
-
-        history.push(`/${gameId}/pickTeams`);
-      }, () => {
-        dispatch({
-          type: JOIN_GAME_ERROR,
-          payload: 'Could not join game'
-        });
+    })
+    .catch(() => {
+      dispatch({
+        type: JOIN_GAME_ERROR,
+        payload: 'Game ID does not exist'
       });
-    }
-
-    dispatch({
-      type: JOIN_GAME_ERROR,
-      payload: 'Game ID does not exist'
     });
-  }).catch(() => {
-    dispatch({
-      type: JOIN_GAME_ERROR,
-      payload: 'Game ID does not exist'
-    });
-  });
 };
 
-export const startGame = (numberOfTeams, topicPackUid, history) => (dispatch, getState) => {
+export const startGame = (numberOfTeams, topicPackUid, history) => (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: STARTING_GAME
   });
 
-  startGameService(numberOfTeams,
+  startGameService(
+    numberOfTeams,
     topicPackUid !== WRITE_OUR_OWN_UID ? topicPackUid : null,
     ({ gameId, gameUid }) => {
       dispatch({
@@ -143,23 +175,30 @@ export const startGame = (numberOfTeams, topicPackUid, history) => (dispatch, ge
       });
 
       dispatch(getGameData(gameUid));
-      addPlayerService(gameUid, getState().Game.name, (playerUid) => {
-        dispatch({
-          type: ADDED_PLAYER,
-          payload: playerUid
-        });
+      addPlayerService(
+        gameUid,
+        getState().Game.name,
+        playerUid => {
+          dispatch({
+            type: ADDED_PLAYER,
+            payload: playerUid
+          });
 
-        history.push(`/${gameId}/pickTeams`);
-      }, () => {
-        dispatch({
-          type: START_GAME_ERROR,
-          payload: 'Error starting a new game'
-        });
-      });
-    }, err => {
+          history.push(`/${gameId}/pickTeams`);
+        },
+        () => {
+          dispatch({
+            type: START_GAME_ERROR,
+            payload: 'Error starting a new game'
+          });
+        }
+      );
+    },
+    err => {
       dispatch({
         type: START_GAME_ERROR,
         payload: 'Error starting a new game'
       });
-    });
+    }
+  );
 };

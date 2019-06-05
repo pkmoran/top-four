@@ -11,9 +11,9 @@ import {
   showStartGameDialog,
   hideStartGameDialog,
   teamNumberChanged,
-  showPickTeams,
-  showPickTopicPacks,
-  topicPackChanged
+  topicPackChanged,
+  onBack,
+  onNext
 } from '../../actions';
 
 class LandingPageContainer extends Component {
@@ -26,8 +26,6 @@ class LandingPageContainer extends Component {
     this.topicPackChanged = this.topicPackChanged.bind(this);
     this.startGame = this.startGame.bind(this);
     this.joinGame = this.joinGame.bind(this);
-    this.onBack = this.onBack.bind(this);
-    this.onNext = this.onNext.bind(this);
   }
 
   gameIdChanged(event) {
@@ -54,14 +52,6 @@ class LandingPageContainer extends Component {
     this.props.joinGame(this.props.gameId, this.props.history);
   }
 
-  onBack() {
-    this.props.showPickTeams();
-  }
-
-  onNext() {
-    this.props.showPickTopicPacks();
-  }
-
   render() {
     const {
       gameId,
@@ -76,7 +66,11 @@ class LandingPageContainer extends Component {
       hideStartGameDialog,
       startGameStep,
       topicPacks,
-      topicPackUid
+      topicPackUid,
+      name,
+      onBack,
+      onNext,
+      numberOfTeams
     } = this.props;
 
     const {
@@ -85,8 +79,6 @@ class LandingPageContainer extends Component {
       startGame,
       joinGame,
       teamNumberChanged,
-      onBack,
-      onNext,
       topicPackChanged
     } = this;
 
@@ -113,7 +105,9 @@ class LandingPageContainer extends Component {
           onNext,
           topicPacks,
           topicPackUid,
-          topicPackChanged
+          topicPackChanged,
+          name,
+          numberOfTeams
         }}
       />
     )
@@ -130,7 +124,8 @@ const mapStateToProps = ({ Game, LandingPage }) => ({
   numberOfTeams: LandingPage.numberOfTeams,
   startGameStep: LandingPage.startGameStep,
   topicPacks: Game.topicPacks,
-  topicPackUid: LandingPage.topicPackUid
+  topicPackUid: LandingPage.topicPackUid,
+  name: LandingPage.name
 });
 
 export default connect(
@@ -143,8 +138,8 @@ export default connect(
     showStartGameDialog,
     hideStartGameDialog,
     teamNumberChanged,
-    showPickTeams,
-    showPickTopicPacks,
-    topicPackChanged
+    topicPackChanged,
+    onBack,
+    onNext
   }
 )(LandingPageContainer);

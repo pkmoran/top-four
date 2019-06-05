@@ -21,11 +21,10 @@ export const INITIAL_STATE = {
   gameUid: '',
   loading: false,
   name: '',
-  startGameEnabled: false,
   joinEnabled: false,
   showDialog: false,
   numberOfTeams: 2,
-  startGameStep: 'pickTeams',
+  startGameStep: 'yourName',
   topicPackUid: WRITE_OUR_OWN_UID
 };
 
@@ -52,7 +51,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         name: action.payload,
-        startGameEnabled: !!action.payload,
         error: ''
       };
     case TEAM_NUMBER_CHANGED:

@@ -8,14 +8,59 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import './styles/StartGameDialog.css';
 
 class StartGameDialog extends Component {
+  renderYourName() {
+    const { open, onClose, onNext, nameChanged, name } = this.props;
+
+    return (
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle>Your name?</DialogTitle>
+        <DialogContent>
+          <form>
+            <FormControl>
+              <TextField
+                onChange={nameChanged}
+                value={name}
+                label="Name"
+                placeholder="e.g. Harry Grundle"
+              />
+            </FormControl>
+          </form>
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant="outlined" onClick={onClose}>
+            Cancel
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => onNext('yourName')}
+            disabled={!name}
+          >
+            Next
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   renderPickTeams() {
-    const { open, onClose, onNext, onTeamNumberChange, value } = this.props;
+    const {
+      open,
+      onClose,
+      onNext,
+      onBack,
+      onTeamNumberChange,
+      numberOfTeams
+    } = this.props;
+
+    console.log('numberOfTeams', numberOfTeams);
 
     return (
       <Dialog open={open} onClose={onClose}>
@@ -27,7 +72,7 @@ class StartGameDialog extends Component {
 
               <Select
                 native
-                value={value}
+                value={numberOfTeams}
                 onChange={onTeamNumberChange}
                 input={<Input id="teams-dropdown" />}
               >
@@ -44,7 +89,12 @@ class StartGameDialog extends Component {
           <Button variant="outlined" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="outlined" onClick={onNext}>
+
+          <Button variant="outlined" onClick={() => onBack('pickTeams')}>
+            Back
+          </Button>
+
+          <Button variant="outlined" onClick={() => onNext('pickTeams')}>
             Next
           </Button>
         </DialogActions>
@@ -53,16 +103,25 @@ class StartGameDialog extends Component {
   }
 
   renderPickTopicPack() {
-    const { open, onClose, onBack, onOk, topicPacks, topicPackUid, onTopicPackChange } = this.props;
+    const {
+      open,
+      onClose,
+      onBack,
+      onOk,
+      topicPacks,
+      topicPackUid,
+      onTopicPackChange
+    } = this.props;
 
     return (
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Play with a topic pack?</DialogTitle>
         <DialogContent>
-
           <form className="PickTopicPackForm">
             <FormControl>
-              <InputLabel htmlFor="topic-packs-dropdown">Topic Packs</InputLabel>
+              <InputLabel htmlFor="topic-packs-dropdown">
+                Topic Packs
+              </InputLabel>
 
               <Select
                 native
@@ -71,12 +130,13 @@ class StartGameDialog extends Component {
                 input={<Input id="topic-packs-dropdown" />}
               >
                 {topicPacks.map(topicPack => (
-                  <option key={topicPack.uid} value={topicPack.uid}>{topicPack.name}</option>
+                  <option key={topicPack.uid} value={topicPack.uid}>
+                    {topicPack.name}
+                  </option>
                 ))}
               </Select>
             </FormControl>
           </form>
-
         </DialogContent>
 
         <DialogActions>
@@ -84,12 +144,12 @@ class StartGameDialog extends Component {
             Cancel
           </Button>
 
-          <Button variant="outlined" onClick={onBack}>
+          <Button variant="outlined" onClick={() => onBack('pickTopicPacks')}>
             Back
           </Button>
 
           <Button variant="outlined" onClick={onOk}>
-            Start Game!
+            Start!
           </Button>
         </DialogActions>
       </Dialog>
@@ -97,6 +157,10 @@ class StartGameDialog extends Component {
   }
 
   render() {
+    if (this.props.startGameStep === 'yourName') {
+      return this.renderYourName();
+    }
+
     if (this.props.startGameStep === 'pickTeams') {
       return this.renderPickTeams();
     }

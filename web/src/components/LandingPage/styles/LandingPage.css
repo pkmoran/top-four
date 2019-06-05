@@ -15,15 +15,16 @@
   text-align: center;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 5%;
+  margin-top: 1.5rem;
 }
 
 .LandingPage__join-game-input {
+  margin-top: 1rem;
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .LandingPage__start-game-button {
-  margin-bottom: 5%;
+  margin-bottom: 1.5rem;
 }

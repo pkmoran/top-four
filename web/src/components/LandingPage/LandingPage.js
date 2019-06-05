@@ -12,7 +12,7 @@ class LandingPageComponent extends Component {
     return (
       <div className="LandingPage">
         <div className="LandingPage__join-game-container">
-          <h1>Top Four&trade; <span>v1.10.5</span></h1>
+          <h1>Top Four&trade; <span>v1.10.6</span></h1>
 
           <TextField
             onChange={this.props.nameChanged}
@@ -51,7 +51,6 @@ class LandingPageComponent extends Component {
             <Button
               variant="outlined"
               onClick={() => this.props.showStartGameDialog()}
-              disabled={!this.props.startGameEnabled}
             >
               Create a New Game
             </Button>
@@ -64,12 +63,14 @@ class LandingPageComponent extends Component {
           onBack={this.props.onBack}
           onNext={this.props.onNext}
           onOk={this.props.startGame}
-          value={this.props.numberOfTeams}
+          numberOfTeams={this.props.numberOfTeams}
           onTeamNumberChange={this.props.teamNumberChanged}
           startGameStep={this.props.startGameStep}
           topicPacks={this.props.topicPacks}
           topicPackUid={this.props.topicPackUid}
           onTopicPackChange={this.props.topicPackChanged}
+          nameChanged={this.props.nameChanged}
+          name={this.props.name}
         />
       </div>
     );
