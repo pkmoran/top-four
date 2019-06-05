@@ -42,11 +42,19 @@ class Root extends Component {
       this.store = createStore(reducers, state, applyMiddleware(thunk, logger));
     }
 
-    window.addEventListener('beforeunload', this.saveStoreState);
+    if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i)) {
+      window.addEventListener('pagehide', this.saveStoreState);
+    } else {
+      window.addEventListener('beforeunload', this.saveStoreState);
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.saveStoreState);
+    if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i)) {
+      window.removeEventListener('pagehide', this.saveStoreState);
+    } else {
+      window.removeEventListener('beforeunload', this.saveStoreState);
+    }
   }
 
   render() {
