@@ -6,6 +6,16 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './styles/DraggableTopics.css';
 
 class DraggableTopics extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      wasDragging: false
+    };
+
+    this.onDragEnd = this.onDragEnd.bind(this);
+  }
+
   topicIsRanked(topic) {
     return (
       this.props.state === 'ranked' &&
@@ -13,34 +23,43 @@ class DraggableTopics extends Component {
     );
   }
 
-  getItemStyle(isDragging, draggableStyle, topic, last) {
+  getClass(isDragging, topic, last) {
     const ranked = this.topicIsRanked(topic);
 
-    let background;
+    let className = 'DraggableTopic';
 
     if (isDragging) {
-      background = 'lightgreen';
+      className += ' DraggableTopic--dragging';
     } else if (ranked) {
       if (topic.isCorrect) {
-        background = 'green';
+        className += ' DraggableTopic--correct';
       } else {
-        background = 'red';
+        className += ' DraggableTopic--incorrect';
       }
-    } else {
-      background = 'grey';
     }
 
-    return {
-      userSelect: 'none',
-      padding: 16,
-      margin: last ? '0' : '0 0 8px 0',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      background,
-      height: '36px',
-      ...draggableStyle
-    };
+    return className;
+  }
+
+  getStyle(style, snapshot) {
+    if (snapshot.isDropAnimating) {
+      const { curve, duration } = snapshot.dropAnimation;
+
+      // patching the existing style
+      return {
+        ...style,
+        transition: `all ${curve} ${duration}s`
+      };
+    }
+
+    if (snapshot.isDragging && !this.state.wasDragging) {
+      return {
+        ...style,
+        transition: 'box-shadow .2s'
+      };
+    }
+
+    return style;
   }
 
   getTopicTitle(topic) {
@@ -48,12 +67,12 @@ class DraggableTopics extends Component {
 
     if (ranked && !topic.isCorrect) {
       return (
-        <span>
+        <>
           {topic.correctTopic.topic}{' '}
           <em>
             <strike>{topic.topic}</strike>
           </em>
-        </span>
+        </>
       );
     }
 
@@ -64,7 +83,7 @@ class DraggableTopics extends Component {
     const { active, lockedIn, reveal } = this.props;
 
     if (!lockedIn) {
-      return <Icon>drag_handle</Icon>
+      return <Icon>drag_handle</Icon>;
     }
 
     if (active && lockedIn && topic.status !== 'ranked') {
@@ -76,13 +95,18 @@ class DraggableTopics extends Component {
     }
   }
 
+  onDragEnd(result) {
+    this.setState({ wasDragging: false });
+    this.props.onDragEnd(result);
+  }
+
   render() {
     return (
       <div className="DraggableTopics">
-        <DragDropContext onDragEnd={this.props.onDragEnd}>
+        <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
             {provided => (
-              <div ref={provided.innerRef}>
+              <div ref={provided.innerRef} className="DraggableTopics__topics">
                 {this.props.topics.map((topic, index) => (
                   <Draggable
                     isDragDisabled={this.props.isDragDisabled}
@@ -95,14 +119,13 @@ class DraggableTopics extends Component {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        style={this.getItemStyle(
-                          snapshot.isDragging,
+                        style={this.getStyle(
                           provided.draggableProps.style,
-                          topic,
-                          index === 3
+                          snapshot
                         )}
+                        className={this.getClass(snapshot.isDragging, topic)}
                       >
-                        {this.getTopicTitle(topic)}
+                        <span className="DraggableTopic__title">{this.getTopicTitle(topic)}</span>
                         {this.renderRevealButton(topic)}
                       </div>
                     )}

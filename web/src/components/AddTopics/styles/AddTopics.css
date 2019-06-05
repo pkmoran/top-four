@@ -18,7 +18,7 @@
   justify-content: space-around;
   width: 100%;
   flex-shrink: 0;
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
 }
 
 .TopicCountContainer {
@@ -31,5 +31,5 @@
 }
 
 .AddTopicsDoneButton {
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
 }

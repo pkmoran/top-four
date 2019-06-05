@@ -130,7 +130,9 @@ class RankTopicsComponent extends Component {
           </div>
         </div>
 
-        {this.renderLockedInPlayers()}
+        <div className="RankTopics__locked-in-players">
+          {this.renderLockedInPlayers()}
+        </div>
 
         <div className="RankTopicsActionButton">
           {this.renderActionButton()}
