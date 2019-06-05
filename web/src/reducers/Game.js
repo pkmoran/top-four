@@ -16,6 +16,7 @@ export const INITIAL_STATE = {
   name: '',
   playerUid: '',
   rankingPlayerUid: '',
+  rankingTeamUid: '',
   state: '',
   teams: { map: {}, array: [] },
   players: { map: {}, array: [] },
@@ -39,6 +40,7 @@ export default (state = INITIAL_STATE, action) => {
       const {
         gameId,
         rankingPlayerUid,
+        rankingTeamUid,
         topicPack,
         teams,
         players,
@@ -49,6 +51,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         gameId,
         rankingPlayerUid,
+        rankingTeamUid,
         topicPack,
         state: action.payload.state,
         teams: {

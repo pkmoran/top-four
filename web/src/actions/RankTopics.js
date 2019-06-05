@@ -1,6 +1,8 @@
 import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import forEach from 'lodash/forEach';
+import findIndex from 'lodash/findIndex';
+
 import {
   setPlayerLockedInService,
   updateGameService,
@@ -60,7 +62,7 @@ const showRevealDialog = pendingRevealAction => ({
 
 export const hideRevealDialog = () => ({
   type: HIDE_REVEAL_DIALOG
-})
+});
 
 export const lockIn = () => (dispatch, getState) => {
   dispatch(hideLockInDialog());
@@ -74,7 +76,7 @@ export const lockIn = () => (dispatch, getState) => {
 
 export const allPlayersLockedIn = players => {
   return filter(players, { lockedIn: true }).length === players.length;
-}
+};
 
 export const reveal = (topic, force) => (dispatch, getState) => {
   const { players, topics, gameUid, state } = getState().Game;
@@ -133,7 +135,16 @@ const resetLocalRanking = () => ({
 });
 
 export const endRound = () => (dispatch, getState) => {
-  const { gameUid, playerUid, topics, players } = getState().Game;
+  const {
+    gameUid,
+    playerUid,
+    topics,
+    players,
+    teams,
+    rankingTeamUid
+  } = getState().Game;
+
+  players.map[playerUid].lockedIn = false;
 
   forEach(topics.map, topic => {
     if (topic.status === 'ranked') {
@@ -141,11 +152,15 @@ export const endRound = () => (dispatch, getState) => {
     }
   });
 
-  players.map[playerUid].lockedIn = false;
+  const numberOfTeams = teams.array.length;
+  const nextRankingTeamIndex =
+    (findIndex(teams.array, { uid: rankingTeamUid }) + 1) % numberOfTeams;
+  const nextRankingTeamUid = teams.array[nextRankingTeamIndex].uid;
 
   const game = {
     state: '',
     rankingPlayerUid: '',
+    rankingTeamUid: nextRankingTeamUid,
     topics: topics.map,
     players: players.map
   };
@@ -165,7 +180,7 @@ export const roundEnded = history => (dispatch, getState) => {
     const player = {
       score: players.map[playerUid].score + roundScore,
       lockedIn: false
-    }
+    };
 
     updatePlayerService(player, playerUid, gameUid, () => {
       dispatch(resetLocalRanking());
@@ -190,6 +205,9 @@ export const watchGameStateForRankTopics = history => (dispatch, getState) => {
   });
 };
 
-export const stopWatchingGameStateForRankTopics = () => (dispatch, getState) => {
+export const stopWatchingGameStateForRankTopics = () => (
+  dispatch,
+  getState
+) => {
   stopWatchingGameStateService(getState().Game.gameUid);
-}
+};

@@ -95,6 +95,8 @@ class RankTopicsComponent extends Component {
 
       return 'All players locked in!';
     }
+
+    return <>&nbsp;</>;
   }
 
   render() {

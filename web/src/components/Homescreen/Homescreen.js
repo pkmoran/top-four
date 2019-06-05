@@ -9,37 +9,45 @@ import ChoiceDialog from '../ChoiceDialog';
 import './styles/Homescreen.css';
 
 class HomescreenComponent extends Component {
-
   renderTeams() {
-    return this.props.teams.map(({
-      uid, name, score, players
-    }) => (
-        <TeamSummary key={uid} name={name} score={score} players={players} />
-      ));
+    return this.props.teams.map(({ uid, name, score, players }) => (
+      <TeamSummary key={uid} name={name} score={score} players={players} />
+    ));
   }
 
   dialogContentText() {
     return `${this.props.playerName}, you're up! Is the group ready?`;
   }
 
-  renderActionButton() {
-    if (this.props.gameOver) {
-      return (
-        <Button variant="contained">Game Over!</Button>
-      );
-    }
-
-    return (
-      <Button variant="contained" onClick={this.props.showStartRoundDialog}>I&apos;m Up!</Button>
-    );
-  }
-
   renderRemainingRounds() {
     const { gameOver, remainingRounds } = this.props;
 
     if (!gameOver) {
-      return `${remainingRounds} round${remainingRounds > 1 ? 's' : ''} remaining!`
+      return `${remainingRounds} round${
+        remainingRounds > 1 ? 's' : ''
+      } remaining!`;
     }
+  }
+
+  renderActionSection() {
+    const { gameOver, rankingTeamUid, teamUid, rankingTeamName } = this.props;
+
+    if (gameOver) {
+      return <Button variant="contained">Game Over!</Button>;
+    }
+
+    if (rankingTeamUid === teamUid) {
+      return (
+        <>
+          {`${rankingTeamName}, who's up?`}
+          <Button variant="contained" onClick={this.props.showStartRoundDialog}>
+            I&apos;m Up!
+          </Button>
+        </>
+      );
+    }
+
+    return `${rankingTeamName} is up!`;
   }
 
   render() {
@@ -51,15 +59,12 @@ class HomescreenComponent extends Component {
 
         <span>{this.props.roundsPlayed} rounds played!</span>
 
-        <div className="HomescreenTeams">
-          {this.renderTeams()}
-        </div>
+        <div className="HomescreenTeams">{this.renderTeams()}</div>
 
         {this.renderRemainingRounds()}
 
         <div className="HomescreenActionButton">
-          Who&apos;s up?
-          {this.renderActionButton()}
+          {this.renderActionSection()}
         </div>
 
         <ChoiceDialog

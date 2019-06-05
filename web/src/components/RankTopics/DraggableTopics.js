@@ -23,7 +23,7 @@ class DraggableTopics extends Component {
     );
   }
 
-  getClass(isDragging, topic, last) {
+  getClass(isDragging, topic) {
     const ranked = this.topicIsRanked(topic);
 
     let className = 'DraggableTopic';
@@ -31,7 +31,9 @@ class DraggableTopics extends Component {
     if (isDragging) {
       className += ' DraggableTopic--dragging';
     } else if (ranked) {
-      if (topic.isCorrect) {
+      if (this.props.active) {
+        className += ' DraggableTopic--ranked';
+      } else if (topic.isCorrect) {
         className += ' DraggableTopic--correct';
       } else {
         className += ' DraggableTopic--incorrect';
@@ -86,9 +88,13 @@ class DraggableTopics extends Component {
       return <Icon>drag_handle</Icon>;
     }
 
-    if (active && lockedIn && topic.status !== 'ranked') {
+    if (active && lockedIn) {
       return (
-        <Button variant="outlined" onClick={() => reveal(topic)}>
+        <Button
+          variant={topic.status === 'ranked' ? 'contained' : 'outlined'}
+          onClick={() => reveal(topic)}
+          disabled={topic.status === 'ranked'}
+        >
           Reveal
         </Button>
       );
@@ -125,7 +131,9 @@ class DraggableTopics extends Component {
                         )}
                         className={this.getClass(snapshot.isDragging, topic)}
                       >
-                        <span className="DraggableTopic__title">{this.getTopicTitle(topic)}</span>
+                        <span className="DraggableTopic__title">
+                          {this.getTopicTitle(topic)}
+                        </span>
                         {this.renderRevealButton(topic)}
                       </div>
                     )}
