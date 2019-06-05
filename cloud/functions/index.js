@@ -11,9 +11,13 @@ exports.putOne = functions.https.onRequest((req, res) => {
     startDate: Date.now()
   };
 
-  return admin.database().ref('/games').push(game).then(snapshot => {
-    return res.status(200).send(snapshot);
-  });
+  return admin
+    .database()
+    .ref('/games')
+    .push(game)
+    .then(snapshot => {
+      return res.status(200).send(snapshot);
+    });
 });
 
 exports.startGame = functions.https.onCall(async (data, context) => {
@@ -40,17 +44,26 @@ exports.startGame = functions.https.onCall(async (data, context) => {
     topicPack: !!topicPackUid
   });
 
-  var i;
+  let firstTeamUid;
+  let i;
   for (i = 0; i < numberOfTeams; i++) {
     const team = {
       name: `Team ${i + 1}`
     };
 
-    newGame.child('/teams').push(team);
+    const teamUid = newGame.child('/teams').push(team).key;
+
+    if (i === 0) {
+      firstTeamUid = teamUid;
+    }
   }
 
+  newGame.update({ rankingTeamUid: firstTeamUid });
+
   if (topicPackUid) {
-    const topics = await db.ref(`/topicPacks/${topicPackUid}/topics`).once('value');
+    const topics = await db
+      .ref(`/topicPacks/${topicPackUid}/topics`)
+      .once('value');
 
     topics.forEach(topic => {
       newGame.child('/topics').push({
@@ -64,7 +77,7 @@ exports.startGame = functions.https.onCall(async (data, context) => {
   return {
     gameUid: newGame.key,
     gameId: newGameId
-  }
+  };
 });
 
 exports.pruneGames = functions.https.onCall(async () => {
