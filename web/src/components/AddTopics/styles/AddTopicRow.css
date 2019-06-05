@@ -6,8 +6,7 @@
 
 .Topic {
   flex-grow: 1;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0 .6rem;
   overflow: hidden;
   text-overflow: ellipsis;
 }

@@ -5,6 +5,6 @@
 .TeamSummaryHeader {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin-top: .6rem;
+  margin-bottom: .3rem;
 }
