@@ -15,7 +15,8 @@ class AddTopicsComponent extends Component {
           key={t.uid}
           topic={t.topic}
           onDelete={() => this.props.deleteTopic(t.uid)}
-        />));
+        />
+      ));
     }
   }
 
@@ -24,7 +25,8 @@ class AddTopicsComponent extends Component {
       <div className="AddTopics">
         <GameId gameId={this.props.gameId} />
         <h1>Add Topics!</h1>
-        <div>
+
+        <div className="AddTopics__add-input">
           <TextField
             onChange={this.props.topicChanged}
             value={this.props.topic}
@@ -33,6 +35,7 @@ class AddTopicsComponent extends Component {
             placeholder="e.g. Road trips"
           />
           <Button
+            variant="outlined"
             disabled={!this.props.addTopicEnabled}
             onClick={() => this.props.addTopic()}
           >
@@ -40,9 +43,7 @@ class AddTopicsComponent extends Component {
           </Button>
         </div>
 
-        <div className="TopicsContainer">
-          {this.renderTopics()}
-        </div>
+        <div className="TopicsContainer">{this.renderTopics()}</div>
 
         <div className="TopicCountsContainer">
           <div className="TopicCountContainer">
@@ -51,7 +52,7 @@ class AddTopicsComponent extends Component {
           </div>
 
           <div className="TopicCountContainer">
-            <span>Total # of Topics</span>
+            <span>All Topics</span>
             <span>{this.props.allTopicsCount}</span>
           </div>
         </div>

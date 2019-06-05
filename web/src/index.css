@@ -1,6 +1,12 @@
-body {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
+  box-sizing: inherit;
+}
+
+body {
   height: 100%;
   font-family: sans-serif;
 }
@@ -11,4 +17,8 @@ html {
 
 #root {
   height: 100%;
+}
+
+h1 {
+  margin: 1.5rem 0 .75rem 0;
 }
