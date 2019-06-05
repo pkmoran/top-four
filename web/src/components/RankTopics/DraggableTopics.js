@@ -46,8 +46,7 @@ class DraggableTopics extends Component {
   getStyle(style, snapshot) {
     if (snapshot.isDropAnimating) {
       const { curve, duration } = snapshot.dropAnimation;
-
-      // patching the existing style
+      
       return {
         ...style,
         transition: `all ${curve} ${duration}s`
