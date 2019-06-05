@@ -60,8 +60,6 @@ class StartGameDialog extends Component {
       numberOfTeams
     } = this.props;
 
-    console.log('numberOfTeams', numberOfTeams);
-
     return (
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>How many teams?</DialogTitle>

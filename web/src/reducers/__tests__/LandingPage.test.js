@@ -66,21 +66,6 @@ describe('name changed action', () => {
     const newState = LandingPage(undefined, action);
     expect(newState.name).toEqual('new name');
   });
-
-  it('enables the start game prop', () => {
-    const action = {
-      type: NAME_CHANGED,
-      payload: 'new name'
-    };
-
-    let newState = LandingPage(undefined, action);
-    expect(newState.startGameEnabled).toEqual(true);
-
-    action.payload = '';
-
-    newState = LandingPage(newState, action);
-    expect(newState.startGameEnabled).toEqual(false);
-  });
 });
 
 it('sets loading when starting a game', () => {
