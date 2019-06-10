@@ -55,6 +55,7 @@ export const watchGameStateForHomescreen = history => (dispatch, getState) => {
     if (newState === 'ranking' && !locked) {
       locked = true;
 
+      dispatch(hideStartRoundDialog());
       stopWatchingGameStateService(gameUid);
 
       history.push(`/${gameId}/rankTopics`);
