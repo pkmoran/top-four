@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import findKey from 'lodash/findKey';
+import forEach from 'lodash/forEach';
 
 export const getGameUidService = async gameId => {
   const games = await firebase
@@ -35,12 +36,28 @@ export const joinTeamService = (teamUid, playerUid, gameUid) => {
     .update({ teamUid });
 };
 
-export const setPlayerLockedInService = (gameUid, playerUid, lockedIn, onUpdated) => {
-  firebase
+export const setPlayerLockedInService = async (
+  gameUid,
+  playerUid,
+  localRanks,
+  onUpdated
+) => {
+  await firebase
     .database()
     .ref(`/games/${gameUid}/players/${playerUid}`)
-    .update({ lockedIn }, onUpdated);
-}
+    .update({ lockedIn: true });
+
+  const guesses = {};
+
+  forEach(localRanks, (rank, topicUid) => {
+    guesses[topicUid] = rank;
+  });
+
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/guesses/${playerUid}`)
+    .update(guesses, onUpdated);
+};
 
 export const updateGameService = (game, gameUid, then) => {
   firebase
@@ -54,7 +71,7 @@ export const updatePlayerService = (player, playerUid, gameUid, then) => {
     .database()
     .ref(`/games/${gameUid}/players/${playerUid}`)
     .update(player, then);
-}
+};
 
 export const watchGameStateService = (gameUid, onStateChange) => {
   firebase
@@ -63,11 +80,11 @@ export const watchGameStateService = (gameUid, onStateChange) => {
     .on('value', state => {
       onStateChange(state.val());
     });
-}
+};
 
-export const stopWatchingGameStateService = (gameUid) => {
+export const stopWatchingGameStateService = gameUid => {
   firebase
     .database()
     .ref(`/games/${gameUid}/state`)
     .off('value');
-}
+};

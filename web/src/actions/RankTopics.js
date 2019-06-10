@@ -68,8 +68,9 @@ export const lockIn = () => (dispatch, getState) => {
   dispatch(hideLockInDialog());
 
   const { gameUid, playerUid } = getState().Game;
+  const { localRanks } = getState().RankTopics;
 
-  setPlayerLockedInService(gameUid, playerUid, true, () => {
+  setPlayerLockedInService(gameUid, playerUid, localRanks, () => {
     dispatch(lockedIn());
   });
 };
@@ -191,10 +192,16 @@ export const roundEnded = history => (dispatch, getState) => {
 };
 
 export const watchGameStateForRankTopics = history => (dispatch, getState) => {
-  const { gameUid } = getState().Game;
+  const { gameUid, playerUid } = getState().Game;
   let locked = false;
 
   watchGameStateService(gameUid, newState => {
+    const lockedIn = getState().Game.players.map[playerUid].lockedIn;
+
+    if (newState === 'ranked' && !lockedIn) {
+      dispatch(lockIn());
+    }
+
     if (newState === '' && !locked) {
       locked = true;
 

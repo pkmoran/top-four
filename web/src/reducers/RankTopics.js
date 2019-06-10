@@ -23,7 +23,7 @@ const INITIAL_STATE = {
   showDialog: false,
   lockedIn: false,
   showRevealDialog: false,
-  pendingRevealAction: () => { },
+  pendingRevealAction: () => {},
   skipScore: false
 };
 
@@ -42,55 +42,74 @@ export default (state = INITIAL_STATE, action) => {
     case LOCKED_IN:
       return { ...state, lockedIn: true };
     case SHOW_REVEAL_DIALOG:
-      return { ...state, showRevealDialog: true, pendingRevealAction: action.payload };
+      return {
+        ...state,
+        showRevealDialog: true,
+        pendingRevealAction: action.payload
+      };
     case HIDE_REVEAL_DIALOG:
       return {
         ...state,
         showRevealDialog: false,
         pendingRevealAction: INITIAL_STATE.pendingRevealAction
-      }
+      };
     case NEW_GAME_DATA:
       if (!action.payload.state || action.payload.state === '') {
         return state;
       }
 
-      const topics = map(action.payload.topics, (topic, uid) => ({ ...topic, uid }));
-      const activeTopics = filter(topics, topic => topic.status === 'active' || topic.status === 'ranked');
+      const topics = map(action.payload.topics, (topic, uid) => ({
+        ...topic,
+        uid
+      }));
+      const activeTopics = filter(
+        topics,
+        topic => topic.status === 'active' || topic.status === 'ranked'
+      );
 
       let localRanks = state.localRanks;
 
       if (!localRanks) {
-        localRanks = reduce(activeTopics, (result, value, index) => ({ ...result, [value.uid]: index }), {});
+        localRanks = reduce(
+          activeTopics,
+          (result, value, index) => ({ ...result, [value.uid]: index }),
+          {}
+        );
       }
 
-      const sortedAndCorrectedTopics = sortAndCorrectTopics(activeTopics, localRanks);
-      const roundScore = filter(sortedAndCorrectedTopics, { isCorrect: true }).length;
+      const sortedAndCorrectedTopics = sortAndCorrectTopics(
+        activeTopics,
+        localRanks
+      );
+      const roundScore = filter(sortedAndCorrectedTopics, { isCorrect: true })
+        .length;
 
       return {
         ...state,
         localRanks,
         topics: sortedAndCorrectedTopics,
         roundScore
-      }
+      };
     case SKIP_SCORE:
       return {
         ...state,
         skipScore: true
-      }
+      };
     default:
       return state;
   }
 };
 
 const sortAndCorrectTopics = (topics, localRanks) => {
-  const sortedTopics = sortBy(topics, [
-    topic => localRanks[topic.uid]
-  ]);
+  const sortedTopics = sortBy(topics, [topic => localRanks[topic.uid]]);
 
   forEach(sortedTopics, (topic, index) => {
     topic.isCorrect = index === topic.rank;
-    topic.correctTopic = Object.assign({}, find(topics, topic => index === topic.rank));
-  })
+    topic.correctTopic = Object.assign(
+      {},
+      find(topics, topic => index === topic.rank)
+    );
+  });
 
   return sortedTopics;
-}
+};
