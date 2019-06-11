@@ -12,7 +12,7 @@ class LandingPageComponent extends Component {
     return (
       <div className="LandingPage">
         <div className="LandingPage__join-game-container">
-          <h1>Top Four&trade; <span>v1.10.6</span></h1>
+          <h1>Top Four&trade; <span>v1.10.7</span></h1>
 
           <TextField
             onChange={this.props.nameChanged}
