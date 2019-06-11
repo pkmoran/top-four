@@ -67,10 +67,12 @@ export const hideRevealDialog = () => ({
 export const lockIn = () => (dispatch, getState) => {
   dispatch(hideLockInDialog());
 
-  const { gameUid, playerUid } = getState().Game;
+  const { gameUid, playerUid, rankingPlayerUid } = getState().Game;
   const { localRanks } = getState().RankTopics;
 
-  setPlayerLockedInService(gameUid, playerUid, localRanks, () => {
+  const active = playerUid === rankingPlayerUid;
+
+  setPlayerLockedInService(gameUid, playerUid, localRanks, active, () => {
     dispatch(lockedIn());
   });
 };

@@ -46,7 +46,7 @@ class DraggableTopics extends Component {
   getStyle(style, snapshot) {
     if (snapshot.isDropAnimating) {
       const { curve, duration } = snapshot.dropAnimation;
-      
+
       return {
         ...style,
         transition: `all ${curve} ${duration}s`
@@ -84,18 +84,32 @@ class DraggableTopics extends Component {
     const { active, lockedIn, reveal } = this.props;
 
     if (!lockedIn) {
-      return <Icon>drag_handle</Icon>;
+      return (
+        <div className="DraggableTopic__right-content">
+          <Icon>drag_handle</Icon>
+        </div>
+      );
     }
 
     if (active && lockedIn) {
+      if (topic.status !== 'ranked') {
+        return (
+          <div className="DraggableTopic__right-content">
+            <Button
+              variant={topic.status === 'ranked' ? 'contained' : 'outlined'}
+              onClick={() => reveal(topic)}
+              disabled={topic.status === 'ranked'}
+            >
+              Reveal
+            </Button>
+          </div>
+        );
+      }
+
       return (
-        <Button
-          variant={topic.status === 'ranked' ? 'contained' : 'outlined'}
-          onClick={() => reveal(topic)}
-          disabled={topic.status === 'ranked'}
-        >
-          Reveal
-        </Button>
+        <div className="DraggableTopic__right-content DraggableTopic__right-content--circle">
+          {topic.percentCorrect}
+        </div>
       );
     }
   }

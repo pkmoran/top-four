@@ -40,6 +40,7 @@ export const setPlayerLockedInService = async (
   gameUid,
   playerUid,
   localRanks,
+  active,
   onUpdated
 ) => {
   await firebase
@@ -50,7 +51,7 @@ export const setPlayerLockedInService = async (
   const guesses = {};
 
   forEach(localRanks, (rank, topicUid) => {
-    guesses[topicUid] = rank;
+    guesses[topicUid] = active ? 'active' : rank;
   });
 
   firebase

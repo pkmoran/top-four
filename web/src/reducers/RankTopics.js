@@ -81,6 +81,10 @@ export default (state = INITIAL_STATE, action) => {
         activeTopics,
         localRanks
       );
+      calculateTopicsPercentageCorrect(
+        sortedAndCorrectedTopics,
+        action.payload.guesses
+      );
       const roundScore = filter(sortedAndCorrectedTopics, { isCorrect: true })
         .length;
 
@@ -112,4 +116,23 @@ const sortAndCorrectTopics = (topics, localRanks) => {
   });
 
   return sortedTopics;
+};
+
+const calculateTopicsPercentageCorrect = (topics, guesses) => {
+  forEach(topics, topic => {
+
+    // default to -1 to account for the ranking player being counted as a guess
+    let numberOfPlayers = -1;
+    let numberCorrect = 0;
+
+    forEach(guesses, playerGuess => {
+      numberOfPlayers += 1;
+
+      if (playerGuess[topic.uid] === topic.rank) {
+        numberCorrect += 1;
+      }
+    });
+
+    topic.percentCorrect = `${(numberCorrect / numberOfPlayers) * 100}%`;
+  });
 };

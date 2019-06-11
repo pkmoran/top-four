@@ -16,10 +16,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-grow: 1;
+  height: 100%;
   margin-bottom: 1.2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
   transition: box-shadow .2s;
+}
+
+.DraggableTopic__right-content {
+  /* margin-left: .8rem; */
+}
+
+.DraggableTopic__right-content--circle {
+  border: 1px solid gray;
+  width: 25%;
+  padding-top: 9%;
+  padding-bottom: 9%;
+  border-radius: 100px;
+  text-align: center
 }
 
 .DraggableTopic--dragging {
@@ -42,4 +55,6 @@
 .DraggableTopic__title {
   white-space: nowrap;
   overflow: auto;
+  width: 70%;
+  margin-right: 5%;
 }
