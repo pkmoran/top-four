@@ -120,7 +120,6 @@ const sortAndCorrectTopics = (topics, localRanks) => {
 
 const calculateTopicsPercentageCorrect = (topics, guesses) => {
   forEach(topics, topic => {
-
     // default to -1 to account for the ranking player being counted as a guess
     let numberOfPlayers = -1;
     let numberCorrect = 0;
@@ -133,6 +132,7 @@ const calculateTopicsPercentageCorrect = (topics, guesses) => {
       }
     });
 
-    topic.percentCorrect = numberCorrect / numberOfPlayers;
+    topic.percentCorrect =
+      numberOfPlayers <= 0 ? 0 : numberCorrect / numberOfPlayers;
   });
 };
