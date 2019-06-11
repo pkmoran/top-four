@@ -68,16 +68,26 @@ class DraggableTopics extends Component {
 
     if (ranked && !topic.isCorrect) {
       return (
-        <>
+        <span className="DraggableTopic__title">
           {topic.correctTopic.topic}{' '}
           <em>
             <strike>{topic.topic}</strike>
           </em>
-        </>
+        </span>
       );
     }
 
-    return topic.topic;
+    if (ranked && this.props.active) {
+      return (
+        <span className="DraggableTopic__title DraggableTopic__title--sized">
+          {topic.topic}
+        </span>
+      );
+    }
+
+    return (
+      <span className="DraggableTopic__title">{topic.topic}</span>
+    );
   }
 
   renderRevealButton(topic) {
@@ -106,9 +116,21 @@ class DraggableTopics extends Component {
         );
       }
 
+      let className = 'DraggableTopic__right-content--circle';
+
+      if (topic.percentCorrect > 0.75) {
+        className += ' DraggableTopic__right-content--guessed-correct';
+      } else if (topic.percentCorrect > 0.25 && topic.percentCorrect <= 0.75) {
+        className += ' DraggableTopic__right-content--guessed-middle';
+      } else {
+        className += ' DraggableTopic__right-content--guessed-incorrect';
+      }
+
       return (
-        <div className="DraggableTopic__right-content DraggableTopic__right-content--circle">
-          {topic.percentCorrect}
+        <div className="DraggableTopic__right-content DraggableTopic__right-content--sized">
+          <div className={className}>
+            {`${topic.percentCorrect * 100}%`}
+          </div>
         </div>
       );
     }
@@ -144,9 +166,7 @@ class DraggableTopics extends Component {
                         )}
                         className={this.getClass(snapshot.isDragging, topic)}
                       >
-                        <span className="DraggableTopic__title">
-                          {this.getTopicTitle(topic)}
-                        </span>
+                        {this.getTopicTitle(topic)}
                         {this.renderRevealButton(topic)}
                       </div>
                     )}

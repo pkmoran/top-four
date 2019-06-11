@@ -133,6 +133,6 @@ const calculateTopicsPercentageCorrect = (topics, guesses) => {
       }
     });
 
-    topic.percentCorrect = `${(numberCorrect / numberOfPlayers) * 100}%`;
+    topic.percentCorrect = numberCorrect / numberOfPlayers;
   });
 };
