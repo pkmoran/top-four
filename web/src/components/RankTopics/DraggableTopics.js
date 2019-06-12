@@ -118,9 +118,9 @@ class DraggableTopics extends Component {
 
       let className = 'DraggableTopic__right-content--circle';
 
-      if (topic.percentCorrect > 0.75) {
+      if (topic.percentCorrect > 75) {
         className += ' DraggableTopic__right-content--guessed-correct';
-      } else if (topic.percentCorrect > 0.25 && topic.percentCorrect <= 0.75) {
+      } else if (topic.percentCorrect > 25 && topic.percentCorrect <= 75) {
         className += ' DraggableTopic__right-content--guessed-middle';
       } else {
         className += ' DraggableTopic__right-content--guessed-incorrect';
@@ -129,7 +129,7 @@ class DraggableTopics extends Component {
       return (
         <div className="DraggableTopic__right-content DraggableTopic__right-content--sized">
           <div className={className}>
-            {`${topic.percentCorrect * 100}%`}
+            {`${topic.percentCorrect}%`}
           </div>
         </div>
       );
