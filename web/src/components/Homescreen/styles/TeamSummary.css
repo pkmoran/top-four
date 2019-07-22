@@ -1,27 +1,38 @@
 .TeamSummary {
-  width: 75%;
+  width: 80%;
 }
 
-.TeamSummary__name {
-  display: inline-block;
-  width: 100%;
-  font-weight: bold;
-  font-size: 1.3em;
-  padding-bottom: 0.25rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+.TeamSummaryHeader {
+  display: flex;
+  align-items: baseline;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid black;
+  margin: 1rem 0;
 }
 
-.TeamSummary__average-score {
-  display: inline-block;
-  width: 100%;
-  text-align: right;
-  margin-bottom: 0.25rem;
+.TeamSummaryHeader__name {
+  font-weight: bold;
+  font-size: 1.75em;
+  flex-grow: 1;
+}
+
+.TeamSummaryHeader__average {
   font-size: 1.15em;
+  margin-right: 0.5rem;
+  font-style: italic;
+  color: gray;
+}
+
+.TeamSummaryHeader__score {
+  font-size: 1.15em;
+  font-weight: bold;
 }
 
 .TeamSummary__player {
-  margin-bottom: 0.25rem;
+  margin-left: 1rem;
   font-size: 1.15em;
+}
+
+.TeamSummary__player:not(:last-child) {
+  margin-bottom: 0.5rem;
 }
