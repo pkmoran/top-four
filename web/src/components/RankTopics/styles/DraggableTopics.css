@@ -85,6 +85,7 @@
   overflow: auto;
   width: 100%;
   margin-right: 5%;
+  scroll-behavior: smooth;
 }
 
 .DraggableTopic__title--sized {

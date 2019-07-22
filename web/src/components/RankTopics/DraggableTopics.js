@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -13,7 +13,28 @@ class DraggableTopics extends Component {
       wasDragging: false
     };
 
+    this.overflowRefs = [createRef(), createRef(), createRef(), createRef()];
+
     this.onDragEnd = this.onDragEnd.bind(this);
+  }
+
+  componentDidMount() {
+    this.overflowRefs.forEach(overflowRef => {
+      this.scrollElem(overflowRef.current);
+    });
+  }
+
+  scrollElem(elem) {
+    if (elem && elem.clientWidth < elem.scrollWidth) {
+      console.log('will scroll');
+
+      setTimeout(() => {
+        elem.scrollLeft = 25;
+        setTimeout(() => {
+          elem.scrollLeft = 0;
+        }, 250);
+      }, 500);
+    }
   }
 
   topicIsRanked(topic) {
@@ -63,12 +84,12 @@ class DraggableTopics extends Component {
     return style;
   }
 
-  getTopicTitle(topic) {
+  getTopicTitle(topic, index) {
     const ranked = this.topicIsRanked(topic);
 
     if (ranked && !topic.isCorrect) {
       return (
-        <span className="DraggableTopic__title">
+        <span ref={this.overflowRefs[index]} className="DraggableTopic__title">
           {topic.correctTopic.topic}{' '}
           <em>
             <strike>{topic.topic}</strike>
@@ -79,14 +100,19 @@ class DraggableTopics extends Component {
 
     if (ranked && this.props.active) {
       return (
-        <span className="DraggableTopic__title DraggableTopic__title--sized">
+        <span
+          ref={this.overflowRefs[index]}
+          className="DraggableTopic__title DraggableTopic__title--sized"
+        >
           {topic.topic}
         </span>
       );
     }
 
     return (
-      <span className="DraggableTopic__title">{topic.topic}</span>
+      <span ref={this.overflowRefs[index]} className="DraggableTopic__title">
+        {topic.topic}
+      </span>
     );
   }
 
@@ -128,9 +154,7 @@ class DraggableTopics extends Component {
 
       return (
         <div className="DraggableTopic__right-content DraggableTopic__right-content--sized">
-          <div className={className}>
-            {`${topic.percentCorrect}%`}
-          </div>
+          <div className={className}>{`${topic.percentCorrect}%`}</div>
         </div>
       );
     }
@@ -166,7 +190,7 @@ class DraggableTopics extends Component {
                         )}
                         className={this.getClass(snapshot.isDragging, topic)}
                       >
-                        {this.getTopicTitle(topic)}
+                        {this.getTopicTitle(topic, index)}
                         {this.renderRevealButton(topic)}
                       </div>
                     )}
