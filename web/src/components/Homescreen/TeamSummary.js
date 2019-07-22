@@ -7,12 +7,14 @@ import './styles/TeamSummary.css';
 
 const TeamSummary = ({ name, score, players }) => (
   <div className="TeamSummary">
-    <div className="TeamSummaryHeader">
-      <span>{name} average score</span>
-      <span>{score}</span>
-    </div>
+    <span className="TeamSummary__name">{name}</span>
+    <span className="TeamSummary__average-score">
+      <b>Average</b> {score}
+    </span>
     {map(players, (player, uid) => (
-      <PlayerSummary key={uid} player={player} />
+      <div key={uid} className="TeamSummary__player">
+        <PlayerSummary player={player} />
+      </div>
     ))}
   </div>
 );

@@ -1,10 +1,27 @@
 .TeamSummary {
-  width: 65%;
+  width: 75%;
 }
 
-.TeamSummaryHeader {
-  display: flex;
-  justify-content: space-between;
-  margin-top: .6rem;
-  margin-bottom: .3rem;
+.TeamSummary__name {
+  display: inline-block;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.3em;
+  padding-bottom: 0.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid black;
+}
+
+.TeamSummary__average-score {
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+  margin-bottom: 0.25rem;
+  font-size: 1.15em;
+}
+
+.TeamSummary__player {
+  margin-bottom: 0.25rem;
+  font-size: 1.15em;
 }
