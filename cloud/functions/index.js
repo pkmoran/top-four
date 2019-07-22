@@ -58,7 +58,9 @@ exports.startGame = functions.https.onCall(async (data, context) => {
     }
   }
 
-  newGame.update({ rankingTeamUid: firstTeamUid });
+  if (firstTeamUid) {
+    newGame.update({ rankingTeamUid: firstTeamUid });
+  }
 
   if (topicPackUid) {
     const topics = await db
