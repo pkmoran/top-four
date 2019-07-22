@@ -42,7 +42,11 @@ class RankTopicsContainer extends Component {
       return;
     }
 
-    this.props.updateMyRanks(this.props.topics, result.source.index, result.destination.index);
+    this.props.updateMyRanks(
+      this.props.topics,
+      result.source.index,
+      result.destination.index
+    );
   }
 
   lockIn() {
@@ -79,17 +83,11 @@ class RankTopicsContainer extends Component {
       endRound
     } = this.props;
 
-    const {
-      onDragEnd,
-      lockIn,
-      reveal,
-      revealAll,
-      confirmReveal
-    } = this;
+    const { onDragEnd, lockIn, reveal, revealAll, confirmReveal } = this;
 
     return (
       <RankTopics
-        {... {
+        {...{
           gameId,
           topics,
           active,
@@ -111,7 +109,7 @@ class RankTopicsContainer extends Component {
           lockedIn
         }}
       />
-    )
+    );
   }
 }
 
