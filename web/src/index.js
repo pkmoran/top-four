@@ -5,6 +5,9 @@ import './index.css';
 import Root from './components/Root';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import { init as initAnalytics } from './services/analytics';
+
+initAnalytics();
 
 ReactDOM.render(
   <Root>

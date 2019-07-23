@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import filter from 'lodash/filter';
 
+import { pageView } from '../../services/analytics';
+
 import AddTopics from './AddTopics';
 import requireGame from '../requireGame';
 
@@ -14,6 +16,10 @@ class AddTopicsContainer extends Component {
     this.topicChanged = this.topicChanged.bind(this);
     this.addTopic = this.addTopic.bind(this);
     this.done = this.done.bind(this);
+  }
+
+  componentDidMount() {
+    pageView('/addTopics');
   }
 
   topicChanged(event) {
@@ -39,15 +45,11 @@ class AddTopicsContainer extends Component {
       gameId
     } = this.props;
 
-    const {
-      topicChanged,
-      addTopic,
-      done
-    } = this;
+    const { topicChanged, addTopic, done } = this;
 
     return (
-      <AddTopics 
-        { ... {
+      <AddTopics
+        {...{
           gameId,
           topic,
           playerTopics,
@@ -60,7 +62,7 @@ class AddTopicsContainer extends Component {
           done
         }}
       />
-    )
+    );
   }
 }
 

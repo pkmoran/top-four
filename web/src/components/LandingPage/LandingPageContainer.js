@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { pageView } from '../../services/analytics';
+
 import LandingPage from './LandingPage';
 
 import {
@@ -28,6 +30,10 @@ class LandingPageContainer extends Component {
     this.joinGame = this.joinGame.bind(this);
   }
 
+  componentDidMount() {
+    pageView('/landingPage');
+  }
+
   gameIdChanged(event) {
     this.props.gameIdChanged(event.target.value);
   }
@@ -45,7 +51,11 @@ class LandingPageContainer extends Component {
   }
 
   startGame() {
-    this.props.startGame(this.props.numberOfTeams, this.props.topicPackUid, this.props.history);
+    this.props.startGame(
+      this.props.numberOfTeams,
+      this.props.topicPackUid,
+      this.props.history
+    );
   }
 
   joinGame() {
@@ -84,7 +94,7 @@ class LandingPageContainer extends Component {
 
     return (
       <LandingPage
-        {... {
+        {...{
           gameId,
           error,
           loading,
@@ -110,7 +120,7 @@ class LandingPageContainer extends Component {
           numberOfTeams
         }}
       />
-    )
+    );
   }
 }
 

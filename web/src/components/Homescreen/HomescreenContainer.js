@@ -4,6 +4,8 @@ import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 
+import { pageView } from '../../services/analytics';
+
 import Homescreen from './Homescreen';
 import requireGame from '../requireGame';
 
@@ -19,6 +21,8 @@ import {
 
 class HomeScreenContainer extends Component {
   componentDidMount() {
+    pageView('/homescreen');
+    
     this.props.watchGameStateForHomescreen(this.props.history);
   }
 
@@ -126,7 +130,9 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   ),
   roundsPlayed: filter(Game.topics.array, { status: 'unavailable' }).length / 4,
   rankingTeamUid: Game.rankingTeamUid,
-  rankingTeamName: Game.noTeams ? undefined : Game.teams.map[Game.rankingTeamUid].name,
+  rankingTeamName: Game.noTeams
+    ? undefined
+    : Game.teams.map[Game.rankingTeamUid].name,
   teamUid: Game.players.map[Game.playerUid].teamUid
 });
 

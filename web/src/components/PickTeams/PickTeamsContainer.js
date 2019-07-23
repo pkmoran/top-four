@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import countBy from 'lodash/countBy';
 import map from 'lodash/map';
 
+import { pageView } from '../../services/analytics';
+
 import PickTeams from './PickTeams';
 import requireGame from '../requireGame';
 
@@ -13,6 +15,10 @@ class PickTeamsContainer extends Component {
     super(props);
 
     this.actionButtonClicked = this.actionButtonClicked.bind(this);
+  }
+
+  componentDidMount() {
+    pageView('/pickTeams');
   }
 
   actionButtonClicked() {
@@ -35,15 +41,13 @@ class PickTeamsContainer extends Component {
       topicPack
     } = this.props;
 
-    const {
-      actionButtonClicked
-    } = this;
+    const { actionButtonClicked } = this;
 
     const actionButtonTitle = topicPack ? 'Done!' : 'Next, Add Topics!';
 
     return (
-      <PickTeams 
-        { ... {
+      <PickTeams
+        {...{
           gameId,
           teams,
           selectedTeam,
@@ -53,14 +57,17 @@ class PickTeamsContainer extends Component {
           actionButtonClicked
         }}
       />
-    )
+    );
   }
 }
 
 export const teamsAndPlayerCounts = ({ teams, players }) => {
   const teamCounts = countBy(players.map, 'teamUid');
-  
-  return map(teams.array, team => ({ ...team, playerCount: teamCounts[team.uid] || 0 }));
+
+  return map(teams.array, team => ({
+    ...team,
+    playerCount: teamCounts[team.uid] || 0
+  }));
 };
 
 const selectedTeam = ({ players, playerUid }) => {

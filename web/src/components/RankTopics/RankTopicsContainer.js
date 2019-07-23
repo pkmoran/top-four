@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import filter from 'lodash/filter';
 
+import { pageView } from '../../services/analytics';
+
 import RankTopics from './RankTopics';
 import requireGame from '../requireGame';
 
@@ -30,6 +32,8 @@ class RankTopicsContainer extends Component {
   }
 
   componentDidMount() {
+    pageView('/rankTopics');
+    
     this.props.watchGameStateForRankTopics(this.props.history);
   }
 
@@ -42,7 +46,11 @@ class RankTopicsContainer extends Component {
       return;
     }
 
-    this.props.updateMyRanks(this.props.topics, result.source.index, result.destination.index);
+    this.props.updateMyRanks(
+      this.props.topics,
+      result.source.index,
+      result.destination.index
+    );
   }
 
   lockIn() {
@@ -79,17 +87,11 @@ class RankTopicsContainer extends Component {
       endRound
     } = this.props;
 
-    const {
-      onDragEnd,
-      lockIn,
-      reveal,
-      revealAll,
-      confirmReveal
-    } = this;
+    const { onDragEnd, lockIn, reveal, revealAll, confirmReveal } = this;
 
     return (
       <RankTopics
-        {... {
+        {...{
           gameId,
           topics,
           active,
@@ -111,7 +113,7 @@ class RankTopicsContainer extends Component {
           lockedIn
         }}
       />
-    )
+    );
   }
 }
 
