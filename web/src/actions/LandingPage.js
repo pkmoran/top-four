@@ -170,28 +170,28 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
     });
 };
 
-export const startGame = (numberOfTeams, topicPackUid, history) => (
-  dispatch,
-  getState
-) => {
+const startGameAnalytics = (numberOfTeams, topicPackUid, topicPacks) => {
   new EventBuilder()
     .category('game_data')
     .action('number_of_teams')
     .value(parseInt(numberOfTeams))
     .send();
 
-  if (topicPackUid !== WRITE_OUR_OWN_UID) {
-    const topicPackName = find(getState().Game.topicPacks, {
-      uid: topicPackUid
-    }).rawName;
+  const topicPackName = find(topicPacks, {
+    uid: topicPackUid
+  }).rawName;
 
-    new EventBuilder()
-      .category('game_data')
-      .action('topic_pack')
-      .label(topicPackName)
-      .send();
-  }
+  new EventBuilder()
+    .category('game_data')
+    .action('topic_pack')
+    .label(topicPackName)
+    .send();
+};
 
+export const startGame = (numberOfTeams, topicPackUid, history) => (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: STARTING_GAME
   });
@@ -200,6 +200,12 @@ export const startGame = (numberOfTeams, topicPackUid, history) => (
     numberOfTeams,
     topicPackUid !== WRITE_OUR_OWN_UID ? topicPackUid : null,
     ({ gameId, gameUid }) => {
+      startGameAnalytics(
+        numberOfTeams,
+        topicPackUid,
+        getState().Game.topicPacks
+      );
+
       dispatch({
         type: STARTED_GAME,
         payload: { gameId, gameUid }

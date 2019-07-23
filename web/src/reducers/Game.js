@@ -79,7 +79,11 @@ export default (state = INITIAL_STATE, action) => {
         name: `${topicPack.name} (${Object.keys(topicPack.topics).length})`,
         uid
       }));
-      topicPacks.unshift({ name: 'Write our own!', uid: WRITE_OUR_OWN_UID });
+      topicPacks.unshift({
+        rawName: 'Write our own!',
+        name: 'Write our own!',
+        uid: WRITE_OUR_OWN_UID
+      });
 
       return {
         ...state,
