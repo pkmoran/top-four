@@ -36,7 +36,12 @@ describe('startGame', () => {
     dispatch = sinon.fake();
     getState = sinon.stub();
 
-    getState.returns({ Game: { name: 'andrew' } });
+    getState.returns({
+      Game: {
+        name: 'andrew',
+        topicPacks: [{ rawName: 'raw name', uid: WRITE_OUR_OWN_UID }]
+      }
+    });
 
     sinon.replace(services, 'startGameService', startGameService);
     sinon.replace(services, 'addPlayerService', addPlayer);
