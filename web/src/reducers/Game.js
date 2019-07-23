@@ -22,7 +22,8 @@ export const INITIAL_STATE = {
   players: { map: {}, array: [] },
   topics: { map: {}, array: [] },
   topicPacks: [],
-  noTeams: false
+  noTeams: false,
+  hasRanked: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -46,7 +47,8 @@ export default (state = INITIAL_STATE, action) => {
         teams,
         players,
         topics,
-        noTeams
+        noTeams,
+        hasRanked
       } = action.payload;
 
       return {
@@ -68,7 +70,8 @@ export default (state = INITIAL_STATE, action) => {
           map: { ...players },
           array: map(players, (player, uid) => ({ ...player, uid }))
         },
-        noTeams
+        noTeams,
+        hasRanked: hasRanked || false
       };
     case TOPIC_PACKS:
       const topicPacks = map(action.payload, (topicPack, uid) => ({

@@ -7,6 +7,7 @@ import {
   stopWatchingGameStateService
 } from '../services/Game';
 import { rankTopicsRoute } from '../services/navigation';
+import { EventBuilder } from '../services/analytics';
 
 import { SHOW_START_ROUND_DIALOG } from './types';
 
@@ -28,7 +29,15 @@ export const randTopicIds = topics => {
 export const startRound = () => (dispatch, getState) => {
   dispatch(hideStartRoundDialog());
 
-  const { gameUid, topics, playerUid } = getState().Game;
+  const { gameUid, topics, playerUid, hasRanked, players } = getState().Game;
+
+  if (!hasRanked) {
+    new EventBuilder()
+      .category('game_data')
+      .action('number_of_players')
+      .value(players.array.length)
+      .send();
+  }
 
   forEach(randTopicIds(topics.map), topicId => {
     topics.map[topicId].status = 'active';
@@ -37,7 +46,8 @@ export const startRound = () => (dispatch, getState) => {
   const game = {
     rankingPlayerUid: playerUid,
     state: 'ranking',
-    topics: topics.map
+    topics: topics.map,
+    hasRanked: true
   };
 
   updateGameService(game, gameUid);
