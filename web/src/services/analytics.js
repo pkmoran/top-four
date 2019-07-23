@@ -2,10 +2,13 @@ import ReactGA from 'react-ga';
 
 export const init = () => {
   let trackingId;
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-    trackingId = process.env.REACT_APP_DEV_ANALYTICS_TRACKING_ID
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test'
+  ) {
+    trackingId = process.env.REACT_APP_DEV_ANALYTICS_TRACKING_ID;
   } else {
-    trackingId = process.env.REACT_APP_PRODUCTION_ANALYTICS_TRACKING_ID
+    trackingId = process.env.REACT_APP_PRODUCTION_ANALYTICS_TRACKING_ID;
   }
 
   const options = { titleCase: false };
@@ -14,14 +17,13 @@ export const init = () => {
     options.debug = true;
   }
 
-  ReactGA.initialize(
-    trackingId,
-    options
-  );
+  ReactGA.initialize(trackingId, options);
 };
 
 export const pageView = page => {
-  ReactGA.pageview(page);
+  if (process.env.NODE_ENV !== 'test') {
+    ReactGA.pageview(page);
+  }
 };
 
 export class EventBuilder {
@@ -50,6 +52,8 @@ export class EventBuilder {
   }
 
   send() {
-    ReactGA.event(this.event);
+    if (process.env.NODE_ENV !== 'test') {
+      ReactGA.event(this.event);
+    }
   }
 }

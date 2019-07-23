@@ -69,15 +69,19 @@ export default (state = INITIAL_STATE, action) => {
           array: map(players, (player, uid) => ({ ...player, uid }))
         },
         noTeams
-      }
+      };
     case TOPIC_PACKS:
-      const topicPacks = map(action.payload, (topicPack, uid) => ({ name: `${topicPack.name} (${Object.keys(topicPack.topics).length})`, uid }));
-      topicPacks.unshift({ name: 'Write our own!', uid: WRITE_OUR_OWN_UID })
+      const topicPacks = map(action.payload, (topicPack, uid) => ({
+        rawName: topicPack.name,
+        name: `${topicPack.name} (${Object.keys(topicPack.topics).length})`,
+        uid
+      }));
+      topicPacks.unshift({ name: 'Write our own!', uid: WRITE_OUR_OWN_UID });
 
       return {
         ...state,
         topicPacks
-      }
+      };
     default:
       return state;
   }

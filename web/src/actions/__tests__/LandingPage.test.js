@@ -1,11 +1,7 @@
 import sinon from 'sinon';
 import * as services from '../../services/LandingPage';
 
-import {
-  joinGame,
-  gameIdChanged,
-  startGame
-} from '../LandingPage';
+import { joinGame, gameIdChanged, startGame } from '../LandingPage';
 import {
   JOIN_GAME_ERROR,
   GAME_ID_CHANGED,
@@ -13,6 +9,7 @@ import {
   STARTING_GAME,
   START_GAME_ERROR
 } from '../types';
+import { WRITE_OUR_OWN_UID } from '../../constants';
 
 it('should return an error when game ID is undefined', () => {
   const dispatch = sinon.fake();
@@ -43,7 +40,7 @@ describe('startGame', () => {
 
     sinon.replace(services, 'startGameService', startGameService);
     sinon.replace(services, 'addPlayerService', addPlayer);
-    startGame()(dispatch, getState);
+    startGame(2, WRITE_OUR_OWN_UID)(dispatch, getState);
   });
 
   afterEach(() => {

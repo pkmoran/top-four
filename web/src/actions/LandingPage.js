@@ -1,3 +1,4 @@
+import find from 'lodash/find';
 import { startGameService, addPlayerService } from '../services/LandingPage';
 import { getGameUidService, getPacksService } from '../services/Game';
 import { getGameData } from './';
@@ -6,6 +7,7 @@ import {
   addTopicsRoute,
   homescreenRoute
 } from '../services/navigation';
+import { EventBuilder } from '../services/analytics';
 
 import { WRITE_OUR_OWN_UID } from '../constants';
 
@@ -172,6 +174,24 @@ export const startGame = (numberOfTeams, topicPackUid, history) => (
   dispatch,
   getState
 ) => {
+  new EventBuilder()
+    .category('game_data')
+    .action('number_of_teams')
+    .value(parseInt(numberOfTeams))
+    .send();
+
+  if (topicPackUid !== WRITE_OUR_OWN_UID) {
+    const topicPackName = find(getState().Game.topicPacks, {
+      uid: topicPackUid
+    }).rawName;
+
+    new EventBuilder()
+      .category('game_data')
+      .action('topic_pack')
+      .label(topicPackName)
+      .send();
+  }
+
   dispatch({
     type: STARTING_GAME
   });
