@@ -10,6 +10,7 @@ import {
   stopWatchingGameStateService,
   updatePlayerService
 } from '../services/Game';
+import { EventBuilder } from '../services/analytics';
 
 import {
   UPDATE_MY_RANKS,
@@ -108,6 +109,11 @@ export const revealAll = force => (dispatch, getState) => {
   const allLockedIn = allPlayersLockedIn(players.array);
 
   if (allLockedIn || force) {
+    new EventBuilder()
+      .category('user_interaction')
+      .action('reveal_all')
+      .send();
+
     if (getState().RankTopics.showRevealDialog) {
       dispatch(hideRevealDialog());
     }
