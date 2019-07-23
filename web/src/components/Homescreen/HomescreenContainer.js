@@ -7,6 +7,8 @@ import find from 'lodash/find';
 import Homescreen from './Homescreen';
 import requireGame from '../requireGame';
 
+import { SINGLE_TEAM_UID } from '../../constants';
+
 import {
   showStartRoundDialog,
   hideStartRoundDialog,
@@ -65,11 +67,27 @@ class HomeScreenContainer extends Component {
   }
 }
 
-export const getTeams = ({ teams, players }) => {
+export const getTeams = ({ teams, players, noTeams }) => {
+  let adjustedTeams;
+
+  if (noTeams) {
+    adjustedTeams = [
+      {
+        uid: SINGLE_TEAM_UID,
+        name: 'Players'
+      }
+    ];
+  } else {
+    adjustedTeams = teams.array;
+  }
+
   return reduce(
-    teams.array,
+    adjustedTeams,
     (result, team) => {
-      const teamPlayers = filter(players.array, { teamUid: team.uid });
+      const teamPlayers =
+        team.uid === SINGLE_TEAM_UID
+          ? players.array
+          : filter(players.array, { teamUid: team.uid });
       const numPlayers = teamPlayers.length;
 
       if (numPlayers > 0) {
@@ -108,7 +126,7 @@ const mapStateToProps = ({ Game, Homescreen }) => ({
   ),
   roundsPlayed: filter(Game.topics.array, { status: 'unavailable' }).length / 4,
   rankingTeamUid: Game.rankingTeamUid,
-  rankingTeamName: Game.teams.map[Game.rankingTeamUid].name,
+  rankingTeamName: Game.noTeams ? undefined : Game.teams.map[Game.rankingTeamUid].name,
   teamUid: Game.players.map[Game.playerUid].teamUid
 });
 

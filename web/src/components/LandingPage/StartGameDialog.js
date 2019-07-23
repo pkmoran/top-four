@@ -34,10 +34,6 @@ class StartGameDialog extends Component {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-
           <Button
             variant="outlined"
             onClick={() => onNext('yourName')}
@@ -60,6 +56,11 @@ class StartGameDialog extends Component {
       numberOfTeams
     } = this.props;
 
+    const noTeams = () => {
+      onTeamNumberChange(0);
+      onNext('pickTeams');
+    };
+
     return (
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>How many teams?</DialogTitle>
@@ -71,7 +72,7 @@ class StartGameDialog extends Component {
               <Select
                 native
                 value={numberOfTeams}
-                onChange={onTeamNumberChange}
+                onChange={event => onTeamNumberChange(event.target.value)}
                 input={<Input id="teams-dropdown" />}
               >
                 <option value={2}>2</option>
@@ -84,12 +85,12 @@ class StartGameDialog extends Component {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-
           <Button variant="outlined" onClick={() => onBack('pickTeams')}>
             Back
+          </Button>
+
+          <Button variant="outlined" onClick={noTeams}>
+            No teams
           </Button>
 
           <Button variant="outlined" onClick={() => onNext('pickTeams')}>
@@ -138,10 +139,6 @@ class StartGameDialog extends Component {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-
           <Button variant="outlined" onClick={() => onBack('pickTopicPacks')}>
             Back
           </Button>

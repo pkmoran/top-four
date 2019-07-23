@@ -1,4 +1,5 @@
 import { joinTeamService } from '../services/Game';
+import { addTopicsRoute } from '../services/navigation';
 
 export const selectTeam = teamUid => (dispatch, getState) => {
   const { playerUid, gameUid } = getState().Game;
@@ -8,5 +9,5 @@ export const selectTeam = teamUid => (dispatch, getState) => {
 
 export const addTopics = history => (dispatch, getState) => {
   const { gameId } = getState().Game;
-  history.push(`/${gameId}/addTopics`);
+  history.push(addTopicsRoute(gameId));
 };

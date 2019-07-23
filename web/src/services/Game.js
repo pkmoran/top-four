@@ -8,7 +8,8 @@ export const getGameUidService = async gameId => {
     .ref('/games')
     .once('value');
 
-  return findKey(games.val(), { gameId });
+  const gameUid = findKey(games.val(), { gameId });
+  return { gameUid, ...games.val()[gameUid] };
 };
 
 export const getGameService = (gameUid, onGame) => {

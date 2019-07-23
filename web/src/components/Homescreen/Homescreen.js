@@ -4,15 +4,34 @@ import Button from '@material-ui/core/Button';
 
 import GameId from '../GameId';
 import TeamSummary from './TeamSummary';
+import PlayerSummary from './PlayerSummary';
 import ChoiceDialog from '../ChoiceDialog';
 
 import './styles/Homescreen.css';
 
 class HomescreenComponent extends Component {
+  renderScores() {
+    if (this.props.teams.length > 0) {
+      return this.renderTeams();
+    }
+
+    return (
+      <div className="HomescreenTeams">
+        {this.props.players.map(player => (
+          <PlayerSummary key={player.uid} player={player} />
+        ))}
+      </div>
+    );
+  }
+
   renderTeams() {
-    return this.props.teams.map(({ uid, name, score, players }) => (
-      <TeamSummary key={uid} name={name} score={score} players={players} />
-    ));
+    return (
+      <div className="HomescreenTeams">
+        {this.props.teams.map(({ uid, name, score, players }) => (
+          <TeamSummary key={uid} name={name} score={score} players={players} />
+        ))}
+      </div>
+    );
   }
 
   dialogContentText() {
@@ -36,10 +55,17 @@ class HomescreenComponent extends Component {
       return <Button variant="contained">Game Over!</Button>;
     }
 
-    if (rankingTeamUid === teamUid) {
+    if (!rankingTeamUid || rankingTeamUid === teamUid) {
+      let labelText;
+      if (!rankingTeamUid) {
+        labelText = `Who's up?`
+      } else {
+        labelText = `${rankingTeamName}, who's up?`;
+      }
+
       return (
         <>
-          {`${rankingTeamName}, who's up?`}
+          {labelText}
           <Button variant="contained" onClick={this.props.showStartRoundDialog}>
             I&apos;m Up!
           </Button>
@@ -59,7 +85,7 @@ class HomescreenComponent extends Component {
 
         <span>{this.props.roundsPlayed} rounds played!</span>
 
-        <div className="HomescreenTeams">{this.renderTeams()}</div>
+        {this.renderScores()}
 
         {this.renderRemainingRounds()}
 

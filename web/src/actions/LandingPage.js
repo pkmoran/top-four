@@ -1,6 +1,11 @@
 import { startGameService, addPlayerService } from '../services/LandingPage';
 import { getGameUidService, getPacksService } from '../services/Game';
 import { getGameData } from './';
+import {
+  pickTeamsRoute,
+  addTopicsRoute,
+  homescreenRoute
+} from '../services/navigation';
 
 import { WRITE_OUR_OWN_UID } from '../constants';
 
@@ -116,7 +121,7 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
   });
 
   getGameUidService(gameId)
-    .then(gameUid => {
+    .then(({ gameUid, noTeams, topicPack }) => {
       if (gameUid) {
         dispatch({
           type: STARTED_GAME,
@@ -133,7 +138,13 @@ export const joinGame = (gameId, history) => (dispatch, getState) => {
               payload: playerUid
             });
 
-            history.push(`/${gameId}/pickTeams`);
+            if (!noTeams) {
+              history.push(pickTeamsRoute(gameId));
+            } else if (!topicPack) {
+              history.push(addTopicsRoute(gameId));
+            } else {
+              history.push(homescreenRoute(gameId));
+            }
           },
           () => {
             dispatch({
@@ -184,7 +195,13 @@ export const startGame = (numberOfTeams, topicPackUid, history) => (
             payload: playerUid
           });
 
-          history.push(`/${gameId}/pickTeams`);
+          if (numberOfTeams > 0) {
+            history.push(pickTeamsRoute(gameId));
+          } else if (topicPackUid === WRITE_OUR_OWN_UID) {
+            history.push(addTopicsRoute(gameId));
+          } else {
+            history.push(homescreenRoute(gameId));
+          }
         },
         () => {
           dispatch({

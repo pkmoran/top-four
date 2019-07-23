@@ -155,18 +155,22 @@ export const endRound = () => (dispatch, getState) => {
     }
   });
 
-  const numberOfTeams = teams.array.length;
-  const nextRankingTeamIndex =
-    (findIndex(teams.array, { uid: rankingTeamUid }) + 1) % numberOfTeams;
-  const nextRankingTeamUid = teams.array[nextRankingTeamIndex].uid;
-
   const game = {
     state: '',
     rankingPlayerUid: '',
-    rankingTeamUid: nextRankingTeamUid,
     topics: topics.map,
     players: players.map
   };
+
+  const numberOfTeams = teams.array.length;
+
+  if (numberOfTeams > 0) {
+    const nextRankingTeamIndex =
+      (findIndex(teams.array, { uid: rankingTeamUid }) + 1) % numberOfTeams;
+    const nextRankingTeamUid = teams.array[nextRankingTeamIndex].uid;
+
+    game.rankingTeamUid = nextRankingTeamUid;
+  }
 
   dispatch({ type: SKIP_SCORE });
   updateGameService(game, gameUid);

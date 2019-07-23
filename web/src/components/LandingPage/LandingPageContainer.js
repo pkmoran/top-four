@@ -36,8 +36,8 @@ class LandingPageContainer extends Component {
     this.props.nameChanged(event.target.value);
   }
 
-  teamNumberChanged(event) {
-    this.props.teamNumberChanged(event.target.value);
+  teamNumberChanged(numberOfTeams) {
+    this.props.teamNumberChanged(numberOfTeams);
   }
 
   topicPackChanged(event) {

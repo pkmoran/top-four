@@ -6,6 +6,7 @@ import {
   watchGameStateService,
   stopWatchingGameStateService
 } from '../services/Game';
+import { rankTopicsRoute } from '../services/navigation';
 
 import { SHOW_START_ROUND_DIALOG } from './types';
 
@@ -19,7 +20,7 @@ export const hideStartRoundDialog = () => ({
   payload: false
 });
 
-export const randTopicIds = (topics) => {
+export const randTopicIds = topics => {
   const availableTopics = pickBy(topics, topic => topic.status === 'available');
   return sampleSize(Object.keys(availableTopics), 4);
 };
@@ -44,7 +45,7 @@ export const startRound = () => (dispatch, getState) => {
 
 export const startRanking = history => (dispatch, getState) => {
   const { gameId } = getState().Game;
-  history.push(`/${gameId}/rankTopics`);
+  history.push(rankTopicsRoute(gameId));
 };
 
 export const watchGameStateForHomescreen = history => (dispatch, getState) => {
@@ -58,11 +59,14 @@ export const watchGameStateForHomescreen = history => (dispatch, getState) => {
       dispatch(hideStartRoundDialog());
       stopWatchingGameStateService(gameUid);
 
-      history.push(`/${gameId}/rankTopics`);
+      history.push(rankTopicsRoute(gameId));
     }
   });
 };
 
-export const stopWatchingGameStateForHomescreen = () => (dispatch, getState) => {
+export const stopWatchingGameStateForHomescreen = () => (
+  dispatch,
+  getState
+) => {
   stopWatchingGameStateService(getState().Game.gameUid);
-}
+};

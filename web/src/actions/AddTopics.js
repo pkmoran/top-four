@@ -1,8 +1,7 @@
 import { addTopicService, deleteTopicService } from '../services/AddTopics';
+import { homescreenRoute } from '../services/navigation';
 
-import {
-  TOPIC_CHANGED, ADDED_TOPIC
-} from './types';
+import { TOPIC_CHANGED, ADDED_TOPIC } from './types';
 
 export const addTopic = topic => (dispatch, getState) => {
   const { playerUid, gameUid } = getState().Game;
@@ -25,5 +24,5 @@ export const deleteTopic = topicUid => (dispatch, getState) => {
 
 export const done = history => (dispatch, getState) => {
   const { gameId } = getState().Game;
-  history.push(`/${gameId}/homescreen`);
+  history.push(homescreenRoute(gameId));
 };
