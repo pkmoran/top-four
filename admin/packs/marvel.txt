@@ -5,6 +5,7 @@ Black Widow
 Bucky
 Captain America
 Captain Marvel
+Dare Devil
 Dr. Strange
 Drax
 Falcon
@@ -13,8 +14,11 @@ Groot
 Happy Hogan
 Hawkeye
 Hulk
+Iron Fist
 Iron Man
+Jessica Jones
 Loki
+Luke Cage
 Mantis
 Nebula
 Nick Fury
