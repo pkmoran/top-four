@@ -41,6 +41,7 @@ exports.startGame = functions.https.onCall(async (data, context) => {
     gameId: newGameId,
     startDate: moment().format(),
     teams: {},
+    noTeams: numberOfTeams === 0,
     topicPack: !!topicPackUid
   });
 
