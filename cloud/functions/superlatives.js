@@ -1,9 +1,5 @@
 const data = require('./mock_game_data').data;
 
-const players = {
-  array: map(data.players, (player, uid) => ({ ...player, uid }))
-};
-
 const theWinningTeam = superlatives => {
   const teamScores = Object.keys(data.players).reduce((teams, playerUid) => {
     const player = data.players[playerUid];
@@ -30,13 +26,15 @@ const theWinningTeam = superlatives => {
 };
 
 const theExpert = superlatives => {
-  const player = players.array.reduce((winning, player) =>
-    winning.score > player.score ? winning : player
+  const expertUid = Object.keys(data.players).reduce((winningUid, playerUid) =>
+    data.players[winningUid].score > data.players[playerUid].score
+      ? winningUid
+      : playerUid
   );
 
   superlatives.push({
     title: 'The Expert',
-    receivedBy: player.name,
+    receivedBy: data.players[expertUid].name,
     description: `Congrats! You know the most about how people feel about random, trivial things. Oh, the places you'll go.`
   });
 };
