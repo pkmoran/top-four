@@ -25,6 +25,6 @@ describe('the interface', () => {
   });
 
   it('should have a dialog title', () => {
-    expect(wrapped.find(DialogTitle).text()).toEqual('How many teams?');
+    expect(wrapped.find(DialogTitle).text()).toEqual('How do you want to play?');
   });
 });
