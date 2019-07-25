@@ -56,29 +56,26 @@ class StartGameDialog extends Component {
       numberOfTeams
     } = this.props;
 
-    const noTeams = () => {
-      onTeamNumberChange(0);
-      onNext('pickTeams');
-    };
-
     return (
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>How many teams?</DialogTitle>
+        <DialogTitle>How do you want to play?</DialogTitle>
         <DialogContent>
           <form>
             <FormControl>
-              <InputLabel htmlFor="teams-dropdown">Teams</InputLabel>
+              <InputLabel htmlFor="teams-dropdown">Play style</InputLabel>
 
               <Select
                 native
                 value={numberOfTeams}
-                onChange={event => onTeamNumberChange(event.target.value)}
+                onChange={onTeamNumberChange}
                 input={<Input id="teams-dropdown" />}
               >
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
+                <option value="" />
+                <option value={0}>As individuals</option>
+                <option value={2}>With 2 teams</option>
+                <option value={3}>With 3 teams</option>
+                <option value={4}>With 4 teams</option>
+                <option value={5}>With 5 teams</option>
               </Select>
             </FormControl>
           </form>
@@ -89,11 +86,11 @@ class StartGameDialog extends Component {
             Back
           </Button>
 
-          <Button variant="outlined" onClick={noTeams}>
-            No teams
-          </Button>
-
-          <Button variant="outlined" onClick={() => onNext('pickTeams')}>
+          <Button
+            variant="outlined"
+            onClick={() => onNext('pickTeams')}
+            disabled={numberOfTeams === ''}
+          >
             Next
           </Button>
         </DialogActions>
@@ -114,13 +111,11 @@ class StartGameDialog extends Component {
 
     return (
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Play with a topic pack?</DialogTitle>
+        <DialogTitle>Select your topics!</DialogTitle>
         <DialogContent>
           <form className="PickTopicPackForm">
             <FormControl>
-              <InputLabel htmlFor="topic-packs-dropdown">
-                Topic Packs
-              </InputLabel>
+              <InputLabel htmlFor="topic-packs-dropdown">Topics</InputLabel>
 
               <Select
                 native
@@ -128,6 +123,7 @@ class StartGameDialog extends Component {
                 onChange={onTopicPackChange}
                 input={<Input id="topic-packs-dropdown" />}
               >
+                <option value="" />
                 {topicPacks.map(topicPack => (
                   <option key={topicPack.uid} value={topicPack.uid}>
                     {topicPack.name}
@@ -143,7 +139,7 @@ class StartGameDialog extends Component {
             Back
           </Button>
 
-          <Button variant="outlined" onClick={onOk}>
+          <Button variant="outlined" onClick={onOk} disabled={!topicPackUid}>
             Start!
           </Button>
         </DialogActions>

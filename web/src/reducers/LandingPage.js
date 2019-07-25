@@ -1,5 +1,3 @@
-import { WRITE_OUR_OWN_UID } from '../constants';
-
 import {
   JOIN_GAME_ERROR,
   GAME_ID_CHANGED,
@@ -23,9 +21,9 @@ export const INITIAL_STATE = {
   name: '',
   joinEnabled: false,
   showDialog: false,
-  numberOfTeams: 2,
+  numberOfTeams: "",
   startGameStep: 'yourName',
-  topicPackUid: WRITE_OUR_OWN_UID
+  topicPackUid: ""
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -57,30 +55,36 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         numberOfTeams: action.payload
-      }
+      };
     case SHOW_START_GAME_DIALOG:
       return {
         ...state,
         showDialog: action.payload,
-        startGameStep: action.payload ? INITIAL_STATE.startGameStep : state.startGameStep,
-        numberOfTeams: action.payload ? INITIAL_STATE.numberOfTeams : state.numberOfTeams,
-        topicPackUid: action.payload ? INITIAL_STATE.topicPackUid : state.topicPackUid
-      }
+        startGameStep: action.payload
+          ? INITIAL_STATE.startGameStep
+          : state.startGameStep,
+        numberOfTeams: action.payload
+          ? INITIAL_STATE.numberOfTeams
+          : state.numberOfTeams,
+        topicPackUid: action.payload
+          ? INITIAL_STATE.topicPackUid
+          : state.topicPackUid
+      };
     case LOADING_TOPIC_PACKS:
       return {
         ...state,
         loading: action.payload
-      }
+      };
     case START_GAME_STEP:
       return {
         ...state,
         startGameStep: action.payload
-      }
+      };
     case TOPIC_PACK_CHANGED:
       return {
         ...state,
         topicPackUid: action.payload
-      }
+      };
     default:
       return state;
   }
