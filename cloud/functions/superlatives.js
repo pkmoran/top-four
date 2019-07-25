@@ -1,6 +1,17 @@
 const data = require('./mock_game_data').data;
 
-const theWinningTeam = superlatives => {
+exports.generate = gameData => {
+  const superlatives = [];
+
+  theWinningTeam(superlatives, gameData);
+  theExpert(superlatives, gameData);
+  theIndividualTopicAwards(superlatives, gameData);
+  theDisagreeTeam(superlatives, gameData);
+
+  return superlatives;
+};
+
+const theWinningTeam = (superlatives, data) => {
   const teamScores = Object.keys(data.players).reduce((teams, playerUid) => {
     const player = data.players[playerUid];
 
@@ -25,7 +36,7 @@ const theWinningTeam = superlatives => {
   });
 };
 
-const theExpert = superlatives => {
+const theExpert = (superlatives, data) => {
   const expertUid = Object.keys(data.players).reduce((winningUid, playerUid) =>
     data.players[winningUid].score > data.players[playerUid].score
       ? winningUid
@@ -39,7 +50,7 @@ const theExpert = superlatives => {
   });
 };
 
-const theIndividualTopicAwards = superlatives => {
+const theIndividualTopicAwards = (superlatives, data) => {
   const topicGuesses = Object.keys(data.guesses).reduce(
     (topicGuesses, playerUid) => {
       Object.keys(data.guesses[playerUid]).forEach(topicUid => {
@@ -144,7 +155,7 @@ const theIndividualTopicAwards = superlatives => {
   });
 };
 
-const theDisagreeTeam = superlatives => {
+const theDisagreeTeam = (superlatives, data) => {
   const teamPlayers = Object.keys(data.players).reduce(
     (teamPlayers, playerUid) => {
       const player = data.players[playerUid];
@@ -215,12 +226,3 @@ const theDisagreeTeam = superlatives => {
     } times! Maybe you should seek counseling...`
   });
 };
-
-const superlatives = [];
-
-theWinningTeam(superlatives);
-theExpert(superlatives);
-theIndividualTopicAwards(superlatives);
-theDisagreeTeam(superlatives);
-
-console.log(superlatives);

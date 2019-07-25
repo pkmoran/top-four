@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 const moment = require('moment');
+const superlatives = require('./superlatives');
 
 admin.initializeApp();
 
@@ -18,6 +19,14 @@ exports.putOne = functions.https.onRequest((req, res) => {
     .then(snapshot => {
       return res.status(200).send(snapshot);
     });
+});
+
+exports.superlatives = functions.https.onCall(async (data, context) => {
+  const db = admin.database();
+
+  const gameData = await db.ref(`/mockGames/test_id`).once('value');
+
+  return superlatives.generate(gameData.val());
 });
 
 exports.startGame = functions.https.onCall(async (data, context) => {
