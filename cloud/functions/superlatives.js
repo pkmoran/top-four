@@ -219,7 +219,7 @@ const theDisagreeTeam = (superlatives, data) => {
   );
 
   superlatives.push({
-    title: 'The Disagree Team',
+    title: 'The Lone Rangers',
     receivedBy: data.teams[mostDisagreeUid].name,
     description: `Your team disagreed ${
       teamDisagrees[mostDisagreeUid]
