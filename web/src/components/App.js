@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { connect } from 'react-redux';
 
 import LandingPageContainer from './LandingPage/LandingPageContainer';
