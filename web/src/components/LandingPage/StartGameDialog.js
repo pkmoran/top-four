@@ -111,7 +111,7 @@ class StartGameDialog extends Component {
 
     return (
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Select your topics!</DialogTitle>
+        <DialogTitle>Select your topics</DialogTitle>
         <DialogContent>
           <form className="PickTopicPackForm">
             <FormControl>
