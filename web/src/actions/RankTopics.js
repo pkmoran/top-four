@@ -183,12 +183,12 @@ export const endRound = () => (dispatch, getState) => {
 };
 
 export const roundEnded = history => (dispatch, getState) => {
-  const { players, gameUid, playerUid } = getState().Game;
+  const { players, gameUid, playerUid, gameId } = getState().Game;
   const { roundScore, skipScore } = getState().RankTopics;
 
   if (skipScore) {
     dispatch(resetLocalRanking());
-    history.goBack();
+    history.replace(`/${gameId}/homescreen`);
   } else {
     const player = {
       score: players.map[playerUid].score + roundScore,
@@ -198,14 +198,21 @@ export const roundEnded = history => (dispatch, getState) => {
     updatePlayerService(player, playerUid, gameUid, () => {
       dispatch(resetLocalRanking());
 
-      history.goBack();
+      history.replace(`/${gameId}/homescreen`);
     });
   }
 };
 
 export const watchGameStateForRankTopics = history => (dispatch, getState) => {
-  const { gameUid, playerUid } = getState().Game;
+  const { gameId, gameUid, playerUid } = getState().Game;
   let locked = false;
+
+  const unlisten = history.listen((location, action) => {
+    if (location.pathname !== `/${gameId}/rankTopics` && action === 'POP') {
+      unlisten()
+      history.push(`/${gameId}/rankTopics`);
+    }
+  });
 
   watchGameStateService(gameUid, newState => {
     const lockedIn = getState().Game.players.map[playerUid].lockedIn;
@@ -219,6 +226,7 @@ export const watchGameStateForRankTopics = history => (dispatch, getState) => {
 
       stopWatchingGameStateService(gameUid);
 
+      unlisten();
       dispatch(roundEnded(history));
     }
   });

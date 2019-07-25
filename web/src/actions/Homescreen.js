@@ -55,7 +55,7 @@ export const startRound = () => (dispatch, getState) => {
 
 export const startRanking = history => (dispatch, getState) => {
   const { gameId } = getState().Game;
-  history.push(rankTopicsRoute(gameId));
+  history.replace(rankTopicsRoute(gameId));
 };
 
 export const watchGameStateForHomescreen = history => (dispatch, getState) => {
@@ -69,7 +69,7 @@ export const watchGameStateForHomescreen = history => (dispatch, getState) => {
       dispatch(hideStartRoundDialog());
       stopWatchingGameStateService(gameUid);
 
-      history.push(rankTopicsRoute(gameId));
+      history.replace(rankTopicsRoute(gameId));
     }
   });
 };
