@@ -48,8 +48,10 @@
       "<rootDir>/tests/__mocks__/setupTests.js"
     ],
     "moduleNameMapper": {
+      "^actions(.*)$": "<rootDir>/src/actions$1",
       "^components(.*)$": "<rootDir>/src/components$1",
       "^routes(.*)$": "<rootDir>/src/routes$1",
+      "^services(.*)$": "<rootDir>/src/services$1",
       "^state(.*)$": "<rootDir>/src/state$1"
     }
   }

@@ -1,11 +1,11 @@
 import { h } from 'preact';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import {
   gameStateReducer,
   GameStateProvider,
   useGameState,
-  withGameState
+  withAction
 } from 'state/game_state';
 
 function MockComponent() {
@@ -34,30 +34,42 @@ describe('game state', () => {
   });
 
   describe('useGameState', () => {
-    it('mocks state and dispatch in a test environment', () => {
-      const [state, dispatch] = useGameState({ test: 'asdf' }, () => 42);
+    it('mocks state, dispatch and actionWrapper in a test environment', () => {
+      const { state, dispatch, actionWrapper } = useGameState(
+        { test: 'asdf' },
+        () => 42
+      );
 
       expect(state).toEqual({ test: 'asdf' });
       expect(dispatch()).toBe(42);
+      expect(actionWrapper).toBeDefined();
+      expect(actionWrapper(() => 42)()).toBe(42);
     });
   });
 
-  describe('withGameState', () => {
-    it('passes props to the wrapped component', () => {
-      const ComponentWithGameState = withGameState(MockComponent);
-      const wrapper = shallow(<ComponentWithGameState test="asdf" />);
+  describe('withAction', () => {
+    it('passes props down to the wrapped component', () => {
+      const namedFunction = () => 42;
+
+      const withNamedFunction = withAction(namedFunction);
+      const ComponentWithNamedFunction = withNamedFunction(MockComponent);
+
+      const wrapper = shallow(<ComponentWithNamedFunction test="asdf" />);
 
       expect(wrapper.find(MockComponent).props().test).toBe('asdf');
     });
 
-    it('passes state and dispatch to the wrapped component', () => {
-      const mockState = { test: 'asdf' };
-      const ComponentWithGameState = withGameState(MockComponent, mockState);
-      const wrapper = shallow(<ComponentWithGameState />);
+    it('passes the wrapped action prop to the wrapped component', () => {
+      const namedFunction = () => 42;
 
-      expect(wrapper.find(MockComponent).props().state).toEqual({
-        test: 'asdf'
-      });
+      const withNamedFunction = withAction(namedFunction);
+      const ComponentWithNamedFunction = withNamedFunction(MockComponent);
+
+      const wrapper = shallow(<ComponentWithNamedFunction />);
+      const action = wrapper.find(MockComponent).props().namedFunction;
+
+      expect(action).toBeDefined();
+      expect(action()).toBe(42);
     });
   });
 });
