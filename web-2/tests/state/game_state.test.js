@@ -2,10 +2,10 @@ import { h } from 'preact';
 import { shallow } from 'enzyme';
 
 import {
-  gameStateReducer,
   GameStateProvider,
   useGameState,
-  withAction
+  withAction,
+  withState
 } from 'state/game_state';
 
 function MockComponent() {
@@ -13,14 +13,6 @@ function MockComponent() {
 }
 
 describe('game state', () => {
-  describe('gameStateReducer', () => {
-    it('returns state for unknown actions', () => {
-      const state = gameStateReducer({ test: 'asdf' }, 'DUMMY_ACTION');
-
-      expect(state).toEqual({ test: 'asdf' });
-    });
-  });
-
   describe('<GameStateProvider />', () => {
     it('renders children', () => {
       const wrapper = shallow(
@@ -70,6 +62,63 @@ describe('game state', () => {
 
       expect(action).toBeDefined();
       expect(action()).toBe(42);
+    });
+  });
+
+  describe('withState', () => {
+    const MOCK_STATE = { nested: { value: 42 }, root: 'asdf' };
+
+    it('passes props down to the wrapped component', () => {
+      const withStateWrapper = withState('state', 'stateName', MOCK_STATE);
+      const ComponentWithState = withStateWrapper(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState test="asdf" />);
+
+      expect(wrapper.find(MockComponent).props().test).toBe('asdf');
+    });
+
+    it('passes root state to the wrapped component', () => {
+      const withRootState = withState('root', 'stateName', MOCK_STATE);
+      const ComponentWithState = withRootState(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState />);
+
+      expect(wrapper.find(MockComponent).props().stateName).toBe('asdf');
+    });
+
+    it('passes nested state to the wrapped component', () => {
+      const withNestedState = withState(
+        'nested.value',
+        'stateName',
+        MOCK_STATE
+      );
+      const ComponentWithState = withNestedState(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState />);
+
+      expect(wrapper.find(MockComponent).props().stateName).toBe(42);
+    });
+
+    it('passes null to the wrapped component if state does not exist', () => {
+      const withNullState = withState(
+        'andrew.sutherland',
+        'stateName',
+        MOCK_STATE
+      );
+      const ComponentWithState = withNullState(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState />);
+
+      expect(wrapper.find(MockComponent).props().stateName).toBeNull();
+    });
+
+    it('defaults the state name to the state key', () => {
+      const withDefaultStateName = withState('nested.value', null, MOCK_STATE);
+      const ComponentWithState = withDefaultStateName(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState />);
+
+      expect(wrapper.find(MockComponent).props()['nested.value']).toBe(42);
     });
   });
 });

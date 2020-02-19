@@ -1,19 +1,12 @@
 import { h, createContext } from 'preact';
 import { useReducer, useContext } from 'preact/hooks';
 
+import resolve from 'utilities/resolve';
+import gameStateReducer from 'state/reducer';
+
 const GameStateContext = createContext();
 
-const INITIAL_STATE = { andrew: 'sutherland' };
-
-const gameStateReducer = (state, action) => {
-  switch (action.type) {
-    case 'andrewsutherland':
-      console.log('gameStateReducer', action.payload);
-      return state;
-    default:
-      return state;
-  }
-};
+const INITIAL_STATE = {};
 
 const GameStateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(gameStateReducer, INITIAL_STATE);
@@ -56,4 +49,21 @@ const withAction = action => {
   };
 };
 
-export { gameStateReducer, GameStateProvider, useGameState, withAction };
+const withState = (stateKey, stateName, mockState) => {
+  return WrappedComponent => {
+    return props => {
+      const { state } = useGameState(mockState);
+
+      const stateValue = resolve(stateKey, state);
+
+      return (
+        <WrappedComponent
+          {...props}
+          {...{ [stateName || stateKey]: stateValue }}
+        />
+      );
+    };
+  };
+};
+
+export { GameStateProvider, useGameState, withAction, withState };

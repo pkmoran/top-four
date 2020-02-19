@@ -20,6 +20,7 @@
     "build/*"
   ],
   "devDependencies": {
+    "async-to-gen": "^1.4.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-preact-pure": "^2.0.0",
     "eslint": "^6.0.1",
@@ -35,6 +36,7 @@
     "serve": "^11.1.0"
   },
   "dependencies": {
+    "@glidejs/glide": "^3.4.1",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^7.8.1",
     "preact": "^10.0.1",
@@ -52,7 +54,12 @@
       "^components(.*)$": "<rootDir>/src/components$1",
       "^routes(.*)$": "<rootDir>/src/routes$1",
       "^services(.*)$": "<rootDir>/src/services$1",
-      "^state(.*)$": "<rootDir>/src/state$1"
+      "^state(.*)$": "<rootDir>/src/state$1",
+      "^utilities(.*)$": "<rootDir>/src/utilities$1"
+    },
+    "transform": {
+      "^.+\\.(mjs|js|jsx|ts|tsx)$": "babel-jest",
+      "^.+\\.js$": "async-to-gen"
     }
   }
 }
