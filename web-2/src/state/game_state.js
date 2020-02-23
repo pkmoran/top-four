@@ -34,7 +34,7 @@ const useGameState = (mockState = {}, mockDispatch = () => {}) => {
   return { ...mock, actionWrapper };
 };
 
-const withAction = action => {
+const withAction = (action, propName) => {
   return WrappedComponent => {
     return props => {
       const { actionWrapper } = useGameState();
@@ -42,7 +42,7 @@ const withAction = action => {
       return (
         <WrappedComponent
           {...props}
-          {...{ [action.name]: actionWrapper(action) }}
+          {...{ [propName]: actionWrapper(action) }}
         />
       );
     };

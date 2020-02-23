@@ -54,7 +54,7 @@ describe('game state', () => {
     it('passes the wrapped action prop to the wrapped component', () => {
       const namedFunction = () => 42;
 
-      const withNamedFunction = withAction(namedFunction);
+      const withNamedFunction = withAction(namedFunction, 'namedFunction');
       const ComponentWithNamedFunction = withNamedFunction(MockComponent);
 
       const wrapper = shallow(<ComponentWithNamedFunction />);

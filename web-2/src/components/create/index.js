@@ -48,8 +48,8 @@ const Create = ({ startGame, topicPacks }) => {
 const withTopicPacksState = withState('topicPacks');
 
 // actions
-const withStartGameAction = withAction(startGame);
-const withGetTopicPacksAction = withAction(getTopicPacks);
+const withStartGameAction = withAction(startGame, 'startGame');
+const withGetTopicPacksAction = withAction(getTopicPacks, 'getTopicPacks');
 
 // effects
 const withEffect = WrappedComponent => {
