@@ -37,13 +37,10 @@ const addPlayer = async ({ gameUid, name }) => {
   return playerUid;
 };
 
-const getTopicPacks = async (
-  { state, dispatch },
-  service = getTopicPacksService
-) => {
+const getTopicPacks = async ({ state, dispatch }) => {
   if (state.topicPacks && state.topicPacks.length > 0) return;
 
-  const topicPacks = await service().catch(
+  const topicPacks = await getTopicPacksService().catch(
     tagLogger('getTopicPacksService failed')
   );
 
@@ -52,4 +49,4 @@ const getTopicPacks = async (
   }
 };
 
-export { startGame, getTopicPacks };
+export { startGame, getTopicPacks, addPlayer };
