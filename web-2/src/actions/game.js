@@ -1,3 +1,5 @@
+import { route } from 'preact-router';
+
 import {
   startGameService,
   addPlayerService,
@@ -25,6 +27,8 @@ const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
         type: STARTED_GAME,
         payload: { gameId, gameUid, playerUid, name }
       });
+
+      route(`${gameId}/share`, true);
     }
   }
 };

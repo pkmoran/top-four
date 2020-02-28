@@ -6,7 +6,7 @@ import {
   useGameState,
   withAction,
   withState
-} from 'state/game_state';
+} from 'state/game';
 
 function MockComponent() {
   return <div />;

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
 
-import { GameStateProvider } from 'state/game_state';
+import { GameStateProvider } from 'state/game';
 
 import App from 'components/app';
 

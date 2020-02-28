@@ -1,8 +1,13 @@
+import { route } from 'preact-router';
 import {
   getTopicPacksService,
   addPlayerService,
   startGameService
 } from 'services/game';
+
+jest.mock('preact-router', () => ({
+  route: jest.fn()
+}));
 
 jest.mock('services/game', () => ({
   getTopicPacksService: jest.fn(),
@@ -114,7 +119,7 @@ describe('game actions', () => {
       });
     });
 
-    it('dispatches the started game action on success', async () => {
+    it('dispatches the started game action and routes on success', async () => {
       startGameService.mockResolvedValue({ gameId: 'A6', gameUid: '12345' });
       addPlayerService.mockResolvedValue('98765');
       const dispatch = jest.fn();
@@ -132,6 +137,9 @@ describe('game actions', () => {
         playerUid: '98765',
         name: 'andrew'
       });
+
+      expect(route).toHaveBeenCalledTimes(1);
+      expect(route.mock.calls[0][0]).toBe('A6/share');
     });
   });
 });

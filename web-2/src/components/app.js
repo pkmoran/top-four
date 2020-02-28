@@ -5,6 +5,7 @@ import { Router } from 'preact-router';
 import Home from 'routes/home';
 import Join from 'routes/join';
 import Create from 'routes/create';
+import Share from 'routes/share';
 
 export default class App extends Component {
   render() {
@@ -14,6 +15,7 @@ export default class App extends Component {
           <Home path="/" />
           <Join path="/join" />
           <Create path="/create" />
+          <Share path=":gameId/share" />
         </Router>
       </div>
     );

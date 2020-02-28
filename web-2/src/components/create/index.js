@@ -4,7 +4,7 @@ import { useState, useEffect } from 'preact/hooks';
 import compose from 'utilities/compose';
 import { WRITE_OUR_OWN_UID, TEAMS } from 'utilities/constants';
 
-import { withAction, withState } from 'state/game_state';
+import { withAction, withState } from 'state/game';
 import { startGame, getTopicPacks } from 'actions/game';
 
 import Slider from 'components/shared/slider';
