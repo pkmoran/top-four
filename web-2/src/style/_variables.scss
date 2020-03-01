@@ -10,4 +10,8 @@ $color-black: #000;
 $color-light-gray: #eee;
 $color-gray: #bbb;
 $color-white: #fafafa;
-$color-primary: #00aaff;
+$color-primary: #ff5d28;
+
+:export {
+  colorPrimary: $color-primary;
+}

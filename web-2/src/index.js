@@ -1,11 +1,13 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
+import { ThemeProvider } from '@material-ui/core';
 
 import { GameStateProvider } from 'state/game';
 
 import App from 'components/app';
 
 import 'style';
+import theme from 'style/theme';
 
 firebase.initializeApp({
   apiKey: process.env.TOP_FOUR_FIREBASE_API_KEY,
@@ -18,9 +20,11 @@ firebase.initializeApp({
 });
 
 const Root = () => (
-  <GameStateProvider>
-    <App />
-  </GameStateProvider>
+  <ThemeProvider theme={theme}>
+    <GameStateProvider>
+      <App />
+    </GameStateProvider>
+  </ThemeProvider>
 );
 
 export default Root;

@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  background: $color-primary;
 
   &__header {
     flex-grow: 1;
@@ -22,6 +23,11 @@
 
   &__separator {
     font-weight: bolder;
-    margin-top: $size-xs;
+    margin: $size-xs 0;
+    color: $color-white;
+  }
+
+  button {
+    background-color: $color-white;
   }
 }

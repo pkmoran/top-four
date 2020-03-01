@@ -11,7 +11,8 @@
     "serve": "preact build && serve build --single",
     "dev": "preact watch",
     "lint": "eslint src",
-    "test": "jest --watch-all"
+    "test": "jest --watch-all",
+    "test-ci": "jest"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
@@ -37,6 +38,7 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.4.1",
+    "@material-ui/core": "^4.9.4",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^7.8.1",
     "preact": "^10.0.1",
