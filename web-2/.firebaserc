@@ -5,8 +5,8 @@
   "targets": {
     "top-four-cca25": {
       "hosting": {
-        "prod": [
-          "top-four-cca25"
+        "dev": [
+          "top-four-dev"
         ]
       }
     }
