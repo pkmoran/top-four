@@ -2,16 +2,14 @@ language: node_js
 node_js:
   - 12
 
+before_script:
+  - npm i -g firebase-tools
+
 script:
   - cd web-2
   - npm install
   - npm run test-ci
   - npm run build
 
-deploy:
-  - provider: firebase
-    skip_cleanup: true
-    token:
-      secure: $FIREBASE_TOKEN
-    on:
-      branch: development
+after_script:
+  - firebase deploy --token "$FIREBASE_TOKEN"
