@@ -1,34 +1,28 @@
 import { h } from 'preact';
+import { FormControlLabel, RadioGroup, Radio } from '@material-ui/core';
 
 import { INDIVIDUALS, TEAMS } from 'utilities/constants';
 
 const GameMode = ({ gameMode, setGameMode }) => {
   return (
     <div class="game-mode">
-      <h3>How do you want to play?</h3>
+      <span class="game-mode__header">How do you want to play?</span>
       <div class="game-mode__choices">
-        <span>
-          <input
-            type="radio"
-            id="teams"
-            name="game-mode"
+        <RadioGroup
+          value={gameMode}
+          onChange={({ target: { value } }) => setGameMode(value)}
+        >
+          <FormControlLabel
             value={TEAMS}
-            onChange={() => setGameMode(TEAMS)}
-            checked={gameMode === TEAMS}
+            control={<Radio />}
+            label="On 2 teams"
           />
-          <label htmlFor="teams">On 2 teams</label>
-        </span>
-        <span>
-          <input
-            type="radio"
-            id="individuals"
-            name="game-mode"
+          <FormControlLabel
             value={INDIVIDUALS}
-            onChange={() => setGameMode(INDIVIDUALS)}
-            checked={gameMode === INDIVIDUALS}
+            control={<Radio />}
+            label="As individuals"
           />
-          <label htmlFor="individuals">As individuals</label>
-        </span>
+        </RadioGroup>
       </div>
     </div>
   );

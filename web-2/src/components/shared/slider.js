@@ -1,16 +1,19 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import Glide from '@glidejs/glide';
+import { Button } from '@material-ui/core';
 
 import cx from 'utilities/cx';
 
-const Slider = ({ children, confirmContent }) => {
+const Slider = ({ children, confirmContent, scrollableSteps }) => {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
     const glide = new Glide('.glide', {
       rewind: false,
-      startsAt: step
+      startsAt: step,
+      swipeThreshold: false,
+      dragThreshold: false
     }).mount();
 
     glide.on('run', () => {
@@ -32,9 +35,13 @@ const Slider = ({ children, confirmContent }) => {
     'visibility--hidden': step === children.length - 1
   });
 
+  const trackClasses = cx('glide__track', {
+    scrollable: scrollableSteps && scrollableSteps.includes(step)
+  });
+
   return (
     <div class="slider glide">
-      <div class="glide__track" data-glide-el="track">
+      <div class={trackClasses} data-glide-el="track">
         <ul class="glide__slides">
           {children.map(child => (
             <li class="glide__slide">{child}</li>
@@ -43,9 +50,9 @@ const Slider = ({ children, confirmContent }) => {
       </div>
 
       <div class="slider__arrows glide__arrows" data-glide-el="controls">
-        <button class={prevClasses} data-glide-dir="<">
-          &lt; prev
-        </button>
+        <div class={prevClasses} data-glide-dir="<">
+          <Button color="primary">&lt; prev</Button>
+        </div>
 
         {confirmContent && (
           <span
@@ -56,9 +63,9 @@ const Slider = ({ children, confirmContent }) => {
           </span>
         )}
 
-        <button class={nextClasses} data-glide-dir=">">
-          next &gt;
-        </button>
+        <div class={nextClasses} data-glide-dir=">">
+          <Button color="primary">next &gt;</Button>
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,10 @@
   flex-direction: column;
   justify-content: space-between;
 
+  .scrollable {
+    overflow-y: auto;
+  }
+
   &__arrows {
     display: flex;
     justify-content: space-around;

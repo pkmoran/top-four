@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
+import { Button } from '@material-ui/core';
 
 import compose from 'utilities/compose';
 import { WRITE_OUR_OWN_UID, TEAMS } from 'utilities/constants';
@@ -7,6 +8,7 @@ import { WRITE_OUR_OWN_UID, TEAMS } from 'utilities/constants';
 import { withAction, withState } from 'state/game';
 import { startGame, getTopicPacks } from 'actions/game';
 
+import Logo from 'components/shared/logo';
 import Slider from 'components/shared/slider';
 
 import GameMode from 'components/create/game_mode';
@@ -19,27 +21,35 @@ const Create = ({ startGame, topicPacks }) => {
   const [name, setName] = useState('');
 
   const handleStartGame = () => {
-    startGame({ name, gameMode, topicPackUid });
+    // startGame({ name, gameMode, topicPackUid });
+    console.log(name, gameMode, topicPackUid);
   };
 
   const confirmButton = (
-    <button class="btn btn__primary" onClick={handleStartGame}>
-      Start Game!
-    </button>
+    <Button variant="contained" color="primary" onClick={handleStartGame}>
+      Start game!
+    </Button>
   );
 
   return (
     <div class="create">
-      <h2>Top Four</h2>
-      <Slider confirmContent={confirmButton}>
-        <GameMode gameMode={gameMode} setGameMode={setGameMode} />
-        <Topics
-          topicPacks={topicPacks}
-          topicPackUid={topicPackUid}
-          setTopicPackUid={setTopicPackUid}
-        />
-        <Name name={name} setName={setName} />
-      </Slider>
+      <div class="create__logo">
+        <Logo size="small" />
+      </div>
+      <div class="create__container">
+        <h2>Create a New Game!</h2>
+        <div class="create__slider">
+          <Slider confirmContent={confirmButton} scrollableSteps={[1]}>
+            <GameMode gameMode={gameMode} setGameMode={setGameMode} />
+            <Topics
+              topicPacks={topicPacks}
+              topicPackUid={topicPackUid}
+              setTopicPackUid={setTopicPackUid}
+            />
+            <Name name={name} setName={setName} />
+          </Slider>
+        </div>
+      </div>
     </div>
   );
 };
