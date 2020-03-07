@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 
 import compose from 'utilities/compose';
 import { WRITE_OUR_OWN_UID, TEAMS } from 'utilities/constants';
@@ -19,14 +19,27 @@ const Create = ({ startGame, topicPacks }) => {
   const [gameMode, setGameMode] = useState(TEAMS);
   const [topicPackUid, setTopicPackUid] = useState(WRITE_OUR_OWN_UID);
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const disabled = loading || !name;
 
   const handleStartGame = () => {
-    startGame({ name, gameMode, topicPackUid });
+    setLoading(true);
+
+    startGame({ name, gameMode, topicPackUid }).catch(() => {
+      setLoading(false);
+    });
   };
 
   const confirmButton = (
-    <Button variant="contained" color="primary" onClick={handleStartGame}>
-      Start game!
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={handleStartGame}
+      disabled={disabled}
+    >
+      {!loading && 'Start game!'}
+      {loading && <CircularProgress size={24} />}
     </Button>
   );
 
