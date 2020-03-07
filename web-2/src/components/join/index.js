@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { Button, TextField } from '@material-ui/core';
+import { Button, CircularProgress, TextField } from '@material-ui/core';
 
 import { withAction } from 'state/game';
 import { joinGame } from 'actions/game';
@@ -10,11 +10,24 @@ import Logo from 'components/shared/logo';
 const Join = ({ joinGame }) => {
   const [name, setName] = useState('');
   const [gameId, setGameId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const disabled = loading || !name || gameId.length !== 2;
 
   const handleJoinGame = () => {
+    setLoading(true);
+
     joinGame({ name, gameId }).catch(() => {
-      console.log('Join component failed');
+      setGameId('');
+      setLoading(false);
+      setError('Invalid Game ID');
     });
+  };
+
+  const handleGameIdChanged = ({ target: { value } }) => {
+    setGameId(value.toUpperCase());
+    setError('');
   };
 
   return (
@@ -35,12 +48,20 @@ const Join = ({ joinGame }) => {
             name="gameId"
             label="What's the game code?"
             value={gameId}
-            onInput={({ target: { value } }) => setGameId(value)}
+            onInput={handleGameIdChanged}
+            error={!!error}
+            helperText={error}
           />
         </div>
         <div class="join__container--bottom">
-          <Button variant="contained" color="primary" onClick={handleJoinGame}>
-            Join!
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleJoinGame}
+            disabled={disabled}
+          >
+            {!loading && 'Join!'}
+            {loading && <CircularProgress size={24} />}
           </Button>
         </div>
       </div>
