@@ -21,8 +21,7 @@ const Create = ({ startGame, topicPacks }) => {
   const [name, setName] = useState('');
 
   const handleStartGame = () => {
-    // startGame({ name, gameMode, topicPackUid });
-    console.log(name, gameMode, topicPackUid);
+    startGame({ name, gameMode, topicPackUid });
   };
 
   const confirmButton = (

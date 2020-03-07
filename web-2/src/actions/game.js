@@ -2,6 +2,7 @@ import { route } from 'preact-router';
 
 import {
   startGameService,
+  getGameService,
   addPlayerService,
   getTopicPacksService
 } from 'services/game';
@@ -17,20 +18,49 @@ const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
     topicPackUid: topicPackUid !== WRITE_OUR_OWN_UID ? topicPackUid : null
   }).catch(tagLogger('startGameService failed'));
 
-  if (data) {
-    const { gameId, gameUid } = data;
-
-    const playerUid = await addPlayer({ gameUid, name });
-
-    if (playerUid) {
-      dispatch({
-        type: STARTED_GAME,
-        payload: { gameId, gameUid, playerUid, name }
-      });
-
-      route(`${gameId}/share`, true);
-    }
+  if (!data || !data.gameId || !data.gameUid) {
+    return Promise.reject('cannot start game');
   }
+
+  const { gameId, gameUid } = data;
+
+  const playerUid = await addPlayer({ gameUid, name });
+
+  if (!playerUid) {
+    return Promise.reject('cannot add player');
+  }
+
+  dispatch({
+    type: STARTED_GAME,
+    payload: { gameId, gameUid, playerUid, name }
+  });
+
+  route(`${gameId}/share`, true);
+};
+
+const joinGame = async ({ name, gameId }, { dispatch }) => {
+  const game = await getGameService(gameId).catch(
+    tagLogger('getGameService failed')
+  );
+
+  if (!game || !game.gameUid) {
+    return Promise.reject('cannot get game object');
+  }
+
+  const { gameUid } = game;
+
+  const playerUid = await addPlayer({ gameUid, name });
+
+  if (!playerUid) {
+    return Promise.reject('cannot add player');
+  }
+
+  dispatch({
+    type: STARTED_GAME,
+    payload: { gameId, gameUid, playerUid, name }
+  });
+
+  route(`${gameId}/share`, true);
 };
 
 const addPlayer = async ({ gameUid, name }) => {
@@ -53,4 +83,4 @@ const getTopicPacks = async ({ state, dispatch }) => {
   }
 };
 
-export { startGame, getTopicPacks, addPlayer };
+export { startGame, joinGame, getTopicPacks, addPlayer };

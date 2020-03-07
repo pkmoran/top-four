@@ -36,4 +36,25 @@ const pruneGamesService = () => {
   pruneGames();
 };
 
-export { startGameService, getTopicPacksService, addPlayerService };
+const getGameService = async gameId => {
+  const response = await firebase
+    .database()
+    .ref('/games')
+    .once('value');
+
+  const games = response.val();
+
+  return Object.keys(games)
+    .map(gameUid => ({
+      gameUid,
+      ...games[gameUid]
+    }))
+    .find(game => game.gameId === gameId);
+};
+
+export {
+  startGameService,
+  getTopicPacksService,
+  addPlayerService,
+  getGameService
+};
