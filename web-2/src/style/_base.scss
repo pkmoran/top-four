@@ -1,13 +1,15 @@
+@import 'variables';
+
 html,
 body {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
-  background: #fafafa;
-  font-family: 'Helvetica Neue', arial, sans-serif;
+  background: $color-white;
+  font-family: 'Roboto', arial, sans-serif;
   font-weight: 400;
-  color: #444;
+  color: $color-dark-gray;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
