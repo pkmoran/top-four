@@ -8,8 +8,11 @@ const GameStateContext = createContext();
 
 const INITIAL_STATE = {};
 
-const GameStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(gameStateReducer, INITIAL_STATE);
+const GameStateProvider = ({ children, initialState }) => {
+  const [state, dispatch] = useReducer(
+    gameStateReducer,
+    initialState || INITIAL_STATE
+  );
 
   const actionWrapper = action => {
     return (...args) => action.apply(null, [...args, { state, dispatch }]);
@@ -54,12 +57,12 @@ const withState = (stateKey, stateName, mockState) => {
     return props => {
       const { state } = useGameState(mockState);
 
-      const stateValue = resolve(stateKey, state);
+      const stateValue = stateKey ? resolve(stateKey, state) : state;
 
       return (
         <WrappedComponent
           {...props}
-          {...{ [stateName || stateKey]: stateValue }}
+          {...{ [stateName || stateKey || 'state']: stateValue }}
         />
       );
     };

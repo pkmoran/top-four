@@ -3,6 +3,7 @@ import 'firebase/database';
 import { ThemeProvider } from '@material-ui/core';
 
 import { GameStateProvider } from 'state/game';
+import { saveState, loadState } from 'utilities/local_storage';
 
 import App from 'components/app';
 
@@ -19,12 +20,17 @@ firebase.initializeApp({
   appId: '1:120019969623:web:6d6ba9a3d0834b0259e512'
 });
 
-const Root = () => (
-  <ThemeProvider theme={theme}>
-    <GameStateProvider>
-      <App />
-    </GameStateProvider>
-  </ThemeProvider>
-);
+const Root = () => {
+  const state = loadState();
+  saveState({});
+
+  return (
+    <ThemeProvider theme={theme}>
+      <GameStateProvider initialState={state}>
+        <App />
+      </GameStateProvider>
+    </ThemeProvider>
+  );
+};
 
 export default Root;

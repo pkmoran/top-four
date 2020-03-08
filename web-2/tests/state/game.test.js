@@ -120,5 +120,14 @@ describe('game state', () => {
 
       expect(wrapper.find(MockComponent).props()['nested.value']).toBe(42);
     });
+
+    it('passes full state to the wrapped component if no stateKey is provided', () => {
+      const withFullState = withState(null, null, MOCK_STATE);
+      const ComponentWithState = withFullState(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState />);
+
+      expect(wrapper.find(MockComponent).props().state).toEqual(MOCK_STATE);
+    });
   });
 });
