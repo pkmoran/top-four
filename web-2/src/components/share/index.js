@@ -1,6 +1,8 @@
 import { h } from 'preact';
 import { Button } from '@material-ui/core';
 
+import { withState } from 'state/game';
+
 import Logo from 'components/shared/logo';
 
 const Share = ({ gameId }) => {
@@ -25,4 +27,7 @@ const Share = ({ gameId }) => {
   );
 };
 
-export default Share;
+const withGameIdState = withState('game.id', 'gameId');
+
+export { Share };
+export default withGameIdState(Share);

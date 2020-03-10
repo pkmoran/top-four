@@ -6,21 +6,20 @@ import { withState } from 'state/game';
 
 const withRequireGame = WrappedComponent => {
   const WrapperComponent = props => {
-    const { gameId, gameUid } = props;
+    const { gameId: routeGameId, stateGameId } = props;
 
     useEffect(() => {
-      if (!gameId || !gameUid) {
+      if (routeGameId && routeGameId !== stateGameId) {
         route('/', true);
       }
-    }, [gameId, gameUid]);
+    }, [props.gameId, props.stateGameId]);
 
     return <WrappedComponent {...props} />;
   };
 
-  const withGameIdState = withState('gameId');
-  const withGameUidState = withState('gameUid');
+  const withGameIdState = withState('game.id', 'stateGameId');
 
-  return withGameIdState(withGameUidState(WrapperComponent));
+  return withGameIdState(WrapperComponent);
 };
 
 export default withRequireGame;

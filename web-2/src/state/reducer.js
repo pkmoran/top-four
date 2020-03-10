@@ -7,7 +7,7 @@ const gameStateReducer = (state, { type, payload }) => {
     case STARTED_GAME:
       const { gameId, gameUid, playerUid, name } = payload;
 
-      return { ...state, gameId, gameUid, playerUid, name };
+      return { ...state, game: { id: gameId, uid: gameUid, playerUid, name } };
     case TOPIC_PACKS:
       const topicPacks = Object.keys(payload).map(uid => {
         const { name, topics } = payload[uid];
