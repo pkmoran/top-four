@@ -1,71 +1,44 @@
 import { h } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
-import Glide from '@glidejs/glide';
+import { useEffect, useState, useRef } from 'preact/hooks';
+import SwipeableViews from 'react-swipeable-views';
 import { Button } from '@material-ui/core';
-
-import cx from 'utilities/cx';
 
 const Slider = ({ children, confirmContent, scrollableSteps }) => {
   const [step, setStep] = useState(0);
+  const updateHeight = useRef(() => {});
 
   useEffect(() => {
-    const glide = new Glide('.glide', {
-      rewind: false,
-      startsAt: step,
-      swipeThreshold: false,
-      dragThreshold: false
-    }).mount();
+    updateHeight.current();
+  }, [step]);
 
-    glide.on('run', () => {
-      setStep(glide.index);
-    });
-  }, []);
-
-  const prevClasses = cx({
-    'btn btn__secondary': true,
-    'visibility--hidden': step === 0
-  });
-
-  const confirmClasses = cx({
-    'visibility--hidden': step < children.length - 1
-  });
-
-  const nextClasses = cx({
-    'btn btn__secondary': true,
-    'visibility--hidden': step === children.length - 1
-  });
-
-  const trackClasses = cx('glide__track', {
-    scrollable: scrollableSteps && scrollableSteps.includes(step)
-  });
+  const handleBack = () => setStep(step - 1);
+  const handleNext = () => setStep(step + 1);
 
   return (
-    <div class="slider glide">
-      <div class={trackClasses} data-glide-el="track">
-        <ul class="glide__slides">
-          {children.map(child => (
-            <li class="glide__slide">{child}</li>
-          ))}
-        </ul>
-      </div>
+    <div class="slider">
+      <SwipeableViews
+        index={step}
+        action={actions => (updateHeight.current = actions.updateHeight)}
+        animateHeight={true}
+      >
+        {children.map(child => (
+          <div>{child}</div>
+        ))}
+      </SwipeableViews>
+      <div class="slider__buttons">
+        <Button color="primary" disabled={step === 0} onClick={handleBack}>
+          &lt; prev
+        </Button>
 
-      <div class="slider__arrows glide__arrows" data-glide-el="controls">
-        <div class={prevClasses} data-glide-dir="<">
-          <Button color="primary">&lt; prev</Button>
-        </div>
+        {step === children.length - 1 && confirmContent}
 
-        {confirmContent && (
-          <span
-            class={confirmClasses}
-            data-glide-dir={`=${children.length - 1}`}
-          >
-            {confirmContent}
-          </span>
-        )}
-
-        <div class={nextClasses} data-glide-dir=">">
-          <Button color="primary">next &gt;</Button>
-        </div>
+        <Button
+          color="primary"
+          disabled={step === children.length - 1}
+          onClick={handleNext}
+        >
+          next &gt;
+        </Button>
       </div>
     </div>
   );

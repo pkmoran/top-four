@@ -37,6 +37,7 @@ const Create = ({ startGame, topicPacks }) => {
       color="primary"
       onClick={handleStartGame}
       disabled={disabled}
+      className="width--40-pct"
     >
       {!loading && 'Start game!'}
       {loading && <CircularProgress size={24} />}

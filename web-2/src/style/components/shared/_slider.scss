@@ -4,12 +4,8 @@
   flex-direction: column;
   justify-content: space-between;
 
-  .scrollable {
-    overflow-y: auto;
-  }
-
-  &__arrows {
+  &__buttons {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 }
