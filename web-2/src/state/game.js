@@ -52,12 +52,14 @@ const withAction = (action, propName) => {
   };
 };
 
-const withState = (stateKey, stateName, mockState) => {
+const withState = (stateKey, stateName, transformFn, mockState) => {
   return WrappedComponent => {
     return props => {
       const { state } = useGameState(mockState);
 
-      const stateValue = stateKey ? resolve(stateKey, state) : state;
+      let stateValue = stateKey ? resolve(stateKey, state) : state;
+
+      if (stateValue && transformFn) stateValue = transformFn(stateValue);
 
       return (
         <WrappedComponent

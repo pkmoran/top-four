@@ -3,7 +3,8 @@ import {
   getTopicPacksService,
   addPlayerService,
   startGameService,
-  getGameService
+  getGameUidService,
+  subscribeToGameUpdatesService
 } from 'services/game';
 
 jest.mock('preact-router', () => ({
@@ -14,11 +15,19 @@ jest.mock('services/game', () => ({
   getTopicPacksService: jest.fn(),
   addPlayerService: jest.fn(),
   startGameService: jest.fn(),
-  getGameService: jest.fn()
+  getGameUidService: jest.fn(),
+  subscribeToGameUpdatesService: jest.fn()
 }));
 
-import { startGame, getTopicPacks, addPlayer, joinGame } from 'actions/game';
-import { TOPIC_PACKS, STARTED_GAME } from 'actions/types';
+import {
+  startGame,
+  getTopicPacks,
+  addPlayer,
+  joinGame,
+  subscribeToGameUpdates
+} from 'actions/game';
+
+import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
 import { TEAMS, INDIVIDUALS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 
 describe('game actions', () => {
@@ -27,7 +36,8 @@ describe('game actions', () => {
     getTopicPacksService.mockClear();
     addPlayerService.mockClear();
     startGameService.mockClear();
-    getGameService.mockClear();
+    getGameUidService.mockClear();
+    subscribeToGameUpdatesService.mockClear();
   });
 
   describe('getTopicPacks', () => {
@@ -140,6 +150,9 @@ describe('game actions', () => {
         name: 'andrew'
       });
 
+      expect(subscribeToGameUpdatesService).toHaveBeenCalledTimes(1);
+      expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
+
       expect(route).toHaveBeenCalledTimes(1);
       expect(route.mock.calls[0][0]).toBe('A6/share');
     });
@@ -166,14 +179,14 @@ describe('game actions', () => {
 
   describe('joinGame', () => {
     it('joins a game', async () => {
-      getGameService.mockResolvedValue({ gameUid: '12345' });
+      getGameUidService.mockResolvedValue({ gameUid: '12345' });
       addPlayerService.mockResolvedValue('98765');
       const dispatch = jest.fn();
 
       await joinGame({ gameId: 'A6', name: 'andrew' }, { dispatch });
 
-      expect(getGameService).toHaveBeenCalledTimes(1);
-      expect(getGameService.mock.calls[0][0]).toBe('A6');
+      expect(getGameUidService).toHaveBeenCalledTimes(1);
+      expect(getGameUidService.mock.calls[0][0]).toBe('A6');
 
       expect(addPlayerService).toHaveBeenCalledTimes(1);
       expect(addPlayerService.mock.calls[0][0]).toEqual({
@@ -193,27 +206,55 @@ describe('game actions', () => {
         name: 'andrew'
       });
 
+      expect(subscribeToGameUpdatesService).toHaveBeenCalledTimes(1);
+      expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
+
       expect(route).toHaveBeenCalledTimes(1);
       expect(route.mock.calls[0][0]).toBe('A6/share');
     });
 
-    it('rejects if getGameService fails', () => {
-      getGameService.mockRejectedValue();
+    it('rejects if getGameUidService fails', () => {
+      getGameUidService.mockRejectedValue();
 
       expect(joinGame({}, {})).rejects.toBe('cannot get game object');
     });
 
-    it('rejects if getGameService does not return a game object', () => {
-      getGameService.mockResolvedValue('not a game object');
+    it('rejects if getGameUidService does not return a game object', () => {
+      getGameUidService.mockResolvedValue('not a game object');
 
       expect(joinGame({}, {})).rejects.toBe('cannot get game object');
     });
 
     it('rejects if addPlayerService fails', () => {
-      getGameService.mockResolvedValue({ gameUid: '12345 ' });
+      getGameUidService.mockResolvedValue({ gameUid: '12345 ' });
       addPlayerService.mockRejectedValue();
 
       expect(joinGame({}, {})).rejects.toBe('cannot add player');
+    });
+  });
+
+  describe('subscribeToGameUpdates', () => {
+    it('calls subscribeToGameUpdatesService with gameUid', () => {
+      subscribeToGameUpdates('12345', {});
+
+      expect(subscribeToGameUpdatesService).toHaveBeenCalledTimes(1);
+      expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
+    });
+
+    it('dispatches the game update action on new data', () => {
+      const dispatch = jest.fn();
+
+      subscribeToGameUpdates('12345', { dispatch });
+
+      const on = subscribeToGameUpdatesService.mock.calls[0][1];
+      on({ newData: '98765' });
+
+      expect(dispatch).toHaveBeenCalledTimes(1);
+
+      const dispatchedAction = dispatch.mock.calls[0][0];
+
+      expect(dispatchedAction.type).toBe(GAME_UPDATE);
+      expect(dispatchedAction.payload).toEqual({ newData: '98765' });
     });
   });
 });

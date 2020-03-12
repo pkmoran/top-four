@@ -69,7 +69,12 @@ describe('game state', () => {
     const MOCK_STATE = { nested: { value: 42 }, root: 'asdf' };
 
     it('passes props down to the wrapped component', () => {
-      const withStateWrapper = withState('state', 'stateName', MOCK_STATE);
+      const withStateWrapper = withState(
+        'state',
+        'stateName',
+        null,
+        MOCK_STATE
+      );
       const ComponentWithState = withStateWrapper(MockComponent);
 
       const wrapper = shallow(<ComponentWithState test="asdf" />);
@@ -78,7 +83,7 @@ describe('game state', () => {
     });
 
     it('passes root state to the wrapped component', () => {
-      const withRootState = withState('root', 'stateName', MOCK_STATE);
+      const withRootState = withState('root', 'stateName', null, MOCK_STATE);
       const ComponentWithState = withRootState(MockComponent);
 
       const wrapper = shallow(<ComponentWithState />);
@@ -90,6 +95,7 @@ describe('game state', () => {
       const withNestedState = withState(
         'nested.value',
         'stateName',
+        null,
         MOCK_STATE
       );
       const ComponentWithState = withNestedState(MockComponent);
@@ -103,6 +109,7 @@ describe('game state', () => {
       const withNullState = withState(
         'andrew.sutherland',
         'stateName',
+        null,
         MOCK_STATE
       );
       const ComponentWithState = withNullState(MockComponent);
@@ -113,7 +120,12 @@ describe('game state', () => {
     });
 
     it('defaults the state name to the state key', () => {
-      const withDefaultStateName = withState('nested.value', null, MOCK_STATE);
+      const withDefaultStateName = withState(
+        'nested.value',
+        null,
+        null,
+        MOCK_STATE
+      );
       const ComponentWithState = withDefaultStateName(MockComponent);
 
       const wrapper = shallow(<ComponentWithState />);
@@ -122,12 +134,28 @@ describe('game state', () => {
     });
 
     it('passes full state to the wrapped component if no stateKey is provided', () => {
-      const withFullState = withState(null, null, MOCK_STATE);
+      const withFullState = withState(null, null, null, MOCK_STATE);
       const ComponentWithState = withFullState(MockComponent);
 
       const wrapper = shallow(<ComponentWithState />);
 
       expect(wrapper.find(MockComponent).props().state).toEqual(MOCK_STATE);
+    });
+
+    it('transforms state', () => {
+      const transform = value => value * 2;
+
+      const withTransformableState = withState(
+        'nested.value',
+        'transformed',
+        transform,
+        MOCK_STATE
+      );
+      const ComponentWithState = withTransformableState(MockComponent);
+
+      const wrapper = shallow(<ComponentWithState />);
+
+      expect(wrapper.find(MockComponent).props().transformed).toBe(84);
     });
   });
 });

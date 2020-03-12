@@ -2,11 +2,14 @@ import { route } from 'preact-router';
 
 import {
   startGameService,
-  getGameService,
+  getGameUidService,
   addPlayerService,
-  getTopicPacksService
+  getTopicPacksService,
+  subscribeToGameUpdatesService,
+  joinTeamService
 } from 'services/game';
-import { TOPIC_PACKS, STARTED_GAME } from 'actions/types';
+
+import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
 import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { tagLogger } from 'utilities/logging';
 
@@ -35,12 +38,13 @@ const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
     payload: { gameId, gameUid, playerUid, name }
   });
 
+  subscribeToGameUpdates(gameUid, { dispatch });
   route(`${gameId}/share`, true);
 };
 
 const joinGame = async ({ name, gameId }, { dispatch }) => {
-  const game = await getGameService(gameId).catch(
-    tagLogger('getGameService failed')
+  const game = await getGameUidService(gameId).catch(
+    tagLogger('getGameUidService failed')
   );
 
   if (!game || !game.gameUid) {
@@ -60,6 +64,7 @@ const joinGame = async ({ name, gameId }, { dispatch }) => {
     payload: { gameId, gameUid, playerUid, name }
   });
 
+  subscribeToGameUpdates(gameUid, { dispatch });
   route(`${gameId}/share`, true);
 };
 
@@ -69,6 +74,10 @@ const addPlayer = async ({ gameUid, name }) => {
   );
 
   return playerUid;
+};
+
+const joinTeam = async (teamUid, { state: { gameUid, playerUid } }) => {
+  joinTeamService({ teamUid, playerUid, gameUid });
 };
 
 const getTopicPacks = async ({ state, dispatch }) => {
@@ -83,4 +92,20 @@ const getTopicPacks = async ({ state, dispatch }) => {
   }
 };
 
-export { startGame, joinGame, getTopicPacks, addPlayer };
+const subscribeToGameUpdates = (gameUid, { dispatch }) => {
+  subscribeToGameUpdatesService(gameUid, game => {
+    dispatch({
+      type: GAME_UPDATE,
+      payload: game
+    });
+  });
+};
+
+export {
+  startGame,
+  joinGame,
+  getTopicPacks,
+  addPlayer,
+  subscribeToGameUpdates,
+  joinTeam
+};

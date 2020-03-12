@@ -36,7 +36,7 @@ const pruneGamesService = () => {
   pruneGames();
 };
 
-const getGameService = async gameId => {
+const getGameUidService = async gameId => {
   const response = await firebase
     .database()
     .ref('/games')
@@ -52,9 +52,25 @@ const getGameService = async gameId => {
     .find(game => game.gameId === gameId);
 };
 
+const subscribeToGameUpdatesService = (gameUid, on) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}`)
+    .on('value', snapshot => on(snapshot.val()));
+};
+
+const joinTeamService = ({ teamUid, playerUid, gameUid }) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/players/${playerUid}`)
+    .update({ teamUid });
+};
+
 export {
   startGameService,
   getTopicPacksService,
   addPlayerService,
-  getGameService
+  getGameUidService,
+  subscribeToGameUpdatesService,
+  joinTeamService
 };

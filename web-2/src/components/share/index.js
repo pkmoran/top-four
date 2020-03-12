@@ -1,7 +1,9 @@
 import { h } from 'preact';
+// import { route } from 'preact-router';
 import { Button } from '@material-ui/core';
 
 import { withState } from 'state/game';
+import route from 'utilities/router';
 
 import Logo from 'components/shared/logo';
 
@@ -19,7 +21,11 @@ const Share = ({ gameId }) => {
           <span class="gameId__value">{gameId}</span>
         </div>
 
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => route.toTeams(gameId)}
+        >
           Pick Teams
         </Button>
       </div>
@@ -27,7 +33,7 @@ const Share = ({ gameId }) => {
   );
 };
 
-const withGameIdState = withState('game.id', 'gameId');
+const withGameIdState = withState('gameId', 'gameId');
 
 export { Share };
 export default withGameIdState(Share);

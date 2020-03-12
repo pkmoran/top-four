@@ -17,7 +17,7 @@ const withRequireGame = WrappedComponent => {
     return <WrappedComponent {...props} />;
   };
 
-  const withGameIdState = withState('game.id', 'stateGameId');
+  const withGameIdState = withState('gameId', 'stateGameId');
 
   return withGameIdState(WrapperComponent);
 };

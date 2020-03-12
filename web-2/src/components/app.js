@@ -2,15 +2,18 @@ import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { Router } from 'preact-router';
 
-import { withState } from 'state/game';
+import { withAction, withState } from 'state/game';
 import { saveState } from 'utilities/local_storage';
 import compose from 'utilities/compose';
+import resolve from 'utilities/resolve';
+import { subscribeToGameUpdates } from 'actions/game';
 
 // Code-splitting is automated for routes
 import Home from 'routes/home';
 import Join from 'routes/join';
 import Create from 'routes/create';
 import Share from 'routes/share';
+import Teams from 'routes/teams';
 
 const App = () => {
   return (
@@ -19,17 +22,32 @@ const App = () => {
         <Home path="/" />
         <Join path="/join" />
         <Create path="/create" />
-        <Share path=":gameId/share" />
+        <Share path="/:gameId/share" />
+        <Teams path="/:gameId/teams" />
       </Router>
     </div>
   );
 };
 
-const withStateForLocalStorage = withState(null, 'localStorageState');
-const withEffect = WrappedComponent => {
+const withSubscribeAction = withAction(subscribeToGameUpdates, 'subscribe');
+const withFullState = withState(null, 'fullState');
+
+const withSubscribeEffect = WrappedComponent => {
+  return props => {
+    useEffect(() => {
+      const uid = resolve('fullState.gameUid', props);
+
+      if (uid) props.subscribe(uid);
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+const withLocaStorageEffect = WrappedComponent => {
   return props => {
     const writeStateToLocalStorage = () => {
-      saveState(props.localStorageState);
+      saveState(props.fullState);
     };
 
     useEffect(() => {
@@ -40,13 +58,18 @@ const withEffect = WrappedComponent => {
         window.removeEventListener('pagehide', writeStateToLocalStorage);
         window.removeEventListener('beforeunload', writeStateToLocalStorage);
       };
-    }, [props.localStorageState]);
+    }, [props.fullState]);
 
     return <WrappedComponent {...props} />;
   };
 };
 
-const wrappers = compose(withStateForLocalStorage, withEffect);
+const wrappers = compose(
+  withSubscribeAction,
+  withFullState,
+  withSubscribeEffect,
+  withLocaStorageEffect
+);
 
 export { App };
 export default wrappers(App);
