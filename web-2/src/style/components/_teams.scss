@@ -27,11 +27,25 @@
     box-shadow: 0 4px 10px rgba($color: $color-black, $alpha: 0.25);
   }
 
-  &__current-team {
+  &__teams {
     padding: $size-xs;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.team {
+  &--left {
+    text-align: left;
   }
 
-  &__player {
-    margin-top: $size-xs;
+  &--right {
+    text-align: right;
+  }
+}
+
+.player {
+  &--current {
+    font-weight: bold;
   }
 }

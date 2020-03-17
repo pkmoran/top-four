@@ -13,15 +13,15 @@ import { withAction, withState } from 'state/game';
 import { joinTeam } from 'actions/game';
 
 import Logo from 'components/shared/logo';
+import Team from 'components/teams/team';
 
-const getTeamIndex = (teams, player) =>
-  teams && player && teams.findIndex(({ uid }) => uid === player.teamUid);
-
-const Teams = ({ joinTeam, teams, player, playersByTeam }) => {
-  const teamIndex = getTeamIndex(teams, player);
-
+const Teams = ({
+  joinTeam,
+  teamsWithPlayers: [team1, team2],
+  playerTeamIndex
+}) => {
   const handleChange = (_, newTeamIndex) => {
-    joinTeam(teams[newTeamIndex].uid);
+    joinTeam(newTeamIndex === 0 ? team1.uid : team2.uid);
   };
 
   return (
@@ -31,32 +31,20 @@ const Teams = ({ joinTeam, teams, player, playersByTeam }) => {
       </div>
       <div class="teams__container">
         <h2>Pick Teams!</h2>
-        {teamIndex >= 0 && (
+        {playerTeamIndex >= 0 && (
           <>
             <Tabs
-              value={teamIndex}
+              value={playerTeamIndex}
               onChange={handleChange}
               textColor="primary"
               variant="fullWidth"
             >
-              {teams.map(team => {
-                const teamPlayers = playersByTeam[team.uid];
-                const numPlayers = teamPlayers ? teamPlayers.length : 0;
-
-                return <Tab label={`${team.name} (${numPlayers})`} />;
-              })}
+              <Tab label={`${team1.name} (${team1.players.length})`} />
+              <Tab label={`${team2.name} (${team2.players.length})`} />
             </Tabs>
-            <div class="teams__current-team">
-              {playersByTeam[player.teamUid].map(teamPlayer => (
-                <div
-                  class="teams__player"
-                  name={`${player.teamUid}_teamPlayer`}
-                >
-                  {`${teamPlayer.name}${
-                    teamPlayer.uid === player.uid ? ' (You)' : ''
-                  }`}
-                </div>
-              ))}
+            <div class="teams__teams">
+              <Team players={team1.players} alignment="left" />
+              <Team players={team2.players} alignment="right" />
             </div>
           </>
         )}
@@ -95,6 +83,28 @@ const withEffect = WrappedComponent => {
   };
 };
 
+const withPropsCombiner = WrappedComponent => {
+  return props => {
+    const { teams, playersByTeam, player } = props;
+
+    const teamsWithPlayers = teams.map(team => ({
+      ...team,
+      players: playersByTeam[team.uid] || []
+    }));
+
+    const playerTeamIndex =
+      teams && player && teams.findIndex(({ uid }) => uid === player.teamUid);
+
+    return (
+      <WrappedComponent
+        {...props}
+        teamsWithPlayers={teamsWithPlayers}
+        playerTeamIndex={playerTeamIndex}
+      />
+    );
+  };
+};
+
 const wrappers = compose(
   withJoinTeamAction,
   withPlayerState,
@@ -102,7 +112,8 @@ const wrappers = compose(
   withTeamsState,
   withTeamUidState,
   withPlayersByTeamState,
-  withEffect
+  withEffect,
+  withPropsCombiner
 );
 
 export { Teams };

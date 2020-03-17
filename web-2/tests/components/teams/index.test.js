@@ -4,43 +4,38 @@ import { Tabs, Tab } from '@material-ui/core';
 
 import { Teams } from 'components/teams';
 
+import Team from 'components/teams/team';
+
 describe('<Teams />', () => {
-  it('does not render Tabs if teams is undefined', () => {
-    const wrapper = shallow(<Teams player={{}} />);
+  const teamsWithPlayers = [
+    {
+      uid: '12345',
+      name: 'Team 1',
+      players: [{ uid: 'abcde' }, { uid: 'bcdef' }]
+    },
+    { uid: '23456', name: 'Team 2', players: [{ uid: 'cdefg' }] }
+  ];
 
-    expect(wrapper.find(Tabs).exists()).toBe(false);
-  });
-
-  it('does not render Tabs if player is undefined', () => {
-    const wrapper = shallow(<Teams teams={[]} />);
+  it('does not render Tabs if the playerTeamIndex is undefined', () => {
+    const wrapper = shallow(<Teams teamsWithPlayers={teamsWithPlayers} />);
 
     expect(wrapper.find(Tabs).exists()).toBe(false);
   });
 
   it('renders Tabs with the correct value', () => {
-    const player = { teamUid: '23456' };
-    const teams = [{ uid: '12345' }, { uid: '23456' }, { uid: '34567' }];
-
     const wrapper = shallow(
-      <Teams teams={teams} player={player} playersByTeam={{ '23456': [] }} />
+      <Teams
+        playerTeamIndex={1}
+        teamsWithPlayers={[{ players: [] }, { players: [] }]}
+      />
     );
 
     expect(wrapper.find(Tabs).props().value).toBe(1);
   });
 
   it('displays the number of players per team', () => {
-    const teams = [
-      { uid: '12345', name: 'Team 1' },
-      { uid: '23456', name: 'Team 2' }
-    ];
-    const playersByTeam = { '12345': [{ uid: 'abcde' }, { uid: 'bcdef' }] };
-
     const wrapper = shallow(
-      <Teams
-        teams={teams}
-        playersByTeam={playersByTeam}
-        player={{ teamUid: '12345' }}
-      />
+      <Teams playerTeamIndex={1} teamsWithPlayers={teamsWithPlayers} />
     );
 
     expect(
@@ -54,29 +49,26 @@ describe('<Teams />', () => {
         .find(Tab)
         .at(1)
         .props().label
-    ).toBe('Team 2 (0)');
+    ).toBe('Team 2 (1)');
   });
 
-  it('renders the players for the selected team', () => {
-    const teams = [
-      { uid: '12345', name: 'Team 1' },
-      { uid: '23456', name: 'Team 2' }
-    ];
-    const playersByTeam = { '23456': [{ uid: 'abcde' }, { uid: 'bcdef' }] };
-
+  it('renders two teams', () => {
     const wrapper = shallow(
-      <Teams
-        teams={teams}
-        playersByTeam={playersByTeam}
-        player={{ teamUid: '23456' }}
-      />
+      <Teams playerTeamIndex={1} teamsWithPlayers={teamsWithPlayers} />
     );
 
+    expect(wrapper.find(Team)).toHaveLength(2);
     expect(
-      wrapper.find('div').filter({ name: '12345_teamPlayer' })
-    ).toHaveLength(0);
+      wrapper
+        .find(Team)
+        .at(0)
+        .props().players
+    ).toEqual(teamsWithPlayers[0].players);
     expect(
-      wrapper.find('div').filter({ name: '23456_teamPlayer' })
-    ).toHaveLength(2);
+      wrapper
+        .find(Team)
+        .at(1)
+        .props().players
+    ).toEqual(teamsWithPlayers[1].players);
   });
 });

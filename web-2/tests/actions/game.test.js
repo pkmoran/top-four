@@ -210,7 +210,7 @@ describe('game actions', () => {
       expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
 
       expect(route).toHaveBeenCalledTimes(1);
-      expect(route.mock.calls[0][0]).toBe('A6/share');
+      expect(route.mock.calls[0][0]).toBe('A6/teams');
     });
 
     it('rejects if getGameUidService fails', () => {

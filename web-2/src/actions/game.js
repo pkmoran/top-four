@@ -65,7 +65,7 @@ const joinGame = async ({ name, gameId }, { dispatch }) => {
   });
 
   subscribeToGameUpdates(gameUid, { dispatch });
-  route(`${gameId}/share`, true);
+  route(`${gameId}/teams`, true);
 };
 
 const addPlayer = async ({ gameUid, name }) => {
