@@ -1,12 +1,13 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { Router } from 'preact-router';
+import { Router, getCurrentUrl } from 'preact-router';
 
 import { withAction, withState } from 'state/game';
 import { saveState } from 'utilities/local_storage';
 import compose from 'utilities/compose';
 import resolve from 'utilities/resolve';
 import { subscribeToGameUpdates } from 'actions/game';
+import { IN_PROGRESS_URL_REGEX } from 'utilities/constants';
 
 // Code-splitting is automated for routes
 import Home from 'routes/home';
@@ -39,7 +40,9 @@ const withSubscribeEffect = WrappedComponent => {
     useEffect(() => {
       const uid = resolve('fullState.gameUid', props);
 
-      if (uid) props.subscribe(uid);
+      if (uid && getCurrentUrl().match(IN_PROGRESS_URL_REGEX)) {
+        props.subscribe(uid);
+      }
     }, []);
 
     return <WrappedComponent {...props} />;
