@@ -14,6 +14,7 @@ import Join from 'routes/join';
 import Create from 'routes/create';
 import Share from 'routes/share';
 import Teams from 'routes/teams';
+import AddTopics from 'routes/add_topics';
 
 const App = () => {
   return (
@@ -22,8 +23,9 @@ const App = () => {
         <Home path="/" />
         <Join path="/join" />
         <Create path="/create" />
-        <Share path="/:gameId/share" />
-        <Teams path="/:gameId/teams" />
+        <Share path="/:routeGameId/share" />
+        <Teams path="/:routeGameId/teams" />
+        <AddTopics path="/:routeGameId/topics" />
       </Router>
     </div>
   );

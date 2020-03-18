@@ -17,7 +17,9 @@ describe('<Teams />', () => {
   ];
 
   it('does not render Tabs if the playerTeamIndex is undefined', () => {
-    const wrapper = shallow(<Teams teamsWithPlayers={teamsWithPlayers} />);
+    const wrapper = shallow(
+      <Teams teamsWithPlayers={teamsWithPlayers} routes={[]} />
+    );
 
     expect(wrapper.find(Tabs).exists()).toBe(false);
   });
@@ -27,6 +29,7 @@ describe('<Teams />', () => {
       <Teams
         playerTeamIndex={1}
         teamsWithPlayers={[{ players: [] }, { players: [] }]}
+        routes={[]}
       />
     );
 
@@ -35,7 +38,11 @@ describe('<Teams />', () => {
 
   it('displays the number of players per team', () => {
     const wrapper = shallow(
-      <Teams playerTeamIndex={1} teamsWithPlayers={teamsWithPlayers} />
+      <Teams
+        playerTeamIndex={1}
+        teamsWithPlayers={teamsWithPlayers}
+        routes={[]}
+      />
     );
 
     expect(
@@ -54,7 +61,11 @@ describe('<Teams />', () => {
 
   it('renders two teams', () => {
     const wrapper = shallow(
-      <Teams playerTeamIndex={1} teamsWithPlayers={teamsWithPlayers} />
+      <Teams
+        playerTeamIndex={1}
+        teamsWithPlayers={teamsWithPlayers}
+        routes={[]}
+      />
     );
 
     expect(wrapper.find(Team)).toHaveLength(2);

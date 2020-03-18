@@ -1,16 +1,20 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { route } from 'preact-router';
 
+import withRouter, { toRoot } from 'utilities/router';
 import { withState } from 'state/game';
 
 const withRequireGame = WrappedComponent => {
   const WrapperComponent = props => {
-    const { gameId: routeGameId, stateGameId } = props;
+    const {
+      routeGameId,
+      stateGameId,
+      routes: [toRoot]
+    } = props;
 
     useEffect(() => {
       if (routeGameId && routeGameId !== stateGameId) {
-        route('/', true);
+        toRoot();
       }
     }, [props.gameId, props.stateGameId]);
 
@@ -18,8 +22,9 @@ const withRequireGame = WrappedComponent => {
   };
 
   const withGameIdState = withState('gameId', 'stateGameId');
+  const withRoutes = withRouter(toRoot);
 
-  return withGameIdState(WrapperComponent);
+  return withGameIdState(withRoutes(WrapperComponent));
 };
 
 export default withRequireGame;

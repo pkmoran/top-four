@@ -1,13 +1,12 @@
 import { h } from 'preact';
-// import { route } from 'preact-router';
 import { Button } from '@material-ui/core';
 
 import { withState } from 'state/game';
-import route from 'utilities/router';
+import withRouter, { toTeams } from 'utilities/router';
 
 import Logo from 'components/shared/logo';
 
-const Share = ({ gameId }) => {
+const Share = ({ routes: [toTeams], gameId }) => {
   return (
     <div class="share">
       <div class="join__logo">
@@ -21,11 +20,7 @@ const Share = ({ gameId }) => {
           <span class="gameId__value">{gameId}</span>
         </div>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => route.toTeams(gameId)}
-        >
+        <Button variant="contained" color="primary" onClick={toTeams}>
           Pick Teams
         </Button>
       </div>
@@ -33,7 +28,8 @@ const Share = ({ gameId }) => {
   );
 };
 
-const withGameIdState = withState('gameId', 'gameId');
+const withGameIdState = withState('gameId');
+const withRoutes = withRouter(toTeams);
 
 export { Share };
-export default withGameIdState(Share);
+export default withGameIdState(withRoutes(Share));

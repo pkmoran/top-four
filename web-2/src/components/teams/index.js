@@ -1,6 +1,6 @@
 import { h, Fragment } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { Tabs, Tab } from '@material-ui/core';
+import { Button, Tabs, Tab } from '@material-ui/core';
 
 import compose from 'utilities/compose';
 import {
@@ -8,6 +8,7 @@ import {
   playersToPlayersByTeam,
   toPlayer
 } from 'utilities/state_mapping';
+import withRouter, { toAddTopics } from 'utilities/router';
 
 import { withAction, withState } from 'state/game';
 import { joinTeam } from 'actions/game';
@@ -18,7 +19,8 @@ import Team from 'components/teams/team';
 const Teams = ({
   joinTeam,
   teamsWithPlayers: [team1, team2],
-  playerTeamIndex
+  playerTeamIndex,
+  routes: [toAddTopics]
 }) => {
   const handleChange = (_, newTeamIndex) => {
     joinTeam(newTeamIndex === 0 ? team1.uid : team2.uid);
@@ -46,6 +48,9 @@ const Teams = ({
               <Team players={team1.players} alignment="left" />
               <Team players={team2.players} alignment="right" />
             </div>
+            <Button variant="contained" color="primary" onClick={toAddTopics}>
+              Add Topics
+            </Button>
           </>
         )}
       </div>
@@ -64,6 +69,13 @@ const withPlayersByTeamState = withState(
   'game.players',
   'playersByTeam',
   playersToPlayersByTeam
+);
+
+const composedState = compose(
+  withPlayerState,
+  withTeamsState,
+  withTeamUidState,
+  withPlayersByTeamState
 );
 
 // effects
@@ -105,15 +117,15 @@ const withPropsCombiner = WrappedComponent => {
   };
 };
 
+// routes
+const withRoutes = withRouter(toAddTopics);
+
 const wrappers = compose(
   withJoinTeamAction,
-  withPlayerState,
-  withPlayersByTeamState,
-  withTeamsState,
-  withTeamUidState,
-  withPlayersByTeamState,
+  composedState,
   withEffect,
-  withPropsCombiner
+  withPropsCombiner,
+  withRoutes
 );
 
 export { Teams };

@@ -31,6 +31,12 @@
     padding: $size-xs;
     display: flex;
     justify-content: space-between;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  button {
+    align-self: center;
   }
 }
 
