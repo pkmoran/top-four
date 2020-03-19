@@ -66,11 +66,24 @@ const joinTeamService = ({ teamUid, playerUid, gameUid }) => {
     .update({ teamUid });
 };
 
+const addTopicService = ({ topic, playerUid, gameUid }) => {
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/topics`)
+    .push({
+      topic,
+      playerUid,
+      state: 'available',
+      rank: -1
+    });
+};
+
 export {
   startGameService,
   getTopicPacksService,
   addPlayerService,
   getGameUidService,
   subscribeToGameUpdatesService,
-  joinTeamService
+  joinTeamService,
+  addTopicService
 };

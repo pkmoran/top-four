@@ -6,7 +6,8 @@ import {
   addPlayerService,
   getTopicPacksService,
   subscribeToGameUpdatesService,
-  joinTeamService
+  joinTeamService,
+  addTopicService
 } from 'services/game';
 
 import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
@@ -101,11 +102,16 @@ const subscribeToGameUpdates = (gameUid, { dispatch }) => {
   });
 };
 
+const addTopic = (topic, { state: { gameUid, playerUid } }) => {
+  addTopicService({ topic, playerUid, gameUid });
+};
+
 export {
   startGame,
   joinGame,
   getTopicPacks,
   addPlayer,
   subscribeToGameUpdates,
-  joinTeam
+  joinTeam,
+  addTopic
 };

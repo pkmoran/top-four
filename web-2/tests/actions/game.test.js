@@ -4,7 +4,8 @@ import {
   addPlayerService,
   startGameService,
   getGameUidService,
-  subscribeToGameUpdatesService
+  subscribeToGameUpdatesService,
+  addTopicService
 } from 'services/game';
 
 jest.mock('preact-router', () => ({
@@ -16,7 +17,8 @@ jest.mock('services/game', () => ({
   addPlayerService: jest.fn(),
   startGameService: jest.fn(),
   getGameUidService: jest.fn(),
-  subscribeToGameUpdatesService: jest.fn()
+  subscribeToGameUpdatesService: jest.fn(),
+  addTopicService: jest.fn()
 }));
 
 import {
@@ -24,7 +26,8 @@ import {
   getTopicPacks,
   addPlayer,
   joinGame,
-  subscribeToGameUpdates
+  subscribeToGameUpdates,
+  addTopic
 } from 'actions/game';
 
 import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
@@ -255,6 +258,21 @@ describe('game actions', () => {
 
       expect(dispatchedAction.type).toBe(GAME_UPDATE);
       expect(dispatchedAction.payload).toEqual({ newData: '98765' });
+    });
+  });
+
+  describe('addTopic', () => {
+    it('calls addTopicService', () => {
+      addTopic('road trips', {
+        state: { gameUid: '12345', playerUid: 'abcde' }
+      });
+
+      expect(addTopicService).toHaveBeenCalledTimes(1);
+      expect(addTopicService.mock.calls[0][0]).toEqual({
+        topic: 'road trips',
+        gameUid: '12345',
+        playerUid: 'abcde'
+      });
     });
   });
 });
