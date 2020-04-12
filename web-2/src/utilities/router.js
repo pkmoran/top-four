@@ -22,6 +22,10 @@ const toAddTopics = gameId => () => {
   route(`/${gameId}/topics`);
 };
 
+const toGame = gameId => () => {
+  route(`/${gameId}/game`);
+};
+
 const withRouter = (...routeFns) => {
   return WrappedComponent => {
     const Component = props => {
@@ -33,9 +37,10 @@ const withRouter = (...routeFns) => {
     };
 
     const withGameIdState = withState('gameId');
+
     return withGameIdState(Component);
   };
 };
 
-export { toRoot, toJoin, toCreate, toTeams, toAddTopics };
+export { toRoot, toJoin, toCreate, toTeams, toAddTopics, toGame };
 export default withRouter;

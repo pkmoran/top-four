@@ -3,7 +3,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { Button, CircularProgress } from '@material-ui/core';
 
 import compose from 'utilities/compose';
-import { WRITE_OUR_OWN_UID, TEAMS } from 'utilities/constants';
+import { WRITE_OUR_OWN_UID, INDIVIDUALS } from 'utilities/constants';
 
 import { withAction, withState } from 'state/game';
 import { startGame, getTopicPacks } from 'actions/game';
@@ -16,7 +16,7 @@ import Topics from 'components/create/topics';
 import Name from 'components/create/name';
 
 const Create = ({ startGame, topicPacks }) => {
-  const [gameMode, setGameMode] = useState(TEAMS);
+  const [gameMode, setGameMode] = useState(INDIVIDUALS);
   const [topicPackUid, setTopicPackUid] = useState(WRITE_OUR_OWN_UID);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);

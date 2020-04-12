@@ -121,7 +121,7 @@ describe('game actions', () => {
 
       expect(startGameService).toHaveBeenCalledTimes(1);
       expect(startGameService.mock.calls[0][0]).toEqual({
-        numberOfTeams: 1,
+        numberOfTeams: 0,
         topicPackUid: null
       });
     });

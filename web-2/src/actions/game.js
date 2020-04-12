@@ -15,7 +15,7 @@ import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { tagLogger } from 'utilities/logging';
 
 const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
-  const numberOfTeams = gameMode === TEAMS ? 2 : 1;
+  const numberOfTeams = gameMode === TEAMS ? 2 : 0;
 
   const data = await startGameService({
     numberOfTeams,

@@ -16,6 +16,7 @@ import Create from 'routes/create';
 import Share from 'routes/share';
 import Teams from 'routes/teams';
 import AddTopics from 'routes/add_topics';
+import Game from 'routes/game';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Share path="/:routeGameId/share" />
         <Teams path="/:routeGameId/teams" />
         <AddTopics path="/:routeGameId/topics" />
+        <Game path="/:routeGameId/game" />
       </Router>
     </div>
   );

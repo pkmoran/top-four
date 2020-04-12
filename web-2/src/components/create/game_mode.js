@@ -14,8 +14,8 @@ const GameMode = ({ gameMode, setGameMode }) => {
         >
           <FormControlLabel
             value={TEAMS}
-            control={<Radio />}
-            label="On 2 teams"
+            control={<Radio disabled />}
+            label="On 2 teams (coming soon!)"
           />
           <FormControlLabel
             value={INDIVIDUALS}

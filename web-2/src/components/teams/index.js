@@ -8,7 +8,7 @@ import {
   playersToPlayersByTeam,
   toPlayer
 } from 'utilities/state_mapping';
-import withRouter, { toAddTopics } from 'utilities/router';
+import withRouter, { toAddTopics, toGame } from 'utilities/router';
 
 import { withAction, withState } from 'state/game';
 import { joinTeam } from 'actions/game';
@@ -20,7 +20,7 @@ const Teams = ({
   joinTeam,
   teamsWithPlayers: [team1, team2],
   playerTeamIndex,
-  routes: [toAddTopics]
+  nextButton
 }) => {
   const handleChange = (_, newTeamIndex) => {
     joinTeam(newTeamIndex === 0 ? team1.uid : team2.uid);
@@ -48,9 +48,8 @@ const Teams = ({
               <Team players={team1.players} alignment="left" />
               <Team players={team2.players} alignment="right" />
             </div>
-            <Button variant="contained" color="primary" onClick={toAddTopics}>
-              Add Topics
-            </Button>
+
+            {nextButton}
           </>
         )}
       </div>
@@ -70,13 +69,18 @@ const withPlayersByTeamState = withState(
   'playersByTeam',
   playersToPlayersByTeam
 );
+const withTopicPackState = withState('game.topicPack', 'topicPack');
 
 const composedState = compose(
   withPlayerState,
   withTeamsState,
   withTeamUidState,
-  withPlayersByTeamState
+  withPlayersByTeamState,
+  withTopicPackState
 );
+
+// routes
+const withRoutes = withRouter(toAddTopics, toGame);
 
 // effects
 const withEffect = WrappedComponent => {
@@ -97,7 +101,13 @@ const withEffect = WrappedComponent => {
 
 const withPropsCombiner = WrappedComponent => {
   return props => {
-    const { teams, playersByTeam, player } = props;
+    const {
+      teams,
+      playersByTeam,
+      player,
+      topicPack,
+      routes: [toAddTopics, toGame]
+    } = props;
 
     const teamsWithPlayers = teams.map(team => ({
       ...team,
@@ -107,18 +117,31 @@ const withPropsCombiner = WrappedComponent => {
     const playerTeamIndex =
       teams && player && teams.findIndex(({ uid }) => uid === player.teamUid);
 
+    let nextButton;
+    if (!topicPack) {
+      nextButton = (
+        <Button variant="contained" color="primary" onClick={toAddTopics}>
+          Add Topics
+        </Button>
+      );
+    } else {
+      nextButton = (
+        <Button variant="contained" color="primary" onClick={toGame}>
+          Done!
+        </Button>
+      );
+    }
+
     return (
       <WrappedComponent
         {...props}
         teamsWithPlayers={teamsWithPlayers}
         playerTeamIndex={playerTeamIndex}
+        nextButton={nextButton}
       />
     );
   };
 };
-
-// routes
-const withRoutes = withRouter(toAddTopics);
 
 const wrappers = compose(
   withJoinTeamAction,
@@ -128,5 +151,5 @@ const wrappers = compose(
   withRoutes
 );
 
-export { Teams };
+export { withPropsCombiner, Teams };
 export default wrappers(Teams);

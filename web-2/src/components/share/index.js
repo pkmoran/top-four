@@ -1,12 +1,13 @@
 import { h } from 'preact';
 import { Button } from '@material-ui/core';
 
+import compose from 'utilities/compose';
 import { withState } from 'state/game';
-import withRouter, { toTeams } from 'utilities/router';
+import withRouter, { toTeams, toAddTopics, toGame } from 'utilities/router';
 
 import Logo from 'components/shared/logo';
 
-const Share = ({ routes: [toTeams], gameId }) => {
+const Share = ({ gameId, nextButton }) => {
   return (
     <div class="share">
       <div class="join__logo">
@@ -20,16 +21,60 @@ const Share = ({ routes: [toTeams], gameId }) => {
           <span class="gameId__value">{gameId}</span>
         </div>
 
-        <Button variant="contained" color="primary" onClick={toTeams}>
-          Pick Teams
-        </Button>
+        {nextButton}
       </div>
     </div>
   );
 };
 
+// state
 const withGameIdState = withState('gameId');
-const withRoutes = withRouter(toTeams);
+const withGameModeState = withState('game.noTeams', 'noTeams');
+const withTopicPackState = withState('game.topicPack', 'topicPack');
 
-export { Share };
-export default withGameIdState(withRoutes(Share));
+// routes
+const withRoutes = withRouter(toTeams, toAddTopics, toGame);
+
+const withNextButton = WrappedComponent => {
+  return props => {
+    const {
+      noTeams,
+      topicPack,
+      routes: [toTeams, toAddTopics, toGame]
+    } = props;
+
+    let nextButton;
+    if (!noTeams) {
+      nextButton = (
+        <Button variant="contained" color="primary" onClick={toTeams}>
+          Pick Teams
+        </Button>
+      );
+    } else if (!topicPack) {
+      nextButton = (
+        <Button variant="contained" color="primary" onClick={toAddTopics}>
+          Add Topics
+        </Button>
+      );
+    } else {
+      nextButton = (
+        <Button variant="contained" color="primary" onClick={toGame}>
+          Done!
+        </Button>
+      );
+    }
+
+    return <WrappedComponent {...props} nextButton={nextButton} />;
+  };
+};
+
+const wrappers = compose(
+  withGameIdState,
+  withGameModeState,
+  withTopicPackState,
+  withRoutes,
+  withNextButton
+);
+
+export { withNextButton, Share };
+export default wrappers(Share);

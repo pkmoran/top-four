@@ -8,7 +8,7 @@ import Topic from 'components/add_topics/topic';
 describe('<AddTopics />', () => {
   describe('add button', () => {
     it('is disabled when the topic field is empty', () => {
-      const wrapper = shallow(<AddTopics playerTopics={[]} />);
+      const wrapper = shallow(<AddTopics playerTopics={[]} routes={[]} />);
 
       wrapper
         .find(TextField)
@@ -24,7 +24,7 @@ describe('<AddTopics />', () => {
     });
 
     it('is enabled when the topic field is populated', () => {
-      const wrapper = shallow(<AddTopics playerTopics={[]} />);
+      const wrapper = shallow(<AddTopics playerTopics={[]} routes={[]} />);
 
       wrapper
         .find(TextField)
@@ -41,7 +41,7 @@ describe('<AddTopics />', () => {
 
     it('clears the input when clicked', () => {
       const wrapper = shallow(
-        <AddTopics playerTopics={[]} addTopic={() => {}} />
+        <AddTopics playerTopics={[]} addTopic={() => {}} routes={[]} />
       );
 
       wrapper
@@ -62,7 +62,7 @@ describe('<AddTopics />', () => {
       const addTopic = jest.fn();
 
       const wrapper = shallow(
-        <AddTopics playerTopics={[]} addTopic={addTopic} />
+        <AddTopics playerTopics={[]} addTopic={addTopic} routes={[]} />
       );
 
       wrapper
@@ -87,13 +87,17 @@ describe('<AddTopics />', () => {
       { uid: '23456', topic: 'johnny depp' }
     ];
 
-    const wrapper = shallow(<AddTopics playerTopics={playerTopics} />);
+    const wrapper = shallow(
+      <AddTopics playerTopics={playerTopics} routes={[]} />
+    );
 
     expect(wrapper.find(Topic)).toHaveLength(2);
   });
 
   it('renders the total number of topics', () => {
-    const wrapper = shallow(<AddTopics playerTopics={[]} numTopics={12} />);
+    const wrapper = shallow(
+      <AddTopics playerTopics={[]} numTopics={12} routes={[]} />
+    );
 
     expect(wrapper.find('p[name="numTopics"]').text()).toBe('Total Topics: 12');
   });

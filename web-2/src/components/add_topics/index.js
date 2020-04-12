@@ -6,11 +6,17 @@ import compose from 'utilities/compose';
 import { topicsToCount, topicsToPlayerTopics } from 'utilities/state_mapping';
 import { withAction, withState } from 'state/game';
 import { addTopic } from 'actions/game';
+import withRouter, { toGame } from 'utilities/router';
 
 import Logo from 'components/shared/logo';
 import Topic from 'components/add_topics/topic';
 
-const AddTopics = ({ addTopic, numTopics = 0, playerTopics }) => {
+const AddTopics = ({
+  addTopic,
+  numTopics = 0,
+  playerTopics,
+  routes: [toGame]
+}) => {
   const [topic, setTopic] = useState('');
 
   const handleAddTopic = () => {
@@ -54,7 +60,7 @@ const AddTopics = ({ addTopic, numTopics = 0, playerTopics }) => {
         </div>
         <div class="add-topics__footer">
           <p name="numTopics">Total Topics: {numTopics}</p>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={toGame}>
             Done!
           </Button>
         </div>
@@ -74,10 +80,14 @@ const withPlayerTopicsState = withState(
   topicsToPlayerTopics
 );
 
+// routes
+const withRoutes = withRouter(toGame);
+
 const wrappers = compose(
   withAddTopicAction,
   withTopicsState,
-  withPlayerTopicsState
+  withPlayerTopicsState,
+  withRoutes
 );
 
 export { AddTopics };
