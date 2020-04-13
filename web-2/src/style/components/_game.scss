@@ -1,0 +1,59 @@
+@import '../variables';
+
+.game {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  padding: $size-xs $size-s;
+
+  span {
+    font-weight: bold;
+  }
+
+  &__game-id {
+    color: $color-green;
+  }
+}
+
+.game-body {
+  flex-grow: 1;
+  text-align: center;
+  overflow-y: auto;
+
+  h1 {
+    color: $color-orange;
+    margin-bottom: $size-xxs;
+  }
+}
+
+.game-footer {
+  display: flex;
+  flex-direction: column;
+  padding: $size-s;
+  text-align: center;
+
+  &__actions {
+    margin-top: $size-xs;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__action {
+    width: 50%;
+
+    button {
+      width: 100%;
+    }
+
+    &--confirming {
+      font-weight: bold;
+      color: $color-purple;
+    }
+  }
+}

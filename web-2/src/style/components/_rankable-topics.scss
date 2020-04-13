@@ -1,0 +1,21 @@
+@import '../variables';
+
+.rankable-topics {
+  margin-bottom: $size-xs;
+
+  &__topic {
+    margin: $size-xs $size-xs 0 $size-xs;
+  }
+}
+
+.rankable-topic {
+  display: flex;
+  align-items: center;
+  padding: $size-xs $size-s;
+  text-align: left;
+
+  &__name {
+    flex-grow: 1;
+    margin-right: $size-s;
+  }
+}

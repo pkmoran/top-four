@@ -23,10 +23,7 @@ const addPlayerService = async ({ gameUid, name }) => {
 };
 
 const getTopicPacksService = async () => {
-  const topicPacks = await firebase
-    .database()
-    .ref('/topicPacks')
-    .once('value');
+  const topicPacks = await firebase.database().ref('/topicPacks').once('value');
 
   return topicPacks.val();
 };
@@ -37,10 +34,7 @@ const pruneGamesService = () => {
 };
 
 const getGameUidService = async gameId => {
-  const response = await firebase
-    .database()
-    .ref('/games')
-    .once('value');
+  const response = await firebase.database().ref('/games').once('value');
 
   const games = response.val();
 
@@ -67,15 +61,16 @@ const joinTeamService = ({ teamUid, playerUid, gameUid }) => {
 };
 
 const addTopicService = ({ topic, playerUid, gameUid }) => {
-  firebase
-    .database()
-    .ref(`/games/${gameUid}/topics`)
-    .push({
-      topic,
-      playerUid,
-      state: 'available',
-      rank: -1
-    });
+  firebase.database().ref(`/games/${gameUid}/topics`).push({
+    topic,
+    playerUid,
+    status: 'available',
+    rank: -1
+  });
+};
+
+const updateGameService = (game, gameUid) => {
+  firebase.database().ref(`/games/${gameUid}`).update(game);
 };
 
 export {
@@ -85,5 +80,6 @@ export {
   getGameUidService,
   subscribeToGameUpdatesService,
   joinTeamService,
-  addTopicService
+  addTopicService,
+  updateGameService
 };

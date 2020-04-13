@@ -1,5 +1,6 @@
 // size
 
+$size-xxs: 0.25em;
 $size-xs: 1em;
 $size-s: 2em;
 $size-base: 4em;
@@ -13,11 +14,14 @@ $color-gray: #bbb;
 $color-white: #fafafa;
 
 $color-primary: #ff5d28;
-$color-orage: $color-primary;
+$color-secondary: #c36be2;
+
+$color-orange: $color-primary;
 $color-green: #3cdabd;
-$color-purple: #c36be2;
+$color-purple: $color-secondary;
 $color-yellow: #b6db22;
 
 :export {
   colorPrimary: $color-primary;
+  colorSecondary: $color-secondary;
 }

@@ -14,6 +14,10 @@ const toCreate = () => () => {
   route('/create');
 };
 
+const toShare = gameId => () => {
+  route(`/${gameId}/share`, true);
+};
+
 const toTeams = gameId => () => {
   route(`/${gameId}/teams`);
 };
@@ -42,5 +46,5 @@ const withRouter = (...routeFns) => {
   };
 };
 
-export { toRoot, toJoin, toCreate, toTeams, toAddTopics, toGame };
+export { toRoot, toJoin, toCreate, toShare, toTeams, toAddTopics, toGame };
 export default withRouter;

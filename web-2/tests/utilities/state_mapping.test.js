@@ -4,7 +4,9 @@ import {
   topicsToCount,
   topicsToPlayerTopics,
   playersToPlayersByTeam,
-  toPlayer
+  toPlayer,
+  toGameRound,
+  toRankingPlayer
 } from 'utilities/state_mapping';
 
 describe('state mapping functions', () => {
@@ -107,6 +109,34 @@ describe('state mapping functions', () => {
       const player = toPlayer(state);
 
       expect(player).toEqual({ uid: '12345', name: 'Emily' });
+    });
+  });
+
+  describe('toGameRound', () => {
+    it('takes an object of topics by ID and returns the current game round', () => {
+      const topicsById = {
+        '12345': { status: 'unavailable' },
+        '23456': { status: 'available' },
+        '34567': { status: 'unavailable' },
+        '23456': { status: 'unavailable' },
+        '23456': { status: 'unavailable' }
+      };
+
+      expect(toGameRound(topicsById)).toBe(2);
+    });
+  });
+
+  describe('toRankingPlayer', () => {
+    it('takes game state and returns the ranking player object', () => {
+      const game = {
+        rankingPlayerUid: '23456',
+        players: {
+          '12345': { name: 'Andrew' },
+          '23456': { name: 'Harrison' }
+        }
+      };
+
+      expect(toRankingPlayer(game)).toEqual({ uid: '23456', name: 'Harrison' });
     });
   });
 });

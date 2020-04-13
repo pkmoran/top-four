@@ -8,7 +8,7 @@ const getDirectories = source =>
     .map(name => path.join(source, name))
     .filter(isDirectory);
 
-export default function(config, env, helpers, options) {
+export default function (config, env, helpers, options) {
   // environment variables
   config.plugins.push(new Dotenv());
   config.node.process = true;

@@ -1,4 +1,6 @@
-import { route } from 'preact-router';
+import sampleSize from 'lodash/sampleSize';
+
+import { toShare, toTeams, toAddTopics, toGame } from 'utilities/router';
 
 import {
   startGameService,
@@ -7,7 +9,8 @@ import {
   getTopicPacksService,
   subscribeToGameUpdatesService,
   joinTeamService,
-  addTopicService
+  addTopicService,
+  updateGameService
 } from 'services/game';
 
 import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
@@ -40,7 +43,7 @@ const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
   });
 
   subscribeToGameUpdates(gameUid, { dispatch });
-  route(`${gameId}/share`, true);
+  toShare(gameId)();
 };
 
 const joinGame = async ({ name, gameId }, { dispatch }) => {
@@ -52,7 +55,7 @@ const joinGame = async ({ name, gameId }, { dispatch }) => {
     return Promise.reject('cannot get game object');
   }
 
-  const { gameUid } = game;
+  const { gameUid, noTeams, topicPack } = game;
 
   const playerUid = await addPlayer({ gameUid, name });
 
@@ -66,7 +69,17 @@ const joinGame = async ({ name, gameId }, { dispatch }) => {
   });
 
   subscribeToGameUpdates(gameUid, { dispatch });
-  route(`${gameId}/teams`, true);
+
+  let route;
+  if (!noTeams) {
+    route = toTeams(gameId);
+  } else if (!topicPack) {
+    route = toAddTopics(gameId);
+  } else {
+    route = toGame(gameId);
+  }
+
+  route();
 };
 
 const addPlayer = async ({ gameUid, name }) => {
@@ -106,6 +119,35 @@ const addTopic = (topic, { state: { gameUid, playerUid } }) => {
   addTopicService({ topic, playerUid, gameUid });
 };
 
+const startRound = ({
+  state: {
+    playerUid,
+    gameUid,
+    game: { topics }
+  }
+}) => {
+  const newTopics = { ...topics };
+
+  sampleSize(
+    Object.keys(topics)
+      .map(uid => ({ uid, ...topics[uid] }))
+      .filter(({ status }) => status === 'available'),
+    4
+  )
+    .map(({ uid }) => uid)
+    .forEach(uid => {
+      newTopics[uid] = { ...topics[uid], status: 'active' };
+    });
+
+  const game = {
+    rankingPlayerUid: playerUid,
+    state: 'ranking',
+    topics: newTopics
+  };
+
+  updateGameService(game, gameUid);
+};
+
 export {
   startGame,
   joinGame,
@@ -113,5 +155,6 @@ export {
   addPlayer,
   subscribeToGameUpdates,
   joinTeam,
-  addTopic
+  addTopic,
+  startRound
 };

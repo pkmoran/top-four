@@ -28,11 +28,29 @@ const toPlayer = ({ playerUid, game: { players } }) => ({
   uid: playerUid
 });
 
+const toGameRound = topics =>
+  1 +
+  Math.ceil(
+    topicsToArray(topics).filter(({ status }) => status === 'unavailable')
+      .length / 4
+  );
+
+const toRankingPlayer = ({ rankingPlayerUid, players }) => ({
+  uid: rankingPlayerUid,
+  ...players[rankingPlayerUid]
+});
+
+const toActiveTopics = topics =>
+  topicsToArray(topics).filter(({ status }) => status === 'active');
+
 export {
   teamsToArray,
   topicsToArray,
   topicsToCount,
   topicsToPlayerTopics,
   playersToPlayersByTeam,
-  toPlayer
+  toPlayer,
+  toGameRound,
+  toRankingPlayer,
+  toActiveTopics
 };

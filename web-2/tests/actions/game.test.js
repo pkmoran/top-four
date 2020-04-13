@@ -1,15 +1,20 @@
-import { route } from 'preact-router';
 import {
   getTopicPacksService,
   addPlayerService,
   startGameService,
   getGameUidService,
   subscribeToGameUpdatesService,
-  addTopicService
+  addTopicService,
+  updateGameService
 } from 'services/game';
 
-jest.mock('preact-router', () => ({
-  route: jest.fn()
+import { toShare, toTeams, toAddTopics, toGame } from 'utilities/router';
+
+jest.mock('utilities/router', () => ({
+  toShare: jest.fn().mockReturnValue(() => {}),
+  toTeams: jest.fn().mockReturnValue(() => {}),
+  toAddTopics: jest.fn().mockReturnValue(() => {}),
+  toGame: jest.fn().mockReturnValue(() => {})
 }));
 
 jest.mock('services/game', () => ({
@@ -18,7 +23,8 @@ jest.mock('services/game', () => ({
   startGameService: jest.fn(),
   getGameUidService: jest.fn(),
   subscribeToGameUpdatesService: jest.fn(),
-  addTopicService: jest.fn()
+  addTopicService: jest.fn(),
+  updateGameService: jest.fn()
 }));
 
 import {
@@ -27,7 +33,8 @@ import {
   addPlayer,
   joinGame,
   subscribeToGameUpdates,
-  addTopic
+  addTopic,
+  startRound
 } from 'actions/game';
 
 import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
@@ -35,12 +42,17 @@ import { TEAMS, INDIVIDUALS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 
 describe('game actions', () => {
   beforeEach(() => {
-    route.mockClear();
+    toShare.mockClear();
+    toTeams.mockClear();
+    toAddTopics.mockClear();
+    toGame.mockClear();
+
     getTopicPacksService.mockClear();
     addPlayerService.mockClear();
     startGameService.mockClear();
     getGameUidService.mockClear();
     subscribeToGameUpdatesService.mockClear();
+    updateGameService.mockClear();
   });
 
   describe('getTopicPacks', () => {
@@ -156,8 +168,8 @@ describe('game actions', () => {
       expect(subscribeToGameUpdatesService).toHaveBeenCalledTimes(1);
       expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
 
-      expect(route).toHaveBeenCalledTimes(1);
-      expect(route.mock.calls[0][0]).toBe('A6/share');
+      expect(toShare).toHaveBeenCalledTimes(1);
+      expect(toShare.mock.calls[0][0]).toBe('A6');
     });
 
     it('rejects if startGameService fails', () => {
@@ -212,8 +224,8 @@ describe('game actions', () => {
       expect(subscribeToGameUpdatesService).toHaveBeenCalledTimes(1);
       expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
 
-      expect(route).toHaveBeenCalledTimes(1);
-      expect(route.mock.calls[0][0]).toBe('A6/teams');
+      expect(toTeams).toHaveBeenCalledTimes(1);
+      expect(toTeams.mock.calls[0][0]).toBe('A6');
     });
 
     it('rejects if getGameUidService fails', () => {
@@ -273,6 +285,38 @@ describe('game actions', () => {
         gameUid: '12345',
         playerUid: 'abcde'
       });
+    });
+  });
+
+  describe('startRound', () => {
+    it('calls updateGameService', () => {
+      const topics = {
+        '12345': { status: 'available' },
+        '23456': { status: 'unavailable' },
+        '34567': { status: 'available' },
+        '45678': { status: 'available' },
+        '56789': { status: 'available' },
+        '67890': { status: 'available' }
+      };
+
+      startRound({
+        state: { playerUid: 'abcde', gameUid: '98765', game: { topics } }
+      });
+
+      expect(updateGameService).toHaveBeenCalledTimes(1);
+      expect(updateGameService.mock.calls[0][1]).toBe('98765');
+
+      const game = updateGameService.mock.calls[0][0];
+      const gameTopics = Object.keys(game.topics).map(uid => ({
+        uid,
+        ...game.topics[uid]
+      }));
+
+      expect(game.rankingPlayerUid).toBe('abcde');
+      expect(game.state).toBe('ranking');
+      expect(
+        gameTopics.filter(({ status }) => status === 'active').length
+      ).toBe(4);
     });
   });
 });

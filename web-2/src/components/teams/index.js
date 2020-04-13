@@ -1,5 +1,5 @@
 import { h, Fragment } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import { Button, Tabs, Tab } from '@material-ui/core';
 
 import compose from 'utilities/compose';
