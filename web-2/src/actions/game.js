@@ -1,6 +1,12 @@
 import sampleSize from 'lodash/sampleSize';
 
-import { toShare, toTeams, toAddTopics, toGame } from 'utilities/router';
+import {
+  toRoot,
+  toShare,
+  toTeams,
+  toAddTopics,
+  toGame
+} from 'utilities/router';
 
 import {
   startGameService,
@@ -108,10 +114,14 @@ const getTopicPacks = async ({ state, dispatch }) => {
 
 const subscribeToGameUpdates = (gameUid, { dispatch }) => {
   subscribeToGameUpdatesService(gameUid, game => {
-    dispatch({
-      type: GAME_UPDATE,
-      payload: game
-    });
+    if (game) {
+      dispatch({
+        type: GAME_UPDATE,
+        payload: game
+      });
+    } else {
+      toRoot()();
+    }
   });
 };
 
