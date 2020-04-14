@@ -3,14 +3,23 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import compose from 'utilities/compose';
 import { toActiveTopics } from 'utilities/state_mapping';
-import { withState } from 'state/game';
+import { withAction, withState } from 'state/game';
+import { updateLocalRanks } from 'actions/game';
 
 import RankableTopic from 'components/game/rankable_topic';
 
-const RankableTopics = ({ activeTopics }) => {
+const RankableTopics = ({ activeTopics, updateLocalRanks }) => {
+  const handleDragEnd = drag => {
+    const {
+      source: { index: sourceIndex },
+      destination: { index: destinationIndex }
+    } = drag;
+    updateLocalRanks(activeTopics, sourceIndex, destinationIndex);
+  };
+
   return (
     <div class="rankable-topics">
-      <DragDropContext>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
@@ -37,13 +46,37 @@ const RankableTopics = ({ activeTopics }) => {
 };
 
 // state
-const withActiveTopics = withState(
+const withActiveTopicsState = withState(
   'game.topics',
   'activeTopics',
   toActiveTopics
 );
+const withLocalRanksState = withState('localRanks');
 
-const wrappers = compose(withActiveTopics);
+// actions
+const withUpdateLocalRanksAction = withAction(
+  updateLocalRanks,
+  'updateLocalRanks'
+);
 
-export { RankableTopics };
+const withProps = WrappedComponent => {
+  return props => {
+    const { activeTopics, localRanks } = props;
+
+    const sortedByLocalRank = activeTopics.sort(
+      ({ uid: uidA }, { uid: uidB }) => localRanks[uidA] - localRanks[uidB]
+    );
+
+    return <WrappedComponent {...props} activeTopics={sortedByLocalRank} />;
+  };
+};
+
+const wrappers = compose(
+  withActiveTopicsState,
+  withLocalRanksState,
+  withUpdateLocalRanksAction,
+  withProps
+);
+
+export { withProps, RankableTopics };
 export default wrappers(RankableTopics);

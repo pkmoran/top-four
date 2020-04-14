@@ -6,13 +6,13 @@ import { withState } from 'state/game';
 
 import RankableTopics from 'components/game/rankable_topics';
 
-const Body = ({ header, subheader }) => {
+const Body = ({ header, subheader, gameState }) => {
   return (
     <div class="game-body">
       <h1>{header}</h1>
       <span>{subheader}</span>
 
-      <RankableTopics />
+      {gameState === 'ranking' && <RankableTopics />}
     </div>
   );
 };

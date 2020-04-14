@@ -34,10 +34,16 @@ import {
   joinGame,
   subscribeToGameUpdates,
   addTopic,
-  startRound
+  startRound,
+  updateLocalRanks
 } from 'actions/game';
 
-import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
+import {
+  TOPIC_PACKS,
+  STARTED_GAME,
+  GAME_UPDATE,
+  UPDATE_LOCAL_RANKS
+} from 'actions/types';
 import { TEAMS, INDIVIDUALS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 
 describe('game actions', () => {
@@ -259,7 +265,7 @@ describe('game actions', () => {
     it('dispatches the game update action on new data', () => {
       const dispatch = jest.fn();
 
-      subscribeToGameUpdates('12345', { dispatch });
+      subscribeToGameUpdates('12345', { state: { game: {} }, dispatch });
 
       const on = subscribeToGameUpdatesService.mock.calls[0][1];
       on({ newData: '98765' });
@@ -269,7 +275,33 @@ describe('game actions', () => {
       const dispatchedAction = dispatch.mock.calls[0][0];
 
       expect(dispatchedAction.type).toBe(GAME_UPDATE);
-      expect(dispatchedAction.payload).toEqual({ newData: '98765' });
+      expect(dispatchedAction.payload).toEqual({ game: { newData: '98765' } });
+    });
+
+    it('calculates default local ranks when round starts', () => {
+      const dispatch = jest.fn();
+      const topics = {
+        '12345': { status: 'active' },
+        '23456': { status: 'active' },
+        '34567': { status: 'active' },
+        '45678': { status: 'available' },
+        '56789': { status: 'active' }
+      };
+
+      subscribeToGameUpdates('12345', {
+        state: { game: { state: '' } },
+        dispatch
+      });
+
+      const on = subscribeToGameUpdatesService.mock.calls[0][1];
+      on({ state: 'ranking', topics });
+
+      expect(dispatch.mock.calls[0][0].payload.localRanks).toEqual({
+        '12345': 0,
+        '23456': 1,
+        '34567': 2,
+        '56789': 3
+      });
     });
   });
 
@@ -317,6 +349,32 @@ describe('game actions', () => {
       expect(
         gameTopics.filter(({ status }) => status === 'active').length
       ).toBe(4);
+    });
+  });
+
+  describe('updateLocalRanks', () => {
+    it('reorders the sorted active topics', () => {
+      const dispatch = jest.fn();
+      const activeTopics = [
+        { uid: '12345', name: 'topic a' },
+        { uid: '23456', name: 'topic b' },
+        { uid: '34567', name: 'topic c' },
+        { uid: '45678', name: 'topic f' }
+      ];
+
+      updateLocalRanks(activeTopics, 3, 1, { dispatch });
+
+      expect(dispatch).toHaveBeenCalledTimes(1);
+
+      const dispatchedAction = dispatch.mock.calls[0][0];
+
+      expect(dispatchedAction.type).toBe(UPDATE_LOCAL_RANKS);
+      expect(dispatchedAction.payload).toEqual({
+        '12345': 0,
+        '45678': 1,
+        '23456': 2,
+        '34567': 3
+      });
     });
   });
 });

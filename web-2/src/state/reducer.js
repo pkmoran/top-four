@@ -1,4 +1,9 @@
-import { TOPIC_PACKS, STARTED_GAME, GAME_UPDATE } from 'actions/types';
+import {
+  TOPIC_PACKS,
+  STARTED_GAME,
+  GAME_UPDATE,
+  UPDATE_LOCAL_RANKS
+} from 'actions/types';
 import { WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { withReducerLogging } from 'utilities/logging';
 
@@ -9,7 +14,11 @@ const gameStateReducer = (state, { type, payload }) => {
 
       return { ...state, gameId, gameUid, playerUid, name };
     case GAME_UPDATE:
-      return { ...state, game: { ...payload } };
+      const { game, localRanks } = payload;
+
+      return { ...state, localRanks, game };
+    case UPDATE_LOCAL_RANKS:
+      return { ...state, localRanks: payload };
     case TOPIC_PACKS:
       const topicPacks = Object.keys(payload).map(uid => {
         const { name, topics } = payload[uid];
