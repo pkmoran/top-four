@@ -1,4 +1,4 @@
-import gameStateReducer from 'state/reducer';
+import gameStateReducer from '@state/reducer';
 
 describe('gameStateReducer', () => {
   it('returns state for unknown actions', () => {

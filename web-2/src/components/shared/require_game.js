@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 
 import withRouter, { toRoot } from 'utilities/router';
-import { withState } from 'state/game';
+import { withState } from '@state';
 
 const withRequireGame = WrappedComponent => {
   const WrapperComponent = props => {

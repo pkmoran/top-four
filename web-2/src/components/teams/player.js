@@ -1,7 +1,7 @@
 import { h } from 'preact';
 
 import cx from 'utilities/cx';
-import { withState } from 'state/game';
+import { withState } from '@state';
 
 const Player = ({ name, uid, playerUid }) => {
   const currentPlayer = uid === playerUid;

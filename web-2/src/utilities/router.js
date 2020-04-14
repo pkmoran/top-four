@@ -1,6 +1,6 @@
 import { route } from 'preact-router';
 
-import { withState } from 'state/game';
+import { withState } from '@state';
 
 const toRoot = () => () => {
   route('/', true);

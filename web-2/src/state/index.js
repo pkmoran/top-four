@@ -2,7 +2,7 @@ import { h, createContext } from 'preact';
 import { useReducer, useContext } from 'preact/hooks';
 
 import resolve from 'utilities/resolve';
-import gameStateReducer from 'state/reducer';
+import gameStateReducer from '@state/reducer';
 
 const GameStateContext = createContext();
 

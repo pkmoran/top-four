@@ -7,8 +7,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import cx from 'utilities/cx';
 import compose from 'utilities/compose';
 
-import { withAction, withState } from 'state/game';
-import { startRound } from 'actions/game';
+import { withAction, withState } from '@state';
+import { startRound } from '@actions';
 
 const Footer = ({ confirmText, helperText, confirmAction }) => {
   const [confirming, setConfirming] = useState(false);

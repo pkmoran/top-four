@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Button } from '@material-ui/core';
 
 import compose from 'utilities/compose';
-import { withState } from 'state/game';
+import { withState } from '@state';
 import withRouter, { toTeams, toAddTopics, toGame } from 'utilities/router';
 
 import Logo from 'components/shared/logo';

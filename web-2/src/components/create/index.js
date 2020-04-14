@@ -5,8 +5,8 @@ import { Button, CircularProgress } from '@material-ui/core';
 import compose from 'utilities/compose';
 import { WRITE_OUR_OWN_UID, INDIVIDUALS } from 'utilities/constants';
 
-import { withAction, withState } from 'state/game';
-import { startGame, getTopicPacks } from 'actions/game';
+import { withAction, withState } from '@state';
+import { startGame, getTopicPacks } from '@actions';
 
 import Logo from 'components/shared/logo';
 import Slider from 'components/shared/slider';

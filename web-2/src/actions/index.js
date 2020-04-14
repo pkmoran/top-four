@@ -12,19 +12,13 @@ import {
   startGameService,
   getGameUidService,
   addPlayerService,
-  getTopicPacksService,
   subscribeToGameUpdatesService,
   joinTeamService,
   addTopicService,
   updateGameService
-} from 'services/game';
+} from '@services';
 
-import {
-  TOPIC_PACKS,
-  STARTED_GAME,
-  GAME_UPDATE,
-  UPDATE_LOCAL_RANKS
-} from 'actions/types';
+import { STARTED_GAME, GAME_UPDATE, UPDATE_LOCAL_RANKS } from '@actions/types';
 import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { tagLogger } from 'utilities/logging';
 
@@ -106,18 +100,6 @@ const addPlayer = async ({ gameUid, name }) => {
 
 const joinTeam = async (teamUid, { state: { gameUid, playerUid } }) => {
   joinTeamService({ teamUid, playerUid, gameUid });
-};
-
-const getTopicPacks = async ({ state, dispatch }) => {
-  if (state.topicPacks && state.topicPacks.length > 0) return;
-
-  const topicPacks = await getTopicPacksService().catch(
-    tagLogger('getTopicPacksService failed')
-  );
-
-  if (topicPacks) {
-    dispatch({ type: TOPIC_PACKS, payload: topicPacks });
-  }
 };
 
 const subscribeToGameUpdates = (gameUid, { state, dispatch }) => {
@@ -213,10 +195,11 @@ const updateLocalRanks = (
   });
 };
 
+export * from '@actions/topic_packs';
+
 export {
   startGame,
   joinGame,
-  getTopicPacks,
   addPlayer,
   subscribeToGameUpdates,
   joinTeam,

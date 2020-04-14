@@ -1,12 +1,7 @@
 import { h } from 'preact';
 import { shallow } from 'enzyme';
 
-import {
-  GameStateProvider,
-  useGameState,
-  withAction,
-  withState
-} from 'state/game';
+import { GameStateProvider, useGameState, withAction, withState } from '@state';
 
 function MockComponent() {
   return <div />;

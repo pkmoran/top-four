@@ -10,8 +10,8 @@ import {
 } from 'utilities/state_mapping';
 import withRouter, { toAddTopics, toGame } from 'utilities/router';
 
-import { withAction, withState } from 'state/game';
-import { joinTeam } from 'actions/game';
+import { withAction, withState } from '@state';
+import { joinTeam } from '@actions';
 
 import Logo from 'components/shared/logo';
 import Team from 'components/teams/team';

@@ -4,8 +4,8 @@ import { Button, TextField } from '@material-ui/core';
 
 import compose from 'utilities/compose';
 import { topicsToCount, topicsToPlayerTopics } from 'utilities/state_mapping';
-import { withAction, withState } from 'state/game';
-import { addTopic } from 'actions/game';
+import { withAction, withState } from '@state';
+import { addTopic } from '@actions';
 import withRouter, { toGame } from 'utilities/router';
 
 import Logo from 'components/shared/logo';

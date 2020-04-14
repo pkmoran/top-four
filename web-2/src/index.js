@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import { ThemeProvider } from '@material-ui/core';
 
-import { GameStateProvider } from 'state/game';
+import { GameStateProvider } from '@state';
 import { saveState, loadState } from 'utilities/local_storage';
 
 import App from 'components/app';

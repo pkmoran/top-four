@@ -19,5 +19,10 @@ export default function (config, env, helpers, options) {
       __dirname,
       dir
     );
+
+    config.resolve.alias[`@${dir.replace('src/', '')}`] = path.resolve(
+      __dirname,
+      dir
+    );
   });
 }

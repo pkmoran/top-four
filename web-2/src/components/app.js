@@ -2,11 +2,11 @@ import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { Router, getCurrentUrl } from 'preact-router';
 
-import { withAction, withState } from 'state/game';
+import { withAction, withState } from '@state';
 import { saveState } from 'utilities/local_storage';
 import compose from 'utilities/compose';
 import resolve from 'utilities/resolve';
-import { subscribeToGameUpdates } from 'actions/game';
+import { subscribeToGameUpdates } from '@actions';
 import { IN_PROGRESS_URL_REGEX } from 'utilities/constants';
 
 // Code-splitting is automated for routes

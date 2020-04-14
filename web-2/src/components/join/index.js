@@ -2,8 +2,8 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Button, CircularProgress, TextField } from '@material-ui/core';
 
-import { withAction } from 'state/game';
-import { joinGame } from 'actions/game';
+import { withAction } from '@state';
+import { joinGame } from '@actions';
 
 import Logo from 'components/shared/logo';
 

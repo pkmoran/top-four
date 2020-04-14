@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 import compose from 'utilities/compose';
 import { toGameRound } from 'utilities/state_mapping';
-import { withState } from 'state/game';
+import { withState } from '@state';
 
 const Header = ({ round, gameId }) => {
   return (

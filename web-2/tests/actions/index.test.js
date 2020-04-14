@@ -1,12 +1,11 @@
 import {
-  getTopicPacksService,
   addPlayerService,
   startGameService,
   getGameUidService,
   subscribeToGameUpdatesService,
   addTopicService,
   updateGameService
-} from 'services/game';
+} from '@services';
 
 import { toShare, toTeams, toAddTopics, toGame } from 'utilities/router';
 
@@ -17,8 +16,7 @@ jest.mock('utilities/router', () => ({
   toGame: jest.fn().mockReturnValue(() => {})
 }));
 
-jest.mock('services/game', () => ({
-  getTopicPacksService: jest.fn(),
+jest.mock('@services', () => ({
   addPlayerService: jest.fn(),
   startGameService: jest.fn(),
   getGameUidService: jest.fn(),
@@ -29,21 +27,15 @@ jest.mock('services/game', () => ({
 
 import {
   startGame,
-  getTopicPacks,
   addPlayer,
   joinGame,
   subscribeToGameUpdates,
   addTopic,
   startRound,
   updateLocalRanks
-} from 'actions/game';
+} from '@actions';
 
-import {
-  TOPIC_PACKS,
-  STARTED_GAME,
-  GAME_UPDATE,
-  UPDATE_LOCAL_RANKS
-} from 'actions/types';
+import { STARTED_GAME, GAME_UPDATE, UPDATE_LOCAL_RANKS } from '@actions/types';
 import { TEAMS, INDIVIDUALS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 
 describe('game actions', () => {
@@ -53,44 +45,11 @@ describe('game actions', () => {
     toAddTopics.mockClear();
     toGame.mockClear();
 
-    getTopicPacksService.mockClear();
     addPlayerService.mockClear();
     startGameService.mockClear();
     getGameUidService.mockClear();
     subscribeToGameUpdatesService.mockClear();
     updateGameService.mockClear();
-  });
-
-  describe('getTopicPacks', () => {
-    it('calls getTopicPacksService', () => {
-      getTopicPacksService.mockResolvedValue([42]);
-
-      getTopicPacks({ state: {}, dispatch: () => {} });
-
-      expect(getTopicPacksService).toHaveBeenCalledTimes(1);
-    });
-
-    it('dispatches the topic packs action on success', async () => {
-      getTopicPacksService.mockResolvedValue([42]);
-      const dispatch = jest.fn();
-
-      await getTopicPacks({ state: {}, dispatch });
-
-      expect(dispatch).toHaveBeenCalledTimes(1);
-
-      const dispatchedAction = dispatch.mock.calls[0][0];
-
-      expect(dispatchedAction.type).toBe(TOPIC_PACKS);
-      expect(dispatchedAction.payload).toEqual([42]);
-    });
-
-    it('does not call getTopicPacksService if topic packs already exist', () => {
-      getTopicPacksService.mockResolvedValue(42);
-
-      getTopicPacks({ state: { topicPacks: [42] } });
-
-      expect(getTopicPacksService).not.toHaveBeenCalled();
-    });
   });
 
   describe('addPlayer', () => {

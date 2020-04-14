@@ -3,7 +3,7 @@ import {
   STARTED_GAME,
   GAME_UPDATE,
   UPDATE_LOCAL_RANKS
-} from 'actions/types';
+} from '@actions/types';
 import { WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { withReducerLogging } from 'utilities/logging';
 

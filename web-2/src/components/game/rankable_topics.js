@@ -3,8 +3,8 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import compose from 'utilities/compose';
 import { toActiveTopics } from 'utilities/state_mapping';
-import { withAction, withState } from 'state/game';
-import { updateLocalRanks } from 'actions/game';
+import { withAction, withState } from '@state';
+import { updateLocalRanks } from '@actions';
 
 import RankableTopic from 'components/game/rankable_topic';
 
