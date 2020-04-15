@@ -4,7 +4,7 @@ jest.mock('@services', () => ({
   getTopicPacksService: jest.fn()
 }));
 
-import { getTopicPacks } from '@actions';
+import { getTopicPacks } from '@actions/topic_packs';
 
 import { TOPIC_PACKS } from '@actions/types';
 
