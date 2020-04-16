@@ -1,7 +1,8 @@
 import {
   addPlayerService,
   startGameService,
-  getGameUidService
+  getGameUidService,
+  addTopicService
 } from '@services';
 
 import { subscribeToGameUpdates } from '@actions/subscribe';
@@ -11,7 +12,8 @@ import { toShare, toTeams } from 'utilities/router';
 jest.mock('@services', () => ({
   addPlayerService: jest.fn(),
   startGameService: jest.fn(),
-  getGameUidService: jest.fn()
+  getGameUidService: jest.fn(),
+  addTopicService: jest.fn()
 }));
 
 jest.mock('@actions/subscribe', () => ({
@@ -23,7 +25,7 @@ jest.mock('utilities/router', () => ({
   toTeams: jest.fn().mockReturnValue(() => {})
 }));
 
-import { startGame, addPlayer, joinGame } from '@actions/pre_game';
+import { startGame, addPlayer, joinGame, addTopic } from '@actions/pre_game';
 
 import { STARTED_GAME } from '@actions/types';
 import { TEAMS, INDIVIDUALS, WRITE_OUR_OWN_UID } from 'utilities/constants';
@@ -33,6 +35,7 @@ describe('pre game actions', () => {
     addPlayerService.mockClear();
     startGameService.mockClear();
     getGameUidService.mockClear();
+    addTopicService.mockClear();
 
     subscribeToGameUpdates.mockClear();
 
@@ -198,6 +201,21 @@ describe('pre game actions', () => {
       addPlayerService.mockRejectedValue();
 
       expect(joinGame({}, {})).rejects.toBe('cannot add player');
+    });
+  });
+
+  describe('addTopic', () => {
+    it('calls addTopicService', () => {
+      addTopic('road trips', {
+        state: { gameUid: '12345', playerUid: 'abcde' }
+      });
+
+      expect(addTopicService).toHaveBeenCalledTimes(1);
+      expect(addTopicService.mock.calls[0][0]).toEqual({
+        topic: 'road trips',
+        gameUid: '12345',
+        playerUid: 'abcde'
+      });
     });
   });
 });

@@ -4,7 +4,8 @@ import {
   startGameService,
   getGameUidService,
   addPlayerService,
-  joinTeamService
+  joinTeamService,
+  addTopicService
 } from '@services';
 
 import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
@@ -90,4 +91,8 @@ const joinTeam = async (teamUid, { state: { gameUid, playerUid } }) => {
   joinTeamService({ teamUid, playerUid, gameUid });
 };
 
-export { startGame, joinGame, addPlayer, joinTeam };
+const addTopic = (topic, { state: { gameUid, playerUid } }) => {
+  addTopicService({ topic, playerUid, gameUid });
+};
+
+export { startGame, joinGame, addPlayer, joinTeam, addTopic };

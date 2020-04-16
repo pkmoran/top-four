@@ -1,33 +1,16 @@
-import { addTopicService, updateGameService } from '@services';
+import { updateGameService } from '@services';
 
 jest.mock('@services', () => ({
-  addTopicService: jest.fn(),
   updateGameService: jest.fn()
 }));
 
-import { addTopic, startRound, updateLocalRanks } from '@actions';
+import { startRound, updateLocalRanks } from '@actions/in_game';
 
 import { UPDATE_LOCAL_RANKS } from '@actions/types';
 
-describe('game actions', () => {
+describe('in game actions', () => {
   beforeEach(() => {
-    addTopicService.mockClear();
     updateGameService.mockClear();
-  });
-
-  describe('addTopic', () => {
-    it('calls addTopicService', () => {
-      addTopic('road trips', {
-        state: { gameUid: '12345', playerUid: 'abcde' }
-      });
-
-      expect(addTopicService).toHaveBeenCalledTimes(1);
-      expect(addTopicService.mock.calls[0][0]).toEqual({
-        topic: 'road trips',
-        gameUid: '12345',
-        playerUid: 'abcde'
-      });
-    });
   });
 
   describe('startRound', () => {
