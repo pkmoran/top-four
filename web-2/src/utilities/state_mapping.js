@@ -4,24 +4,25 @@ const teamsToArray = teams =>
 const topicsToArray = topics =>
   Object.keys(topics).map(uid => ({ uid, ...topics[uid] }));
 
+const playersToArray = players =>
+  Object.keys(players).map(uid => ({ uid, ...players[uid] }));
+
 const topicsToCount = topics => Object.keys(topics).length;
 
 const topicsToPlayerTopics = ({ playerUid, game: { topics = {} } }) =>
   topicsToArray(topics).filter(topic => topic.playerUid === playerUid);
 
 const playersToPlayersByTeam = players =>
-  Object.keys(players)
-    .map(uid => ({ uid, ...players[uid] }))
-    .reduce((playersByTeam, player) => {
-      const { teamUid } = player;
+  playersToArray(players).reduce((playersByTeam, player) => {
+    const { teamUid } = player;
 
-      const team = playersByTeam[teamUid] || [];
+    const team = playersByTeam[teamUid] || [];
 
-      return {
-        ...playersByTeam,
-        [teamUid]: [...team, player]
-      };
-    }, {});
+    return {
+      ...playersByTeam,
+      [teamUid]: [...team, player]
+    };
+  }, {});
 
 const toPlayer = ({ playerUid, game: { players } }) => ({
   ...players[playerUid],
@@ -43,6 +44,9 @@ const toRankingPlayer = ({ rankingPlayerUid, players }) => ({
 const toActiveTopics = topics =>
   topicsToArray(topics).filter(({ status }) => status === 'active');
 
+const toUnlockedInPlayers = players =>
+  playersToArray(players).filter(({ lockedIn }) => !lockedIn);
+
 export {
   teamsToArray,
   topicsToArray,
@@ -52,5 +56,6 @@ export {
   toPlayer,
   toGameRound,
   toRankingPlayer,
-  toActiveTopics
+  toActiveTopics,
+  toUnlockedInPlayers
 };

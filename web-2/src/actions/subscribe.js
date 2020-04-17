@@ -5,6 +5,8 @@ import { GAME_UPDATE } from '@actions/types';
 let previousGame;
 
 const subscribeToGameUpdates = (gameUid, { dispatch }) => {
+  previousGame = null;
+
   subscribeToGameUpdatesService(gameUid, game => {
     if (game) {
       const localRanks = getLocalRanks(game, previousGame);
@@ -22,14 +24,14 @@ const subscribeToGameUpdates = (gameUid, { dispatch }) => {
 };
 
 const getLocalRanks = (game, previousGame) => {
-  const { state: previousState, localRanks } = previousGame || {};
+  const { state: previousState } = previousGame || {};
   const { state: nextState, topics } = game;
 
   if (!previousState && nextState === 'ranking') {
     return defaultLocalRanks(topics);
   }
 
-  return localRanks;
+  return null;
 };
 
 const defaultLocalRanks = topics =>

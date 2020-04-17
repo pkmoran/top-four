@@ -1,6 +1,6 @@
 import sampleSize from 'lodash/sampleSize';
 
-import { updateGameService } from '@services';
+import { updateGameService, lockInService } from '@services';
 import { UPDATE_LOCAL_RANKS } from '@actions/types';
 
 const startRound = ({
@@ -56,4 +56,24 @@ const updateLocalRanks = (
   });
 };
 
-export { startRound, updateLocalRanks };
+const lockIn = ({
+  state: {
+    gameUid,
+    playerUid,
+    localRanks,
+    game: { rankingPlayerUid }
+  }
+}) => {
+  const active = playerUid === rankingPlayerUid;
+  const guesses = Object.keys(localRanks).reduce(
+    (topicGuesses, topicUid) => ({
+      ...topicGuesses,
+      [topicUid]: active ? 'active' : localRanks[topicUid]
+    }),
+    {}
+  );
+
+  lockInService({ gameUid, playerUid, guesses });
+};
+
+export { startRound, updateLocalRanks, lockIn };

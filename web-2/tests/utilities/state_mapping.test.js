@@ -6,7 +6,8 @@ import {
   playersToPlayersByTeam,
   toPlayer,
   toGameRound,
-  toRankingPlayer
+  toRankingPlayer,
+  toUnlockedInPlayers
 } from 'utilities/state_mapping';
 
 describe('state mapping functions', () => {
@@ -137,6 +138,21 @@ describe('state mapping functions', () => {
       };
 
       expect(toRankingPlayer(game)).toEqual({ uid: '23456', name: 'Harrison' });
+    });
+  });
+
+  describe('toUnlockedInPlayers', () => {
+    it('takes an object of players by ID and returns all players who are not locked in', () => {
+      const players = {
+        '12345': { lockedIn: false },
+        '23456': { lockedIn: true },
+        '34567': { lockedIn: false }
+      };
+
+      expect(toUnlockedInPlayers(players)).toEqual([
+        { uid: '12345', lockedIn: false },
+        { uid: '34567', lockedIn: false }
+      ]);
     });
   });
 });

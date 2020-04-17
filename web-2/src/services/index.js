@@ -73,6 +73,18 @@ const updateGameService = (game, gameUid) => {
   firebase.database().ref(`/games/${gameUid}`).update(game);
 };
 
+const lockInService = async ({ gameUid, playerUid, guesses }) => {
+  await firebase
+    .database()
+    .ref(`/games/${gameUid}/players/${playerUid}`)
+    .update({ lockedIn: true });
+
+  firebase
+    .database()
+    .ref(`/games/${gameUid}/guesses/${playerUid}`)
+    .update(guesses);
+};
+
 export {
   startGameService,
   getTopicPacksService,
@@ -81,5 +93,6 @@ export {
   subscribeToGameUpdatesService,
   joinTeamService,
   addTopicService,
-  updateGameService
+  updateGameService,
+  lockInService
 };

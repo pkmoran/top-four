@@ -6,12 +6,19 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import cx from 'utilities/cx';
 import compose from 'utilities/compose';
+import { toPlayer, toUnlockedInPlayers } from 'utilities/state_mapping';
 
 import { withAction, withState } from '@state';
-import { startRound } from '@actions';
+import { startRound, lockIn } from '@actions';
 
-const Footer = ({ confirmText, helperText, confirmAction }) => {
+import footerState from 'components/game/game_state_helpers';
+
+const Footer = ({ helperText, confirmText, confirmAction }) => {
   const [confirming, setConfirming] = useState(false);
+
+  const actionsClasses = cx('game-footer__actions', {
+    'visibility--hidden': !confirmAction
+  });
 
   const confirmClasses = cx('game-footer__confirm-action', {
     'visibility--hidden': !confirming
@@ -30,7 +37,7 @@ const Footer = ({ confirmText, helperText, confirmAction }) => {
     <Paper elevation={3}>
       <div class="game-footer">
         {helperText}
-        <div class="game-footer__actions">
+        <div class={actionsClasses}>
           <span class={confirmClasses}>
             <Button variant="outlined" color="primary" onClick={handleConfirm}>
               <CheckIcon />
@@ -44,7 +51,7 @@ const Footer = ({ confirmText, helperText, confirmAction }) => {
                 color="primary"
                 onClick={() => setConfirming(true)}
               >
-                {confirmText}
+                {confirmText || ''}
               </Button>
             )}
             {confirming && (
@@ -69,28 +76,40 @@ const Footer = ({ confirmText, helperText, confirmAction }) => {
 
 // state
 const withGameState = withState('game.state', 'gameState');
+const withPlayerState = withState(null, 'player', toPlayer);
+const withUnlockedInPlayersState = withState(
+  'game.players',
+  'unlockedInPlayers',
+  toUnlockedInPlayers
+);
+const withRankingPlayerUidState = withState(
+  'game.rankingPlayerUid',
+  'rankingPlayerUid'
+);
 
 // actions
 const withStartRoundAction = withAction(startRound, 'startRound');
+const withLockInAction = withAction(lockIn, 'lockIn');
 
 const withProps = WrappedComponent => {
   return props => {
-    const { gameState, startRound } = props;
+    const {
+      gameState,
+      player,
+      unlockedInPlayers,
+      rankingPlayerUid,
+      startRound,
+      lockIn
+    } = props;
 
-    let helperText;
-    let confirmText;
-    let confirmAction;
-
-    if (!gameState) {
-      helperText = 'Whose turn is it to rank?';
-      confirmText = `I'm up!`;
-      confirmAction = startRound;
-    } else if (gameState === 'ranking') {
-      helperText = 'Feel good about your ranks?';
-      confirmText = `Lock 'em in!`;
-      confirmAction = () => {};
-    } else if (gameState === 'ranked') {
-    }
+    const { helperText, confirmText, confirmAction } = footerState({
+      gameState,
+      player,
+      unlockedInPlayers,
+      startRound,
+      lockIn,
+      rankingPlayerUid
+    });
 
     return (
       <WrappedComponent
@@ -103,7 +122,15 @@ const withProps = WrappedComponent => {
   };
 };
 
-const wrappers = compose(withGameState, withStartRoundAction, withProps);
+const wrappers = compose(
+  withGameState,
+  withPlayerState,
+  withUnlockedInPlayersState,
+  withRankingPlayerUidState,
+  withStartRoundAction,
+  withLockInAction,
+  withProps
+);
 
 export { Footer };
 export default wrappers(Footer);

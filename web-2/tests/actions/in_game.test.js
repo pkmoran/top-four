@@ -1,16 +1,18 @@
-import { updateGameService } from '@services';
+import { updateGameService, lockInService } from '@services';
 
 jest.mock('@services', () => ({
-  updateGameService: jest.fn()
+  updateGameService: jest.fn(),
+  lockInService: jest.fn()
 }));
 
-import { startRound, updateLocalRanks } from '@actions/in_game';
+import { startRound, updateLocalRanks, lockIn } from '@actions/in_game';
 
 import { UPDATE_LOCAL_RANKS } from '@actions/types';
 
 describe('in game actions', () => {
   beforeEach(() => {
     updateGameService.mockClear();
+    lockInService.mockClear();
   });
 
   describe('startRound', () => {
@@ -67,6 +69,68 @@ describe('in game actions', () => {
         '45678': 1,
         '23456': 2,
         '34567': 3
+      });
+    });
+  });
+
+  describe('lockIn', () => {
+    it('calls lockInService with guesses for a ranking player', () => {
+      const localRanks = {
+        '12345': 0,
+        '23456': 1,
+        '34567': 2,
+        '45678': 3
+      };
+
+      lockIn({
+        state: {
+          gameUid: 'abcde',
+          playerUid: 'bcdef',
+          localRanks,
+          game: { rankingPlayerUid: 'bcdef' }
+        }
+      });
+
+      expect(lockInService).toHaveBeenCalledTimes(1);
+      expect(lockInService.mock.calls[0][0]).toEqual({
+        gameUid: 'abcde',
+        playerUid: 'bcdef',
+        guesses: {
+          '12345': 'active',
+          '23456': 'active',
+          '34567': 'active',
+          '45678': 'active'
+        }
+      });
+    });
+
+    it('calls lockInService with guesses for a guessing player', () => {
+      const localRanks = {
+        '12345': 0,
+        '23456': 1,
+        '34567': 2,
+        '45678': 3
+      };
+
+      lockIn({
+        state: {
+          gameUid: 'abcde',
+          playerUid: 'bcdef',
+          localRanks,
+          game: { rankingPlayerUid: '98765' }
+        }
+      });
+
+      expect(lockInService).toHaveBeenCalledTimes(1);
+      expect(lockInService.mock.calls[0][0]).toEqual({
+        gameUid: 'abcde',
+        playerUid: 'bcdef',
+        guesses: {
+          '12345': 0,
+          '23456': 1,
+          '34567': 2,
+          '45678': 3
+        }
       });
     });
   });

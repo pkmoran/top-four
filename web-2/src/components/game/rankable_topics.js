@@ -30,7 +30,12 @@ const RankableTopics = ({ activeTopics, updateLocalRanks }) => {
                   index={index}
                 >
                   {(provided, snapshot) => (
-                    <div class="rankable-topics__topic">
+                    <div
+                      class="rankable-topics__topic"
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
                       <RankableTopic topic={topic} provided={provided} />
                     </div>
                   )}
