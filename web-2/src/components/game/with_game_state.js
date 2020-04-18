@@ -4,21 +4,23 @@ import { withState } from '@state';
 import { toPlayer } from 'utilities/state_mapping';
 import compose from 'utilities/compose';
 import { GAME_STATE } from 'utilities/constants';
+import { toUnlockedInPlayers } from 'utilities/state_mapping';
 
 const getGameState = ({
   remoteGameState,
   player: { uid, lockedIn },
-  rankingPlayerUid
+  rankingPlayerUid,
+  unlockedInPlayers
 }) => {
-  const ranking = uid === rankingPlayerUid;
+  const ranker = uid === rankingPlayerUid;
 
   if (!remoteGameState) return { state: GAME_STATE.BETWEEN_ROUNDS };
 
   if (remoteGameState === 'ranking' && !lockedIn)
-    return { state: GAME_STATE.RANKING, ranking };
+    return { state: GAME_STATE.RANKING, ranker };
 
   if (remoteGameState === 'ranking' && lockedIn)
-    return { state: GAME_STATE.LOCKED_IN, ranking };
+    return { state: GAME_STATE.LOCKED_IN, ranker, unlockedInPlayers };
 };
 
 const withGameState = WrappedComponent => {
@@ -32,11 +34,17 @@ const withGameState = WrappedComponent => {
     'game.rankingPlayerUid',
     'rankingPlayerUid'
   );
+  const withUnlockedInPlayersState = withState(
+    'game.players',
+    'unlockedInPlayers',
+    toUnlockedInPlayers
+  );
 
   const wrappers = compose(
     withRemoteGameState,
     withPlayerState,
-    withRankingPlayerUidState
+    withRankingPlayerUidState,
+    withUnlockedInPlayersState
   );
 
   return wrappers(Component);

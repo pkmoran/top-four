@@ -3,8 +3,10 @@ import { h } from 'preact';
 import compose from 'utilities/compose';
 import { toRankingPlayer } from 'utilities/state_mapping';
 import { withState } from '@state';
+import { GAME_STATE } from 'utilities/constants';
 
 import RankableTopics from 'components/game/rankable_topics';
+import { bodyState } from 'components/game/game_state_helpers';
 
 const Body = ({ header, subheader, gameState }) => {
   return (
@@ -12,14 +14,14 @@ const Body = ({ header, subheader, gameState }) => {
       <h1>{header}</h1>
       <span>{subheader}</span>
 
-      {gameState === 'ranking' && <RankableTopics />}
+      {[GAME_STATE.RANKING, GAME_STATE.LOCKED_IN].includes(gameState.state) && (
+        <RankableTopics gameState={gameState} />
+      )}
     </div>
   );
 };
 
 // state
-const withGameState = withState('game.state', 'gameState');
-const withPlayerUidState = withState('playerUid');
 const withRankingPlayerState = withState(
   'game',
   'rankingPlayer',
@@ -28,24 +30,7 @@ const withRankingPlayerState = withState(
 
 const withProps = WrappedComponent => {
   return props => {
-    const { gameState, playerUid, rankingPlayer } = props;
-
-    let header;
-    let subheader;
-
-    if (!gameState) {
-      header = 'Waiting!';
-      subheader = '...for someone to start ranking.';
-    } else if (gameState === 'ranking') {
-      if (playerUid === rankingPlayer.uid) {
-        header = 'Rank!';
-        subheader = '...the following topics, best to worst.';
-      } else {
-        header = 'Guess!';
-        subheader = `...how ${rankingPlayer.name} would rank the following topics.`;
-      }
-    } else if (gameState === 'ranked') {
-    }
+    const { header, subheader } = bodyState(props);
 
     return (
       <WrappedComponent {...props} header={header} subheader={subheader} />
@@ -53,12 +38,7 @@ const withProps = WrappedComponent => {
   };
 };
 
-const wrappers = compose(
-  withGameState,
-  withPlayerUidState,
-  withRankingPlayerState,
-  withProps
-);
+const wrappers = compose(withRankingPlayerState, withProps);
 
 export { Body };
 export default wrappers(Body);

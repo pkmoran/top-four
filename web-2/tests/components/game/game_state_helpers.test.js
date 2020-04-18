@@ -1,6 +1,6 @@
 import { GAME_STATE } from 'utilities/constants';
 
-import footerState from 'components/game/game_state_helpers';
+import { footerState } from 'components/game/game_state_helpers';
 
 describe('game state helpers', () => {
   describe('footerState', () => {
@@ -20,16 +20,17 @@ describe('game state helpers', () => {
     it('returns all players locked in state', () => {
       expect(
         footerState({
-          gameState: { state: GAME_STATE.LOCKED_IN },
-          unlockedInPlayers: []
+          gameState: { state: GAME_STATE.LOCKED_IN, unlockedInPlayers: [] }
         })._stateName
       ).toBe('locked_in_all');
     });
 
     it('returns one player not locked in state', () => {
       const state = footerState({
-        gameState: { state: GAME_STATE.LOCKED_IN },
-        unlockedInPlayers: [{ name: 'Emily' }]
+        gameState: {
+          state: GAME_STATE.LOCKED_IN,
+          unlockedInPlayers: [{ name: 'Emily' }]
+        }
       });
 
       expect(state._stateName).toBe('locked_in_single');
@@ -38,8 +39,7 @@ describe('game state helpers', () => {
 
     it('returns multiple not locked in state', () => {
       const state = footerState({
-        gameState: { state: GAME_STATE.LOCKED_IN },
-        unlockedInPlayers: [{}, {}]
+        gameState: { state: GAME_STATE.LOCKED_IN, unlockedInPlayers: [{}, {}] }
       });
 
       expect(state._stateName).toBe('locked_in_multiple');

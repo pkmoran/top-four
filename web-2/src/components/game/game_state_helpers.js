@@ -1,53 +1,71 @@
 import { GAME_STATE } from 'utilities/constants';
 
-const footerState = ({ gameState, unlockedInPlayers, startRound, lockIn }) => {
-  switch (gameState.state) {
+const footerState = ({
+  gameState: { state, ranker, unlockedInPlayers },
+  startRound,
+  lockIn
+}) => {
+  switch (state) {
     case GAME_STATE.BETWEEN_ROUNDS:
-      return betweenRounds(startRound);
+      return {
+        _stateName: 'between_rounds',
+        helperText: 'Whose turn is it to rank?',
+        confirmText: `I'm up!`,
+        confirmAction: startRound
+      };
     case GAME_STATE.RANKING:
-      return ranking(lockIn);
+      return {
+        _stateName: 'ranking',
+        helperText: 'Feel good about your ranks?',
+        confirmText: `Lock 'em in!`,
+        confirmAction: lockIn
+      };
     case GAME_STATE.LOCKED_IN:
-      return lockedIn(unlockedInPlayers);
+      if (unlockedInPlayers.length === 0)
+        return {
+          _stateName: 'locked_in_all',
+          helperText: `Everyone's locked in!`,
+          confirmText: null,
+          confirmAction: null
+        };
+
+      if (unlockedInPlayers.length === 1)
+        return {
+          _stateName: 'locked_in_single',
+          helperText: `Waiting on ${unlockedInPlayers[0].name} to lock in!`,
+          confirmText: null,
+          confirmAction: null
+        };
+
+      return {
+        _stateName: 'locked_in_multiple',
+        helperText: `Waiting on ${unlockedInPlayers.length} players to lock in!`,
+        confirmText: null,
+        confirmAction: null
+      };
   }
 };
 
-const betweenRounds = startRound => ({
-  _stateName: 'between_rounds',
-  helperText: 'Whose turn is it to rank?',
-  confirmText: `I'm up!`,
-  confirmAction: startRound
-});
+const bodyState = ({ gameState: { state, ranker }, rankingPlayer }) => {
+  switch (state) {
+    case GAME_STATE.BETWEEN_ROUNDS:
+      return {
+        header: 'Waiting!',
+        subheader: '...for someone to start ranking.'
+      };
+    case GAME_STATE.RANKING:
+    case GAME_STATE.LOCKED_IN:
+      if (ranker)
+        return {
+          header: 'Rank!',
+          subheader: '...the following topics, best to worst.'
+        };
 
-const ranking = lockIn => ({
-  _stateName: 'ranking',
-  helperText: 'Feel good about your ranks?',
-  confirmText: `Lock 'em in!`,
-  confirmAction: lockIn
-});
-
-const lockedIn = unlockedInPlayers => {
-  if (unlockedInPlayers.length === 0)
-    return {
-      _stateName: 'locked_in_all',
-      helperText: `Everyone's locked in!`,
-      confirmText: null,
-      confirmAction: null
-    };
-
-  if (unlockedInPlayers.length === 1)
-    return {
-      _stateName: 'locked_in_single',
-      helperText: `Waiting on ${unlockedInPlayers[0].name} to lock in!`,
-      confirmText: null,
-      confirmAction: null
-    };
-
-  return {
-    _stateName: 'locked_in_multiple',
-    helperText: `Waiting on ${unlockedInPlayers.length} players to lock in!`,
-    confirmText: null,
-    confirmAction: null
-  };
+      return {
+        header: 'Guess!',
+        subheader: `...how ${rankingPlayer.name} would rank the following topics.`
+      };
+  }
 };
 
-export default footerState;
+export { footerState, bodyState };

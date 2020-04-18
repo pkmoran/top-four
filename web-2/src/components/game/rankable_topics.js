@@ -5,10 +5,11 @@ import compose from 'utilities/compose';
 import { toActiveTopics } from 'utilities/state_mapping';
 import { withAction, withState } from '@state';
 import { updateLocalRanks } from '@actions';
+import { GAME_STATE } from 'utilities/constants';
 
 import RankableTopic from 'components/game/rankable_topic';
 
-const RankableTopics = ({ activeTopics, updateLocalRanks }) => {
+const RankableTopics = ({ activeTopics, updateLocalRanks, gameState }) => {
   const handleDragEnd = drag => {
     const {
       source: { index: sourceIndex },
@@ -28,6 +29,7 @@ const RankableTopics = ({ activeTopics, updateLocalRanks }) => {
                   key={topic.uid}
                   draggableId={topic.uid}
                   index={index}
+                  isDragDisabled={gameState.state === GAME_STATE.LOCKED_IN}
                 >
                   {(provided, snapshot) => (
                     <div
@@ -36,7 +38,7 @@ const RankableTopics = ({ activeTopics, updateLocalRanks }) => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <RankableTopic topic={topic} provided={provided} />
+                      <RankableTopic topic={topic} gameState={gameState} />
                     </div>
                   )}
                 </Draggable>

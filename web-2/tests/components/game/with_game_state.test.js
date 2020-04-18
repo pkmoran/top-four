@@ -21,7 +21,7 @@ describe('withGameState(WrappedComponent)', () => {
           rankingPlayerUid: '12345',
           player: { uid: '12345', lockedIn: false }
         })
-      ).toEqual({ state: GAME_STATE.RANKING, ranking: true });
+      ).toEqual({ state: GAME_STATE.RANKING, ranker: true });
     });
 
     it('returns ranking state for the guessing player', () => {
@@ -31,7 +31,7 @@ describe('withGameState(WrappedComponent)', () => {
           rankingPlayerUid: '23456',
           player: { uid: '12345', lockedIn: false }
         })
-      ).toEqual({ state: GAME_STATE.RANKING, ranking: false });
+      ).toEqual({ state: GAME_STATE.RANKING, ranker: false });
     });
 
     it('returns locked in state for the ranking player', () => {
@@ -41,7 +41,7 @@ describe('withGameState(WrappedComponent)', () => {
           rankingPlayerUid: '12345',
           player: { uid: '12345', lockedIn: true }
         })
-      ).toEqual({ state: GAME_STATE.LOCKED_IN, ranking: true });
+      ).toEqual({ state: GAME_STATE.LOCKED_IN, ranker: true });
     });
 
     it('returns locked in state for the guessing player', () => {
@@ -51,7 +51,7 @@ describe('withGameState(WrappedComponent)', () => {
           rankingPlayerUid: '23456',
           player: { uid: '12345', lockedIn: true }
         })
-      ).toEqual({ state: GAME_STATE.LOCKED_IN, ranking: false });
+      ).toEqual({ state: GAME_STATE.LOCKED_IN, ranker: false });
     });
   });
 });

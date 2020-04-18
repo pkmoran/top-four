@@ -6,13 +6,11 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import cx from 'utilities/cx';
 import compose from 'utilities/compose';
-import { toPlayer, toUnlockedInPlayers } from 'utilities/state_mapping';
 
-import { withAction, withState } from '@state';
+import { withAction } from '@state';
 import { startRound, lockIn } from '@actions';
 
-import footerState from 'components/game/game_state_helpers';
-import withGameState from 'components/game/with_game_state';
+import { footerState } from 'components/game/game_state_helpers';
 
 const Footer = ({ helperText, confirmText, confirmAction }) => {
   const [confirming, setConfirming] = useState(false);
@@ -75,13 +73,6 @@ const Footer = ({ helperText, confirmText, confirmAction }) => {
   );
 };
 
-// state
-const withUnlockedInPlayersState = withState(
-  'game.players',
-  'unlockedInPlayers',
-  toUnlockedInPlayers
-);
-
 // actions
 const withStartRoundAction = withAction(startRound, 'startRound');
 const withLockInAction = withAction(lockIn, 'lockIn');
@@ -101,13 +92,7 @@ const withProps = WrappedComponent => {
   };
 };
 
-const wrappers = compose(
-  withGameState,
-  withUnlockedInPlayersState,
-  withStartRoundAction,
-  withLockInAction,
-  withProps
-);
+const wrappers = compose(withStartRoundAction, withLockInAction, withProps);
 
 export { Footer };
 export default wrappers(Footer);
