@@ -1,26 +1,26 @@
+import { GAME_STATE } from 'utilities/constants';
+
 import footerState from 'components/game/game_state_helpers';
 
 describe('game state helpers', () => {
   describe('footerState', () => {
     it('returns between rounds state', () => {
-      expect(footerState({ gameState: undefined })._stateName).toBe(
-        'between_rounds'
-      );
-      expect(footerState({ gameState: '' })._stateName).toBe('between_rounds');
+      expect(
+        footerState({ gameState: { state: GAME_STATE.BETWEEN_ROUNDS } })
+          ._stateName
+      ).toBe('between_rounds');
     });
 
     it('returns ranking state', () => {
       expect(
-        footerState({ gameState: 'ranking', player: { lockedIn: false } })
-          ._stateName
+        footerState({ gameState: { state: GAME_STATE.RANKING } })._stateName
       ).toBe('ranking');
     });
 
     it('returns all players locked in state', () => {
       expect(
         footerState({
-          gameState: 'ranking',
-          player: { lockedIn: true },
+          gameState: { state: GAME_STATE.LOCKED_IN },
           unlockedInPlayers: []
         })._stateName
       ).toBe('locked_in_all');
@@ -28,8 +28,7 @@ describe('game state helpers', () => {
 
     it('returns one player not locked in state', () => {
       const state = footerState({
-        gameState: 'ranking',
-        player: { lockedIn: true },
+        gameState: { state: GAME_STATE.LOCKED_IN },
         unlockedInPlayers: [{ name: 'Emily' }]
       });
 
@@ -39,8 +38,7 @@ describe('game state helpers', () => {
 
     it('returns multiple not locked in state', () => {
       const state = footerState({
-        gameState: 'ranking',
-        player: { lockedIn: true },
+        gameState: { state: GAME_STATE.LOCKED_IN },
         unlockedInPlayers: [{}, {}]
       });
 

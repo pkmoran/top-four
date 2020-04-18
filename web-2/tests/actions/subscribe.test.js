@@ -34,7 +34,10 @@ describe('subscription actions', () => {
       const dispatchedAction = dispatch.mock.calls[0][0];
 
       expect(dispatchedAction.type).toBe(GAME_UPDATE);
-      expect(dispatchedAction.payload).toEqual({ game: { newData: '98765' } });
+      expect(dispatchedAction.payload).toEqual({
+        game: { newData: '98765' },
+        localRanks: null
+      });
     });
 
     it('calculates default local ranks when round starts', () => {

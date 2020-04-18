@@ -3,3 +3,9 @@ export const SINGLE_TEAM_UID = '830c80da-a932-4922-b3ca-cd3578383ea1';
 export const INDIVIDUALS = 'individuals';
 export const TEAMS = 'teams';
 export const IN_PROGRESS_URL_REGEX = /\/[A-Z]{1}\d{1}\/\w*/g;
+
+export const GAME_STATE = {
+  BETWEEN_ROUNDS: 'between_rounds',
+  RANKING: 'ranking',
+  LOCKED_IN: 'locked_in'
+};

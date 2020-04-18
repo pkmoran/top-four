@@ -1,17 +1,14 @@
-const footerState = ({
-  gameState,
-  player,
-  unlockedInPlayers,
-  startRound,
-  lockIn,
-  rankingPlayerUid
-}) => {
-  if (!gameState) return betweenRounds(startRound);
+import { GAME_STATE } from 'utilities/constants';
 
-  if (gameState === 'ranking' && !player.lockedIn) return ranking(lockIn);
-
-  if (gameState === 'ranking' && player.lockedIn)
-    return lockedIn(unlockedInPlayers);
+const footerState = ({ gameState, unlockedInPlayers, startRound, lockIn }) => {
+  switch (gameState.state) {
+    case GAME_STATE.BETWEEN_ROUNDS:
+      return betweenRounds(startRound);
+    case GAME_STATE.RANKING:
+      return ranking(lockIn);
+    case GAME_STATE.LOCKED_IN:
+      return lockedIn(unlockedInPlayers);
+  }
 };
 
 const betweenRounds = startRound => ({

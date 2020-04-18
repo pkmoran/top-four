@@ -12,6 +12,7 @@ import { withAction, withState } from '@state';
 import { startRound, lockIn } from '@actions';
 
 import footerState from 'components/game/game_state_helpers';
+import withGameState from 'components/game/with_game_state';
 
 const Footer = ({ helperText, confirmText, confirmAction }) => {
   const [confirming, setConfirming] = useState(false);
@@ -75,16 +76,10 @@ const Footer = ({ helperText, confirmText, confirmAction }) => {
 };
 
 // state
-const withGameState = withState('game.state', 'gameState');
-const withPlayerState = withState(null, 'player', toPlayer);
 const withUnlockedInPlayersState = withState(
   'game.players',
   'unlockedInPlayers',
   toUnlockedInPlayers
-);
-const withRankingPlayerUidState = withState(
-  'game.rankingPlayerUid',
-  'rankingPlayerUid'
 );
 
 // actions
@@ -93,23 +88,7 @@ const withLockInAction = withAction(lockIn, 'lockIn');
 
 const withProps = WrappedComponent => {
   return props => {
-    const {
-      gameState,
-      player,
-      unlockedInPlayers,
-      rankingPlayerUid,
-      startRound,
-      lockIn
-    } = props;
-
-    const { helperText, confirmText, confirmAction } = footerState({
-      gameState,
-      player,
-      unlockedInPlayers,
-      startRound,
-      lockIn,
-      rankingPlayerUid
-    });
+    const { helperText, confirmText, confirmAction } = footerState(props);
 
     return (
       <WrappedComponent
@@ -124,9 +103,7 @@ const withProps = WrappedComponent => {
 
 const wrappers = compose(
   withGameState,
-  withPlayerState,
   withUnlockedInPlayersState,
-  withRankingPlayerUidState,
   withStartRoundAction,
   withLockInAction,
   withProps
