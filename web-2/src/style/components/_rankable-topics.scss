@@ -19,4 +19,14 @@
     flex-grow: 1;
     margin-right: $size-s;
   }
+
+  &--correct {
+    background-color: $color-green;
+    color: $color-light-gray;
+  }
+
+  &--incorrect {
+    background-color: $color-purple;
+    color: $color-light-gray;
+  }
 }

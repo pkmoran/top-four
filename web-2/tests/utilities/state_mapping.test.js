@@ -7,7 +7,8 @@ import {
   toPlayer,
   toGameRound,
   toRankingPlayer,
-  toUnlockedInPlayers
+  toUnlockedInPlayers,
+  toGuessesByTopic
 } from 'utilities/state_mapping';
 
 describe('state mapping functions', () => {
@@ -153,6 +154,38 @@ describe('state mapping functions', () => {
         { uid: '12345', lockedIn: false },
         { uid: '34567', lockedIn: false }
       ]);
+    });
+  });
+
+  describe('toGuessesByTopic', () => {
+    it('takes an object of guesses by player ID and returns an object of topics by ID with guesses', () => {
+      const guesses = {
+        player_1: {
+          topic_1: 0,
+          topic_2: 2,
+          topic_3: 1,
+          topic_4: 3
+        },
+        player_2: {
+          topic_1: 'active',
+          topic_2: 'active',
+          topic_3: 'active',
+          topic_4: 'active'
+        },
+        player_3: {
+          topic_1: 0,
+          topic_2: 1,
+          topic_3: 2,
+          topic_4: 3
+        }
+      };
+
+      expect(toGuessesByTopic(guesses)).toEqual({
+        topic_1: [0, 0],
+        topic_2: [2, 1],
+        topic_3: [1, 2],
+        topic_4: [3, 3]
+      });
     });
   });
 });

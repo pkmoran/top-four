@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import compose from 'utilities/compose';
-import { toActiveTopics } from 'utilities/state_mapping';
+import { toActiveTopics, toGuessesByTopic } from 'utilities/state_mapping';
 import { withAction, withState } from '@state';
 import { updateLocalRanks } from '@actions';
 import { GAME_STATE } from 'utilities/constants';
@@ -29,7 +29,7 @@ const RankableTopics = ({ activeTopics, updateLocalRanks, gameState }) => {
                   key={topic.uid}
                   draggableId={topic.uid}
                   index={index}
-                  isDragDisabled={gameState.state === GAME_STATE.LOCKED_IN}
+                  isDragDisabled={gameState.state !== GAME_STATE.RANKING}
                 >
                   {(provided, snapshot) => (
                     <div
@@ -59,6 +59,11 @@ const withActiveTopicsState = withState(
   toActiveTopics
 );
 const withLocalRanksState = withState('localRanks');
+const withGuessesByTopicState = withState(
+  'game.guesses',
+  'guessesByTopic',
+  toGuessesByTopic
+);
 
 // actions
 const withUpdateLocalRanksAction = withAction(
@@ -68,11 +73,27 @@ const withUpdateLocalRanksAction = withAction(
 
 const withProps = WrappedComponent => {
   return props => {
-    const { activeTopics, localRanks } = props;
+    const { activeTopics, localRanks, guessesByTopic } = props;
 
-    const sortedByLocalRank = activeTopics.sort(
-      ({ uid: uidA }, { uid: uidB }) => localRanks[uidA] - localRanks[uidB]
-    );
+    const sortedByLocalRank = activeTopics
+      .sort(
+        ({ uid: uidA }, { uid: uidB }) => localRanks[uidA] - localRanks[uidB]
+      )
+      .map((topic, index, topics) => {
+        const correctTopic = topics.find(({ rank }) => rank === index);
+
+        return {
+          ...topic,
+          localRank: index,
+          correctTopic,
+          correctGuesses:
+            correctTopic &&
+            guessesByTopic[correctTopic.uid].filter(
+              guess => guess === correctTopic.rank
+            ).length,
+          totalGuesses: correctTopic && guessesByTopic[correctTopic.uid].length
+        };
+      });
 
     return <WrappedComponent {...props} activeTopics={sortedByLocalRank} />;
   };
@@ -81,6 +102,7 @@ const withProps = WrappedComponent => {
 const wrappers = compose(
   withActiveTopicsState,
   withLocalRanksState,
+  withGuessesByTopicState,
   withUpdateLocalRanksAction,
   withProps
 );

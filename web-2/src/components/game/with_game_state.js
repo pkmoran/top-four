@@ -14,7 +14,7 @@ const getGameState = ({
 }) => {
   const ranker = uid === rankingPlayerUid;
 
-  if (!remoteGameState) return { state: GAME_STATE.BETWEEN_ROUNDS };
+  if (!remoteGameState) return { state: GAME_STATE.BETWEEN_ROUNDS, ranker };
 
   if (remoteGameState === 'ranking' && !lockedIn)
     return { state: GAME_STATE.RANKING, ranker };
