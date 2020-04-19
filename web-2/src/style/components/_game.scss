@@ -7,9 +7,13 @@
 }
 
 .game-header {
-  display: flex;
-  justify-content: space-between;
-  padding: $size-xs $size-s;
+  padding: $size-xs $size-s 0 $size-s;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: $size-xxs;
+  }
 
   span {
     font-weight: bold;

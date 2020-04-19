@@ -9,7 +9,8 @@ import {
   toRemainingRounds,
   toRankingPlayer,
   toUnlockedInPlayers,
-  toGuessesByTopic
+  toGuessesByTopic,
+  toPlayersWithScores
 } from 'utilities/state_mapping';
 
 describe('state mapping functions', () => {
@@ -207,6 +208,50 @@ describe('state mapping functions', () => {
         topic_3: [1, 2],
         topic_4: [3, 3]
       });
+    });
+  });
+
+  describe('toPlayersWithScores', () => {
+    it('takes guesses and topics and returns an object of players and their score', () => {
+      const guesses = {
+        player_1: {
+          topic_1: 3,
+          topic_2: 2,
+          topic_3: 0,
+          topic_4: 1
+        },
+        player_2: {
+          topic_1: 'active',
+          topic_2: 'active',
+          topic_3: 'active',
+          topic_4: 'active'
+        },
+        player_3: {
+          topic_1: 0,
+          topic_2: 1,
+          topic_3: 2,
+          topic_4: 3
+        }
+      };
+      const topics = {
+        topic_1: { rank: 3 },
+        topic_2: { rank: 1 },
+        topic_3: { rank: 2 },
+        topic_4: { rank: 0 }
+      };
+      const players = {
+        player_1: { name: 'Player 1' },
+        player_2: { name: 'Player 2' },
+        player_3: { name: 'Player 3' },
+        player_4: { name: 'Player 4' }
+      };
+
+      expect(toPlayersWithScores({ guesses, topics, players })).toEqual([
+        { uid: 'player_3', score: 2, name: 'Player 3' },
+        { uid: 'player_1', score: 1, name: 'Player 1' },
+        { uid: 'player_2', score: 0, name: 'Player 2' },
+        { uid: 'player_4', score: 0, name: 'Player 4' }
+      ]);
     });
   });
 });

@@ -73,6 +73,35 @@ const toGuessesByTopic = guesses =>
       return topicGuesses;
     }, {});
 
+const toPlayersWithScores = ({ guesses, topics, players }) => {
+  const playerScores = Object.keys(guesses || {}).reduce(
+    (playerScores, playerUid) => {
+      const playerGuesses = guesses[playerUid];
+
+      const playerScore = Object.keys(playerGuesses).reduce(
+        (score, topicUid) => {
+          const playerGuess = playerGuesses[topicUid];
+          const topic = topics[topicUid];
+          const correctGuess = playerGuess === topic.rank ? 1 : 0;
+
+          return score + correctGuess;
+        },
+        0
+      );
+
+      return { ...playerScores, [playerUid]: playerScore };
+    },
+    {}
+  );
+
+  return playersToArray(players)
+    .map(player => ({
+      ...player,
+      score: playerScores[player.uid] || 0
+    }))
+    .sort(({ score: scoreA }, { score: scoreB }) => scoreB - scoreA);
+};
+
 export {
   teamsToArray,
   topicsToArray,
@@ -85,5 +114,6 @@ export {
   toActiveTopics,
   toUnlockedInPlayers,
   toGuessesByTopic,
-  toRemainingRounds
+  toRemainingRounds,
+  toPlayersWithScores
 };
