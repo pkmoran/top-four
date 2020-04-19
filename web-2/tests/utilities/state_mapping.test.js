@@ -6,6 +6,7 @@ import {
   playersToPlayersByTeam,
   toPlayer,
   toGameRound,
+  toRemainingRounds,
   toRankingPlayer,
   toUnlockedInPlayers,
   toGuessesByTopic
@@ -120,11 +121,31 @@ describe('state mapping functions', () => {
         '12345': { status: 'unavailable' },
         '23456': { status: 'available' },
         '34567': { status: 'unavailable' },
-        '23456': { status: 'unavailable' },
-        '23456': { status: 'unavailable' }
+        '45678': { status: 'unavailable' },
+        '56789': { status: 'unavailable' }
       };
 
       expect(toGameRound(topicsById)).toBe(2);
+    });
+  });
+
+  describe('toRemainingRounds', () => {
+    it('takes an object of topics by ID and returns the number of remaining rounds', () => {
+      const topicsById = {
+        '12345': { status: 'unavailable' },
+        '23456': { status: 'available' },
+        '34567': { status: 'available' },
+        '45678': { status: 'available' },
+        '56789': { status: 'available' },
+        '67890': { status: 'unavailable' },
+        '78901': { status: 'available' },
+        '89012': { status: 'available' },
+        '90123': { status: 'available' },
+        '11234': { status: 'available' },
+        '22345': { status: 'available' }
+      };
+
+      expect(toRemainingRounds(topicsById)).toBe(2);
     });
   });
 

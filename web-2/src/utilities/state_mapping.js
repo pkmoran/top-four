@@ -36,6 +36,12 @@ const toGameRound = topics =>
       .length / 4
   );
 
+const toRemainingRounds = topics =>
+  Math.floor(
+    topicsToArray(topics).filter(({ status }) => status === 'available')
+      .length / 4
+  );
+
 const toRankingPlayer = ({ rankingPlayerUid, players }) => ({
   uid: rankingPlayerUid,
   ...players[rankingPlayerUid]
@@ -78,5 +84,6 @@ export {
   toRankingPlayer,
   toActiveTopics,
   toUnlockedInPlayers,
-  toGuessesByTopic
+  toGuessesByTopic,
+  toRemainingRounds
 };

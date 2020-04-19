@@ -8,7 +8,7 @@ import withGameState from 'components/game/with_game_state';
 const Game = ({ gameState }) => {
   return (
     <div class="game">
-      <Header />
+      <Header gameState={gameState} />
       <Body gameState={gameState} />
       <Footer gameState={gameState} />
     </div>
