@@ -14,9 +14,7 @@ const Body = ({ header, subheader, gameState }) => {
       <h1>{header}</h1>
       <span>{subheader}</span>
 
-      {[GAME_STATE.RANKING, GAME_STATE.LOCKED_IN].includes(gameState.state) && (
-        <RankableTopics gameState={gameState} />
-      )}
+      <RankableTopics gameState={gameState} />
     </div>
   );
 };

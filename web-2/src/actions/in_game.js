@@ -7,11 +7,29 @@ const startRound = ({
   state: {
     playerUid,
     gameUid,
-    game: { topics }
+    game: { topics, players }
   }
 }) => {
-  const newTopics = { ...topics };
+  const game = {
+    rankingPlayerUid: playerUid,
+    state: 'ranking',
+    topics: { ...topics },
+    players: { ...players }
+  };
 
+  // mark all players not locked in
+  Object.keys(players).forEach(uid => (game.players[uid].lockedIn = false));
+
+  // update all ranked topics to unavailable
+  Object.keys(topics)
+    .map(uid => ({ uid, ...topics[uid] }))
+    .filter(({ status }) => status === 'ranked')
+    .map(({ uid }) => uid)
+    .forEach(uid => {
+      game.topics[uid].status = 'unavailable';
+    });
+
+  // mark 4 random topics as active
   sampleSize(
     Object.keys(topics)
       .map(uid => ({ uid, ...topics[uid] }))
@@ -20,14 +38,8 @@ const startRound = ({
   )
     .map(({ uid }) => uid)
     .forEach(uid => {
-      newTopics[uid] = { ...topics[uid], status: 'active' };
+      game.topics[uid].status = 'active';
     });
-
-  const game = {
-    rankingPlayerUid: playerUid,
-    state: 'ranking',
-    topics: newTopics
-  };
 
   updateGameService(game, gameUid);
 };
@@ -76,4 +88,34 @@ const lockIn = ({
   lockInService({ gameUid, playerUid, guesses });
 };
 
-export { startRound, updateLocalRanks, lockIn };
+const revealTopic = (
+  topicUid,
+  {
+    state: {
+      gameUid,
+      localRanks,
+      game: { topics, state: currentState }
+    }
+  }
+) => {
+  const fullyRanked =
+    Object.keys(topics)
+      .map(uid => ({ uid, ...topics[uid] }))
+      .filter(({ status }) => status === 'ranked').length === 3;
+
+  const game = {
+    topics: {
+      ...topics,
+      [topicUid]: {
+        ...topics[topicUid],
+        rank: localRanks[topicUid],
+        status: 'ranked'
+      }
+    },
+    state: fullyRanked ? '' : currentState
+  };
+
+  updateGameService(game, gameUid);
+};
+
+export { startRound, updateLocalRanks, lockIn, revealTopic };

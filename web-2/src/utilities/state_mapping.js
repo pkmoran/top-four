@@ -42,7 +42,9 @@ const toRankingPlayer = ({ rankingPlayerUid, players }) => ({
 });
 
 const toActiveTopics = topics =>
-  topicsToArray(topics).filter(({ status }) => status === 'active');
+  topicsToArray(topics).filter(
+    ({ status }) => status === 'active' || status === 'ranked'
+  );
 
 const toUnlockedInPlayers = players =>
   playersToArray(players).filter(({ lockedIn }) => !lockedIn);

@@ -5,7 +5,12 @@ jest.mock('@services', () => ({
   lockInService: jest.fn()
 }));
 
-import { startRound, updateLocalRanks, lockIn } from '@actions/in_game';
+import {
+  startRound,
+  updateLocalRanks,
+  lockIn,
+  revealTopic
+} from '@actions/in_game';
 
 import { UPDATE_LOCAL_RANKS } from '@actions/types';
 
@@ -23,11 +28,23 @@ describe('in game actions', () => {
         '34567': { status: 'available' },
         '45678': { status: 'available' },
         '56789': { status: 'available' },
-        '67890': { status: 'available' }
+        '67890': { status: 'available' },
+        '78901': { status: 'ranked' },
+        '89012': { status: 'ranked' }
       };
 
       startRound({
-        state: { playerUid: 'abcde', gameUid: '98765', game: { topics } }
+        state: {
+          playerUid: 'abcde',
+          gameUid: '98765',
+          game: {
+            topics,
+            players: {
+              '98765': { lockedIn: true },
+              '87654': { lockedIn: true }
+            }
+          }
+        }
       });
 
       expect(updateGameService).toHaveBeenCalledTimes(1);
@@ -44,6 +61,8 @@ describe('in game actions', () => {
       expect(
         gameTopics.filter(({ status }) => status === 'active').length
       ).toBe(4);
+      expect(game.players['98765'].lockedIn).toBe(false);
+      expect(game.players['87654'].lockedIn).toBe(false);
     });
   });
 
@@ -132,6 +151,56 @@ describe('in game actions', () => {
           '45678': 3
         }
       });
+    });
+  });
+
+  describe('revealTopic', () => {
+    it('calls updateGameService', () => {
+      revealTopic('12345', {
+        state: {
+          gameUid: 'abcde',
+          localRanks: { '12345': 2 },
+          game: {
+            state: 'ranking',
+            topics: {
+              '12345': { rank: -1, status: 'active' },
+              '23456': { rank: -1, status: 'active' },
+              '34567': { rank: 3, status: 'unavailable' }
+            }
+          }
+        }
+      });
+
+      expect(updateGameService).toHaveBeenCalledTimes(1);
+      expect(updateGameService.mock.calls[0][1]).toBe('abcde');
+      expect(updateGameService.mock.calls[0][0]).toEqual({
+        state: 'ranking',
+        topics: {
+          '12345': { rank: 2, status: 'ranked' },
+          '23456': { rank: -1, status: 'active' },
+          '34567': { rank: 3, status: 'unavailable' }
+        }
+      });
+    });
+
+    it('sets fully ranked when all topics are ranked', () => {
+      revealTopic('12345', {
+        state: {
+          gameUid: 'abcde',
+          localRanks: { '12345': 1 },
+          game: {
+            topics: {
+              '12345': { status: 'active' },
+              '23456': { status: 'ranked' },
+              '34567': { status: 'ranked' },
+              '45678': { status: 'ranked' }
+            }
+          }
+        }
+      });
+
+      expect(updateGameService).toHaveBeenCalledTimes(1);
+      expect(updateGameService.mock.calls[0][0].state).toBe('');
     });
   });
 });

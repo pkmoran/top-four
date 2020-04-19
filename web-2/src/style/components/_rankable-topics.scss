@@ -11,8 +11,9 @@
 .rankable-topic {
   display: flex;
   align-items: center;
-  padding: $size-xs $size-s;
+  padding: 0 $size-s;
   text-align: left;
+  min-height: 5em;
 
   &__name {
     flex-grow: 1;
