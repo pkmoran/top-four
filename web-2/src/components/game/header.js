@@ -14,7 +14,8 @@ const Header = ({
   remainingRounds,
   gameId,
   gameState: { state },
-  winnerHeader
+  winnerHeader,
+  onClickScores
 }) => {
   return (
     <div class="game-header">
@@ -28,7 +29,10 @@ const Header = ({
         )}
         <span class="game-header__game-id">{gameId}</span>
       </div>
-      <span class="game-header__bottom">{winnerHeader}</span>
+      <span class="game-header__bottom">
+        <span>{winnerHeader}</span>
+        <a onClick={onClickScores}>SCORES-></a>
+      </span>
     </div>
   );
 };

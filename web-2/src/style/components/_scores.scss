@@ -1,0 +1,38 @@
+@import '../variables';
+
+.scores {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: $size-xxs $size-s 0 $size-s;
+
+  h1 {
+    align-self: center;
+    color: $color-orange;
+    margin-top: $size-xxs;
+    margin-bottom: $size-xxs;
+  }
+
+  &__player-score {
+    width: 100%;
+    display: flex;
+    margin-bottom: $size-xs;
+    align-content: center;
+
+    &--index {
+      font-weight: bold;
+    }
+
+    &--name {
+      margin-left: $size-xxs;
+      margin-right: $size-xxs;
+    }
+
+    &--score {
+      text-align: right;
+      flex-grow: 1;
+      font-weight: bold;
+      color: $color-orange;
+    }
+  }
+}

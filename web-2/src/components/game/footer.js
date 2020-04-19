@@ -37,9 +37,13 @@ const Footer = ({ helperText, confirmText, confirmAction }) => {
       <div class="game-footer">
         {helperText}
         <div class={actionsClasses}>
-          <span class={confirmClasses}>
-            <Button variant="outlined" color="primary" onClick={handleConfirm}>
-              <CheckIcon />
+          <span class={cancelClasses}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => setConfirming(false)}
+            >
+              <CloseIcon />
             </Button>
           </span>
 
@@ -58,13 +62,9 @@ const Footer = ({ helperText, confirmText, confirmAction }) => {
             )}
           </span>
 
-          <span class={cancelClasses}>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => setConfirming(false)}
-            >
-              <CloseIcon />
+          <span class={confirmClasses}>
+            <Button variant="outlined" color="primary" onClick={handleConfirm}>
+              <CheckIcon />
             </Button>
           </span>
         </div>
