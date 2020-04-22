@@ -36,38 +36,40 @@ const Join = ({ joinGame }) => {
         <Logo size="small" />
       </div>
       <div class="join__container">
-        <div class="join__container--top">
-          <h2>Join an Existing Game!</h2>
-          <form autoComplete="off">
+        <h2>Join an Existing Game!</h2>
+        <form autoComplete="off">
+          <div class="join__name-input">
             <TextField
               name="name"
               label="What's you name?"
               value={name}
               onInput={({ target: { value } }) => setName(value)}
             />
-          </form>
-          <form autoComplete="off">
-            <TextField
-              name="gameId"
-              label="What's the game code?"
-              value={gameId}
-              onInput={handleGameIdChanged}
-              error={!!error}
-              helperText={error}
-            />
-          </form>
-        </div>
-        <div class="join__container--bottom">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleJoinGame}
-            disabled={disabled}
-          >
-            {!loading && 'Join!'}
-            {loading && <CircularProgress size={24} />}
-          </Button>
-        </div>
+          </div>
+
+          <div class="join__bottom">
+            <span class="join__game-id">
+              <TextField
+                name="gameId"
+                label="What's the game code?"
+                value={gameId}
+                onInput={handleGameIdChanged}
+                error={!!error}
+                helperText={error}
+              />
+            </span>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleJoinGame}
+              disabled={disabled}
+            >
+              {!loading && 'Join!'}
+              {loading && <CircularProgress size={24} />}
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

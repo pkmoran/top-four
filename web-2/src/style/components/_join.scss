@@ -11,12 +11,30 @@
     margin: $size-s;
   }
 
+  &__name-input {
+    width: 100%;
+    margin-bottom: $size-xs;
+
+    :first-child {
+      width: 100%;
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+  }
+
+  &__game-id {
+    margin-right: $size-xs;
+  }
+
   &__container {
     height: 1px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     margin: 0 $size-xs $size-xs $size-xs;
     padding: $size-xs;
     background-color: $color-white;
@@ -27,7 +45,6 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       align-items: center;
     }
 
@@ -40,13 +57,6 @@
 
     h2 {
       text-align: center;
-    }
-
-    button {
-      width: 25%;
-      @media (orientation: landscape) {
-        visibility: hidden;
-      }
     }
   }
 }
