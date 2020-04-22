@@ -6,6 +6,7 @@ import {
   playersToPlayersByTeam,
   toPlayer,
   toGameRound,
+  toTotalRounds,
   toRemainingRounds,
   toRankingPlayer,
   toUnlockedInPlayers,
@@ -127,6 +128,25 @@ describe('state mapping functions', () => {
       };
 
       expect(toGameRound(topicsById)).toBe(2);
+    });
+  });
+
+  describe('toTotalRounds', () => {
+    it('takes an object of topics by ID and returns the total possible rounds', () => {
+      expect(
+        toTotalRounds({
+          '1': {},
+          '2': {},
+          '3': {},
+          '4': {},
+          '5': {},
+          '6': {},
+          '7': {},
+          '8': {},
+          '9': {},
+          '10': {}
+        })
+      ).toBe(2);
     });
   });
 

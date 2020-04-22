@@ -3,7 +3,7 @@ import { h } from 'preact';
 import compose from 'utilities/compose';
 import {
   toGameRound,
-  toRemainingRounds,
+  toTotalRounds,
   toPlayersWithScores
 } from 'utilities/state_mapping';
 import { withState } from '@state';
@@ -11,7 +11,7 @@ import { GAME_STATE } from 'utilities/constants';
 
 const Header = ({
   round,
-  remainingRounds,
+  totalRounds,
   gameId,
   gameState: { state },
   winnerHeader,
@@ -20,13 +20,9 @@ const Header = ({
   return (
     <div class="game-header">
       <div class="game-header__top">
-        {state !== GAME_STATE.BETWEEN_ROUNDS && <span>Round {round}</span>}
-        {state === GAME_STATE.BETWEEN_ROUNDS && remainingRounds > 1 && (
-          <span>{remainingRounds} more rounds</span>
-        )}
-        {state === GAME_STATE.BETWEEN_ROUNDS && remainingRounds === 1 && (
-          <span>Last round</span>
-        )}
+        <span>
+          Round {round}/{totalRounds}
+        </span>
         <span class="game-header__game-id">{gameId}</span>
       </div>
       <span class="game-header__bottom">
@@ -39,10 +35,10 @@ const Header = ({
 
 // state
 const withGameRoundState = withState('game.topics', 'round', toGameRound);
-const withRemainingRoundsState = withState(
+const withTotalRoundsState = withState(
   'game.topics',
-  'remainingRounds',
-  toRemainingRounds
+  'totalRounds',
+  toTotalRounds
 );
 const withGameIdState = withState('gameId');
 const withPlayerScoresState = withState(
@@ -75,7 +71,7 @@ const withProps = WrappedComponent => {
 
 const wrappers = compose(
   withGameRoundState,
-  withRemainingRoundsState,
+  withTotalRoundsState,
   withGameIdState,
   withPlayerScoresState,
   withPlayerUidState,

@@ -36,6 +36,8 @@ const toGameRound = topics =>
       .length / 4
   );
 
+const toTotalRounds = topics => Math.floor(topicsToArray(topics).length / 4);
+
 const toRemainingRounds = topics =>
   Math.floor(
     topicsToArray(topics).filter(({ status }) => status === 'available')
@@ -110,6 +112,7 @@ export {
   playersToPlayersByTeam,
   toPlayer,
   toGameRound,
+  toTotalRounds,
   toRankingPlayer,
   toActiveTopics,
   toUnlockedInPlayers,
