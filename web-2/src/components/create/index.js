@@ -1,12 +1,11 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import { Button, CircularProgress } from '@material-ui/core';
 
 import compose from 'utilities/compose';
 import { WRITE_OUR_OWN_UID, INDIVIDUALS } from 'utilities/constants';
 
 import { withAction, withState } from '@state';
-import { startGame, getTopicPacks } from '@actions';
+import { getTopicPacks, startGame } from '@actions';
 
 import Logo from 'components/shared/logo';
 import Slider from 'components/shared/slider';
@@ -15,13 +14,11 @@ import GameMode from 'components/create/game_mode';
 import Topics from 'components/create/topics';
 import Name from 'components/create/name';
 
-const Create = ({ startGame, topicPacks }) => {
+const Create = ({ topicPacks, startGame }) => {
   const [gameMode, setGameMode] = useState(INDIVIDUALS);
   const [topicPackUid, setTopicPackUid] = useState(WRITE_OUR_OWN_UID);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const disabled = loading || !name;
 
   const handleStartGame = () => {
     setLoading(true);
@@ -31,19 +28,6 @@ const Create = ({ startGame, topicPacks }) => {
     });
   };
 
-  const confirmButton = (
-    <Button
-      variant="contained"
-      color="primary"
-      onClick={handleStartGame}
-      disabled={disabled}
-      className="width--40-pct"
-    >
-      {!loading && 'Start game!'}
-      {loading && <CircularProgress size={24} />}
-    </Button>
-  );
-
   return (
     <div class="create">
       <div class="create__logo">
@@ -52,14 +36,19 @@ const Create = ({ startGame, topicPacks }) => {
       <div class="create__container">
         <h2>Create a New Game!</h2>
         <div class="create__slider">
-          <Slider confirmContent={confirmButton} scrollableSteps={[1]}>
+          <Slider>
             <GameMode gameMode={gameMode} setGameMode={setGameMode} />
             <Topics
               topicPacks={topicPacks}
               topicPackUid={topicPackUid}
               setTopicPackUid={setTopicPackUid}
             />
-            <Name name={name} setName={setName} />
+            <Name
+              name={name}
+              setName={setName}
+              loading={loading}
+              onStartGame={handleStartGame}
+            />
           </Slider>
         </div>
       </div>

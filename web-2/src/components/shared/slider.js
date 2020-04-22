@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'preact/hooks';
 import SwipeableViews from 'react-swipeable-views';
 import { Button } from '@material-ui/core';
 
-const Slider = ({ children, confirmContent, scrollableSteps }) => {
+const Slider = ({ children }) => {
   const [step, setStep] = useState(0);
   const updateHeight = useRef(() => {});
 
@@ -29,8 +29,6 @@ const Slider = ({ children, confirmContent, scrollableSteps }) => {
         <Button color="primary" disabled={step === 0} onClick={handleBack}>
           &lt; prev
         </Button>
-
-        {step === children.length - 1 && confirmContent}
 
         <Button
           color="primary"

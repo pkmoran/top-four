@@ -31,12 +31,6 @@
     flex-grow: 1;
     height: 1px;
   }
-
-  button {
-    @media (orientation: landscape) {
-      visibility: hidden;
-    }
-  }
 }
 
 .game-mode {
@@ -75,9 +69,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 $size-xs;
 
   &__header {
     font-size: 1.5rem;
     margin-bottom: $size-xs;
+  }
+
+  &__input {
+    margin-right: $size-xs;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
   }
 }
