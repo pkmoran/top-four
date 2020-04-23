@@ -13,7 +13,7 @@ const Game = ({ gameState }) => {
 
   return (
     <div class="game">
-      <Header gameState={gameState} onClickScores={() => setShowScores(true)} />
+      <Header onClickScores={() => setShowScores(true)} />
       <Body gameState={gameState} />
       <Footer gameState={gameState} />
 

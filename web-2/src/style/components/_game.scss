@@ -22,8 +22,7 @@
 
   &__bottom {
     display: flex;
-    justify-content: space-between;
-    align-content: center;
+    flex-direction: row-reverse;
 
     a {
       color: $color-orange;
