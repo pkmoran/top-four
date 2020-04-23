@@ -9,6 +9,21 @@
     min-width: 65%;
     max-width: 80%;
   }
+
+  &__winner-wrapper {
+    margin-top: $size-xs;
+  }
+
+  &__winner {
+    background-color: lighten($color: $color-green, $amount: 20%) !important;
+    color: $color-white !important;
+
+    span {
+      font-weight: bold;
+      font-size: 1.2em;
+      padding: 0 $size-xs;
+    }
+  }
 }
 
 .game-header {

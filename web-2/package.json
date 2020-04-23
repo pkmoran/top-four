@@ -39,6 +39,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.50",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^7.14.0",
     "lodash": "^4.17.15",
