@@ -2,7 +2,8 @@ import {
   TOPIC_PACKS,
   STARTED_GAME,
   GAME_UPDATE,
-  UPDATE_LOCAL_RANKS
+  UPDATE_LOCAL_RANKS,
+  CLEAR_STATE
 } from '@actions/types';
 import { WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { withReducerLogging } from 'utilities/logging';
@@ -40,6 +41,8 @@ const gameStateReducer = (state, { type, payload }) => {
         ...state,
         topicPacks
       };
+    case CLEAR_STATE:
+      return {};
     default:
       return state;
   }

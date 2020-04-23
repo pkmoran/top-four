@@ -12,7 +12,7 @@ import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { tagLogger } from 'utilities/logging';
 
 import { subscribeToGameUpdates } from '@actions/subscribe';
-import { STARTED_GAME } from '@actions/types';
+import { STARTED_GAME, CLEAR_STATE } from '@actions/types';
 
 const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
   const numberOfTeams = gameMode === TEAMS ? 2 : 0;
@@ -95,4 +95,8 @@ const addTopic = (topic, { state: { gameUid, playerUid } }) => {
   addTopicService({ topic, playerUid, gameUid });
 };
 
-export { startGame, joinGame, addPlayer, joinTeam, addTopic };
+const clearState = ({ dispatch }) => {
+  dispatch({ type: CLEAR_STATE });
+};
+
+export { startGame, joinGame, addPlayer, joinTeam, addTopic, clearState };
