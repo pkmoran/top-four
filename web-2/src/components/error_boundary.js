@@ -1,6 +1,8 @@
 import { h, Component } from 'preact';
 import { Button } from '@material-ui/core';
 
+import { logError } from '@services/logger';
+
 import Logo from 'components/shared/logo';
 
 class ErrorBoundary extends Component {
@@ -13,13 +15,12 @@ class ErrorBoundary extends Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.log('error', error);
-    console.log('errorInfo', errorInfo);
+  componentDidCatch(error) {
+    logError(error, window.location.pathname);
   }
 
   handleClick = () => {
-    document.location.href = '/';
+    window.location.href = '/';
   };
 
   render({ children }, { hasError }) {
