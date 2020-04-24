@@ -6,6 +6,7 @@ import { GameStateProvider } from '@state';
 import { saveState, loadState } from 'utilities/local_storage';
 
 import App from 'components/app';
+import ErrorBoundary from 'components/error_boundary';
 
 import 'style';
 import 'typeface-roboto';
@@ -28,9 +29,11 @@ const Root = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GameStateProvider initialState={state}>
-        <App />
-      </GameStateProvider>
+      <ErrorBoundary>
+        <GameStateProvider initialState={state}>
+          <App />
+        </GameStateProvider>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 };
