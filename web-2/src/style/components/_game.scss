@@ -28,20 +28,12 @@
 
 .game-header {
   padding: $size-xs $size-s 0 $size-s;
+  display: flex;
+  justify-content: space-between;
 
-  &__top {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: $size-xxs;
-  }
-
-  &__bottom {
-    display: flex;
-    flex-direction: row-reverse;
-
-    a {
-      color: $color-orange;
-    }
+  a {
+    font-weight: bold;
+    color: $color-orange;
   }
 
   span {
