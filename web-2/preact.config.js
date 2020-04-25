@@ -10,7 +10,7 @@ const getDirectories = source =>
 
 export default function (config, env, helpers, options) {
   // environment variables
-  config.plugins.push(new Dotenv());
+  config.plugins.push(new Dotenv({ systemvars: true }));
   config.node.process = true;
 
   // absolute imports

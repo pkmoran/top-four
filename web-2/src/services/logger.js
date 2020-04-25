@@ -4,7 +4,6 @@ import ReactGA from 'react-ga';
 let initialized = false;
 
 const maybeInitialize = () => {
-  console.log('maybeInitialize', process.env.TOP_FOUR_ANALYTICS_TRACKING_ID);
   if (!initialized) {
     ReactGA.initialize(process.env.TOP_FOUR_ANALYTICS_TRACKING_ID);
     initialized = true;
