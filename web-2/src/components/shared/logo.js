@@ -3,14 +3,14 @@ import { h } from 'preact';
 import cx from 'utilities/cx';
 
 const Logo = ({ size }) => {
-  const classes = cx('logo', `logo--${size}`);
+  const height = size === 'small' ? 42 * 0.75 : 42;
 
   return (
-    <div class={classes}>
+    <div class="logo">
       <svg
         width="336"
-        height="42"
-        viewBox="0 0 336 42"
+        height={height}
+        viewBox={`0 0 336 42`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >

@@ -5,7 +5,8 @@ import {
   getGameUidService,
   addPlayerService,
   joinTeamService,
-  addTopicService
+  addTopicService,
+  deleteTopicService
 } from '@services';
 
 import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
@@ -95,8 +96,20 @@ const addTopic = (topic, { state: { gameUid, playerUid } }) => {
   addTopicService({ topic, playerUid, gameUid });
 };
 
+const deleteTopic = (topicUid, { state: { gameUid } }) => {
+  deleteTopicService(topicUid, gameUid);
+};
+
 const clearState = ({ dispatch }) => {
   dispatch({ type: CLEAR_STATE });
 };
 
-export { startGame, joinGame, addPlayer, joinTeam, addTopic, clearState };
+export {
+  startGame,
+  joinGame,
+  addPlayer,
+  joinTeam,
+  addTopic,
+  deleteTopic,
+  clearState
+};

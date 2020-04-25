@@ -69,6 +69,10 @@ const addTopicService = ({ topic, playerUid, gameUid }) => {
   });
 };
 
+const deleteTopicService = (topicUid, gameUid) => {
+  firebase.database().ref(`/games/${gameUid}/topics/${topicUid}`).remove();
+};
+
 const updateGameService = (game, gameUid) => {
   firebase.database().ref(`/games/${gameUid}`).update(game);
 };
@@ -100,6 +104,7 @@ export {
   subscribeToGameUpdatesService,
   joinTeamService,
   addTopicService,
+  deleteTopicService,
   updateGameService,
   lockInService,
   setPlayerActiveService

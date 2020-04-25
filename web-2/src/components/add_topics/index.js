@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { Button, TextField } from '@material-ui/core';
 
+import cx from 'utilities/cx';
 import compose from 'utilities/compose';
 import { topicsToCount, topicsToPlayerTopics } from 'utilities/state_mapping';
 import { withAction, withState } from '@state';
@@ -18,11 +19,14 @@ const AddTopics = ({
   routes: [toGame]
 }) => {
   const [topic, setTopic] = useState('');
+  const [focussed, setFocussed] = useState(false);
 
   const handleAddTopic = () => {
     addTopic(topic);
     setTopic('');
   };
+
+  const footerClasses = cx('add-topics__footer', { 'display--none': focussed });
 
   return (
     <div class="add-topics">
@@ -41,6 +45,8 @@ const AddTopics = ({
               label="Trivial topic"
               value={topic}
               onInput={({ target: { value } }) => setTopic(value)}
+              onFocus={() => setFocussed(true)}
+              onBlur={() => setFocussed(false)}
             />
           </div>
           <Button
@@ -58,7 +64,7 @@ const AddTopics = ({
             <Topic topic={topic} />
           ))}
         </div>
-        <div class="add-topics__footer">
+        <div class={footerClasses}>
           <p name="numTopics">Total Topics: {numTopics}</p>
           <Button variant="contained" color="primary" onClick={toGame}>
             Done!

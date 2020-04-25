@@ -10,7 +10,9 @@ const playersToArray = players =>
 const topicsToCount = topics => Object.keys(topics).length;
 
 const topicsToPlayerTopics = ({ playerUid, game: { topics = {} } }) =>
-  topicsToArray(topics).filter(topic => topic.playerUid === playerUid);
+  topicsToArray(topics).filter(
+    topic => topic.playerUid === playerUid && topic.status === 'available'
+  );
 
 const playersToPlayersByTeam = players =>
   playersToArray(players).reduce((playersByTeam, player) => {

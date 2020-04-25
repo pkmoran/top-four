@@ -63,9 +63,10 @@ describe('state mapping functions', () => {
   describe('topicsToPlayerTopics', () => {
     it('takes state and returns the current players topics as an array', () => {
       const topicsById = {
-        '12345': { topic: 'topic a', playerUid: 'abcde' },
-        '23456': { topic: 'topic b', playerUid: 'bcdef' },
-        '34567': { topic: 'topic c', playerUid: 'abcde' }
+        '12345': { topic: 'topic a', playerUid: 'abcde', status: 'available' },
+        '23456': { topic: 'topic b', playerUid: 'bcdef', status: 'available' },
+        '34567': { topic: 'topic c', playerUid: 'abcde', status: 'available' },
+        '45678': { topic: 'topic c', playerUid: 'abcde', status: 'unavailable' }
       };
 
       const playerTopics = topicsToPlayerTopics({
@@ -74,8 +75,18 @@ describe('state mapping functions', () => {
       });
 
       expect(playerTopics).toEqual([
-        { uid: '12345', topic: 'topic a', playerUid: 'abcde' },
-        { uid: '34567', topic: 'topic c', playerUid: 'abcde' }
+        {
+          uid: '12345',
+          topic: 'topic a',
+          playerUid: 'abcde',
+          status: 'available'
+        },
+        {
+          uid: '34567',
+          topic: 'topic c',
+          playerUid: 'abcde',
+          status: 'available'
+        }
       ]);
     });
   });
