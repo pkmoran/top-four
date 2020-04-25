@@ -38,7 +38,11 @@ const RankableTopics = ({ activeTopics, updateLocalRanks, gameState }) => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <RankableTopic topic={topic} gameState={gameState} />
+                      <RankableTopic
+                        topic={topic}
+                        gameState={gameState}
+                        dragging={snapshot.isDragging}
+                      />
                     </div>
                   )}
                 </Draggable>

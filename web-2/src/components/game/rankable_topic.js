@@ -19,6 +19,7 @@ const RankableTopic = ({
     totalGuesses
   },
   gameState: { state, ranker, unlockedInPlayers },
+  dragging,
   revealTopic
 }) => {
   const handleReveal = () => {
@@ -34,7 +35,7 @@ const RankableTopic = ({
   });
 
   return (
-    <Paper>
+    <Paper elevation={dragging ? 7 : 1}>
       <div class={topicClasses}>
         <div class="rankable-topic__names">
           {!isRanked && <span class="rankable-topic__name">{topic}</span>}
