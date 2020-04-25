@@ -56,18 +56,21 @@
 .game-body {
   flex-grow: 1;
   text-align: center;
-  overflow-y: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
 
   h1 {
     color: $color-orange;
     margin-bottom: $size-xxs;
+    margin-top: $size-xxs;
   }
 }
 
 .game-footer {
   display: flex;
   flex-direction: column;
-  padding: $size-s;
+  padding: $size-xs $size-s;
   text-align: center;
 
   &__actions {

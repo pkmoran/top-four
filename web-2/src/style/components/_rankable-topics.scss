@@ -1,7 +1,8 @@
 @import '../variables';
 
 .rankable-topics {
-  margin-bottom: $size-xs;
+  padding-bottom: $size-xs;
+  overflow-y: auto;
 
   &__topic {
     margin: $size-xs $size-xs 0 $size-xs;
