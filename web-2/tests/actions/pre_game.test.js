@@ -21,8 +21,8 @@ jest.mock('@actions/subscribe', () => ({
 }));
 
 jest.mock('utilities/router', () => ({
-  toShare: jest.fn().mockReturnValue(() => {}),
-  toTeams: jest.fn().mockReturnValue(() => {})
+  toShare: jest.fn(),
+  toTeams: jest.fn()
 }));
 
 import { startGame, addPlayer, joinGame, addTopic } from '@actions/pre_game';
@@ -32,15 +32,17 @@ import { TEAMS, INDIVIDUALS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 
 describe('pre game actions', () => {
   beforeEach(() => {
-    addPlayerService.mockClear();
-    startGameService.mockClear();
-    getGameUidService.mockClear();
-    addTopicService.mockClear();
+    addPlayerService.mockRestore();
+    startGameService.mockRestore();
+    getGameUidService.mockRestore();
+    addTopicService.mockRestore();
 
-    subscribeToGameUpdates.mockClear();
+    subscribeToGameUpdates.mockRestore();
 
-    toShare.mockClear();
-    toTeams.mockClear();
+    toShare.mockRestore();
+    toShare.mockReturnValue(() => {});
+    toTeams.mockRestore();
+    toTeams.mockReturnValue(() => {});
   });
 
   describe('addPlayer', () => {
@@ -97,6 +99,8 @@ describe('pre game actions', () => {
     it('starts a game', async () => {
       startGameService.mockResolvedValue({ gameId: 'A6', gameUid: '12345' });
       addPlayerService.mockResolvedValue('98765');
+      subscribeToGameUpdates.mockResolvedValue();
+
       const dispatch = jest.fn();
 
       await startGame({ name: 'andrew' }, { dispatch });
@@ -152,6 +156,8 @@ describe('pre game actions', () => {
     it('joins a game', async () => {
       getGameUidService.mockResolvedValue({ gameUid: '12345' });
       addPlayerService.mockResolvedValue('98765');
+      subscribeToGameUpdates.mockResolvedValue();
+
       const dispatch = jest.fn();
 
       await joinGame({ gameId: 'A6', name: 'andrew' }, { dispatch });

@@ -10,7 +10,7 @@ import { GAME_UPDATE } from '@actions/types';
 
 describe('subscription actions', () => {
   beforeEach(() => {
-    subscribeToGameUpdatesService.mockClear();
+    subscribeToGameUpdatesService.mockRestore();
   });
 
   describe('subscribeToGameUpdates', () => {

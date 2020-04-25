@@ -10,7 +10,7 @@ import { TOPIC_PACKS } from '@actions/types';
 
 describe('topic pack actions', () => {
   beforeEach(() => {
-    getTopicPacksService.mockClear();
+    getTopicPacksService.mockRestore();
   });
 
   describe('getTopicPacks', () => {

@@ -22,9 +22,9 @@ import { UPDATE_LOCAL_RANKS } from '@actions/types';
 
 describe('in game actions', () => {
   beforeEach(() => {
-    updateGameService.mockClear();
-    lockInService.mockClear();
-    setPlayerActiveService.mockClear();
+    updateGameService.mockRestore();
+    lockInService.mockRestore();
+    setPlayerActiveService.mockRestore();
   });
 
   describe('startRound', () => {

@@ -7,19 +7,23 @@ let previousGame;
 const subscribeToGameUpdates = (gameUid, { dispatch }) => {
   previousGame = null;
 
-  subscribeToGameUpdatesService(gameUid, game => {
-    if (game) {
-      const localRanks = getLocalRanks(game, previousGame);
+  return new Promise(resolve => {
+    subscribeToGameUpdatesService(gameUid, game => {
+      if (game) {
+        const localRanks = getLocalRanks(game, previousGame);
 
-      dispatch({
-        type: GAME_UPDATE,
-        payload: { game, localRanks }
-      });
+        dispatch({
+          type: GAME_UPDATE,
+          payload: { game, localRanks }
+        });
 
-      previousGame = { ...game };
-    } else {
-      toRoot()();
-    }
+        previousGame = { ...game };
+
+        resolve();
+      } else {
+        toRoot()();
+      }
+    });
   });
 };
 
