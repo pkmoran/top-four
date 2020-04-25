@@ -1,3 +1,5 @@
+import { withPageView } from '@services/logger';
+
 import Join from 'components/join';
 
-export default Join;
+export default withPageView(Join);

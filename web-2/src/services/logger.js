@@ -1,5 +1,39 @@
-const logError = (error, path) => {
-  console.log('logError', error, path);
+import { useEffect } from 'preact/hooks';
+import ReactGA from 'react-ga';
+
+let initialized = false;
+
+const maybeInitialize = () => {
+  if (!initialized) {
+    ReactGA.initialize(process.env.TOP_FOUR_ANALYTICS_TRACKING_ID);
+    initialized = true;
+  }
 };
 
-export { logError };
+const pageView = page => {
+  maybeInitialize();
+
+  if (process.env.NODE_ENV !== 'test') {
+    ReactGA.pageview(page);
+  }
+};
+
+const logError = error => {
+  maybeInitialize();
+
+  if (process.env.NODE_ENV !== 'test') {
+    ReactGA.exception({ description: error, fatal: true });
+  }
+};
+
+const withPageView = WrappedComponent => {
+  return props => {
+    useEffect(() => {
+      pageView(window.location.pathname);
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+export { logError, withPageView };

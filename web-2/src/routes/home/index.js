@@ -1,3 +1,5 @@
+import { withPageView } from '@services/logger';
+
 import Home from 'components/home';
 
-export default Home;
+export default withPageView(Home);

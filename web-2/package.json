@@ -47,6 +47,7 @@
     "preact-render-to-string": "^5.1.6",
     "preact-router": "^3.0.0",
     "react-beautiful-dnd": "^13.0.0",
+    "react-ga": "^2.7.0",
     "react-swipeable-views": "^0.13.9",
     "typeface-roboto": "0.0.75"
   },
