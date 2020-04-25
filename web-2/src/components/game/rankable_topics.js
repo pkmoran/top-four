@@ -81,16 +81,15 @@ const withProps = WrappedComponent => {
       )
       .map((topic, index, topics) => {
         const correctTopic = topics.find(({ rank }) => rank === index);
+        const topicGuesses = correctTopic && guessesByTopic[correctTopic.uid];
 
         return {
           ...topic,
           localRank: index,
           correctTopic,
           correctGuesses:
-            correctTopic &&
-            guessesByTopic[correctTopic.uid].filter(
-              guess => guess === correctTopic.rank
-            ).length,
+            topicGuesses &&
+            topicGuesses.filter(guess => guess === correctTopic.rank).length,
           totalGuesses: correctTopic && guessesByTopic[correctTopic.uid].length
         };
       });

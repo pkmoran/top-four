@@ -15,18 +15,18 @@
   text-align: left;
   min-height: 5em;
 
-  &__name {
+  &__names {
     flex-grow: 1;
     margin-right: $size-s;
+    display: flex;
+    flex-direction: column;
   }
 
   &--correct {
-    background-color: $color-green;
-    color: $color-light-gray;
+    background-color: lighten($color: $color-green, $amount: 25%);
   }
 
   &--incorrect {
-    background-color: $color-purple;
-    color: $color-light-gray;
+    background-color: lighten($color: $color-orange, $amount: 25%);
   }
 }

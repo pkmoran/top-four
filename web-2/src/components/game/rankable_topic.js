@@ -26,7 +26,6 @@ const RankableTopic = ({
   };
 
   const isRanked = correctTopic && correctTopic.status === 'ranked';
-  const topicName = isRanked ? correctTopic.topic : topic;
   const isCorrect = localRank === rank;
 
   const topicClasses = cx('rankable-topic', {
@@ -37,7 +36,17 @@ const RankableTopic = ({
   return (
     <Paper>
       <div class={topicClasses}>
-        <span class="rankable-topic__name">{topicName}</span>
+        <div class="rankable-topic__names">
+          {!isRanked && <span class="rankable-topic__name">{topic}</span>}
+          {isRanked && !isCorrect && (
+            <span class="rankable-topic__name">
+              <strike>{topic}</strike>
+            </span>
+          )}
+          {isRanked && (
+            <span class="rankable-topic__name">{correctTopic.topic}</span>
+          )}
+        </div>
 
         {state === GAME_STATE.RANKING && <DragIndicatorIcon />}
 
