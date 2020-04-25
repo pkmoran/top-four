@@ -9,6 +9,8 @@ import resolve from 'utilities/resolve';
 import { subscribeToGameUpdates } from '@actions';
 import { IN_PROGRESS_URL_REGEX } from 'utilities/constants';
 
+import ErrorBoundary from 'components/error_boundary';
+
 // Code-splitting is automated for routes
 import Home from 'routes/home';
 import Join from 'routes/join';
@@ -20,17 +22,19 @@ import Game from 'routes/game';
 
 const App = () => {
   return (
-    <div id="app">
-      <Router>
-        <Home path="/" />
-        <Join path="/join" />
-        <Create path="/create" />
-        <Share path="/:routeGameId/share" />
-        <Teams path="/:routeGameId/teams" />
-        <AddTopics path="/:routeGameId/topics" />
-        <Game path="/:routeGameId/game" />
-      </Router>
-    </div>
+    <ErrorBoundary>
+      <div id="app">
+        <Router>
+          <Home path="/" />
+          <Join path="/join" />
+          <Create path="/create" />
+          <Share path="/:routeGameId/share" />
+          <Teams path="/:routeGameId/teams" />
+          <AddTopics path="/:routeGameId/topics" />
+          <Game path="/:routeGameId/game" />
+        </Router>
+      </div>
+    </ErrorBoundary>
   );
 };
 

@@ -80,8 +80,8 @@ const withProps = WrappedComponent => {
     const { activeTopics, localRanks, guessesByTopic } = props;
 
     const sortedByLocalRank = activeTopics
-      .sort(
-        ({ uid: uidA }, { uid: uidB }) => localRanks[uidA] - localRanks[uidB]
+      .sort(({ uid: uidA }, { uid: uidB }) =>
+        localRanks ? localRanks[uidA] - localRanks[uidB] : 1
       )
       .map((topic, index, topics) => {
         const correctTopic = topics.find(({ rank }) => rank === index);
