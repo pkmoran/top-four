@@ -1,15 +1,21 @@
-import { updateGameService, lockInService } from '@services';
+import {
+  updateGameService,
+  lockInService,
+  setPlayerActiveService
+} from '@services';
 
 jest.mock('@services', () => ({
   updateGameService: jest.fn(),
-  lockInService: jest.fn()
+  lockInService: jest.fn(),
+  setPlayerActiveService: jest.fn()
 }));
 
 import {
   startRound,
   updateLocalRanks,
   lockIn,
-  revealTopic
+  revealTopic,
+  togglePlayerActive
 } from '@actions/in_game';
 
 import { UPDATE_LOCAL_RANKS } from '@actions/types';
@@ -18,6 +24,7 @@ describe('in game actions', () => {
   beforeEach(() => {
     updateGameService.mockClear();
     lockInService.mockClear();
+    setPlayerActiveService.mockClear();
   });
 
   describe('startRound', () => {
@@ -201,6 +208,40 @@ describe('in game actions', () => {
 
       expect(updateGameService).toHaveBeenCalledTimes(1);
       expect(updateGameService.mock.calls[0][0].state).toBe('');
+    });
+  });
+
+  describe('togglePlayerActive', () => {
+    it('deactives an active player', () => {
+      togglePlayerActive('12345', {
+        state: {
+          gameUid: 'abcde',
+          game: { players: { '12345': { active: true } } }
+        }
+      });
+
+      expect(setPlayerActiveService).toHaveBeenCalledTimes(1);
+      expect(setPlayerActiveService.mock.calls[0]).toEqual([
+        '12345',
+        false,
+        'abcde'
+      ]);
+    });
+
+    it('activates a deactive player', () => {
+      togglePlayerActive('12345', {
+        state: {
+          gameUid: 'abcde',
+          game: { players: { '12345': { active: false } } }
+        }
+      });
+
+      expect(setPlayerActiveService).toHaveBeenCalledTimes(1);
+      expect(setPlayerActiveService.mock.calls[0]).toEqual([
+        '12345',
+        true,
+        'abcde'
+      ]);
     });
   });
 });

@@ -4,7 +4,7 @@ import { Drawer, Slide, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { withState } from '@state';
-import { toPlayersWithScores } from 'utilities/state_mapping';
+import { toAllPlayersWithScores } from 'utilities/state_mapping';
 import compose from 'utilities/compose';
 import { GAME_STATE } from 'utilities/constants';
 
@@ -56,7 +56,7 @@ const Game = ({ closeSnackbar, gameState, snackbarOpen, winner }) => {
 const withPlayerScoresState = withState(
   'game',
   'playerScores',
-  toPlayersWithScores
+  toAllPlayersWithScores
 );
 const withPlayerUidState = withState('playerUid');
 
@@ -64,17 +64,15 @@ const withProps = WrappedComponent => {
   return props => {
     const { playerUid, playerScores } = props;
 
+    const players = playerScores.filter(({ active }) => active);
     let winner;
 
-    if (
-      playerScores.length > 1 &&
-      playerScores[0].score === playerScores[1].score
-    ) {
+    if (players.length > 1 && players[0].score === players[1].score) {
       winner = `There's a tie!`;
-    } else if (playerScores[0].uid === playerUid) {
+    } else if (players[0].uid === playerUid) {
       winner = `You're winning!`;
     } else {
-      winner = `${playerScores[0].name} is winning!`;
+      winner = `${players[0].name} is winning!`;
     }
 
     return <WrappedComponent {...props} winner={winner} />;

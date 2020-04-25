@@ -1,6 +1,10 @@
 import sampleSize from 'lodash/sampleSize';
 
-import { updateGameService, lockInService } from '@services';
+import {
+  updateGameService,
+  lockInService,
+  setPlayerActiveService
+} from '@services';
 import { UPDATE_LOCAL_RANKS } from '@actions/types';
 
 const startRound = ({
@@ -118,4 +122,24 @@ const revealTopic = (
   updateGameService(game, gameUid);
 };
 
-export { startRound, updateLocalRanks, lockIn, revealTopic };
+const togglePlayerActive = (
+  playerUid,
+  {
+    state: {
+      gameUid,
+      game: { players }
+    }
+  }
+) => {
+  const currentlyActive = players[playerUid].active;
+
+  setPlayerActiveService(playerUid, !currentlyActive, gameUid);
+};
+
+export {
+  startRound,
+  updateLocalRanks,
+  lockIn,
+  revealTopic,
+  togglePlayerActive
+};

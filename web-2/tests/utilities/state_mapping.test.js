@@ -11,7 +11,7 @@ import {
   toRankingPlayer,
   toUnlockedInPlayers,
   toGuessesByTopic,
-  toPlayersWithScores
+  toAllPlayersWithScores
 } from 'utilities/state_mapping';
 
 describe('state mapping functions', () => {
@@ -185,16 +185,18 @@ describe('state mapping functions', () => {
   });
 
   describe('toUnlockedInPlayers', () => {
-    it('takes an object of players by ID and returns all players who are not locked in', () => {
+    it('takes an object of players by ID and returns all active players who are not locked in', () => {
       const players = {
-        '12345': { lockedIn: false },
-        '23456': { lockedIn: true },
-        '34567': { lockedIn: false }
+        '12345': { lockedIn: false, active: true },
+        '23456': { lockedIn: true, active: true },
+        '34567': { lockedIn: false, active: true },
+        '45678': { lockedIn: false, active: false },
+        '56789': { lockedIn: true, active: false }
       };
 
       expect(toUnlockedInPlayers(players)).toEqual([
-        { uid: '12345', lockedIn: false },
-        { uid: '34567', lockedIn: false }
+        { uid: '12345', lockedIn: false, active: true },
+        { uid: '34567', lockedIn: false, active: true }
       ]);
     });
   });
@@ -231,7 +233,7 @@ describe('state mapping functions', () => {
     });
   });
 
-  describe('toPlayersWithScores', () => {
+  describe('toAllPlayersWithScores', () => {
     it('takes guesses and topics and returns an object of players and their score', () => {
       const guesses = {
         player_1: {
@@ -266,7 +268,7 @@ describe('state mapping functions', () => {
         player_4: { name: 'Player 4' }
       };
 
-      expect(toPlayersWithScores({ guesses, topics, players })).toEqual([
+      expect(toAllPlayersWithScores({ guesses, topics, players })).toEqual([
         { uid: 'player_3', score: 2, name: 'Player 3' },
         { uid: 'player_1', score: 1, name: 'Player 1' },
         { uid: 'player_2', score: 0, name: 'Player 2' },

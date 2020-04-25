@@ -55,7 +55,7 @@ const toActiveTopics = topics =>
   );
 
 const toUnlockedInPlayers = players =>
-  playersToArray(players).filter(({ lockedIn }) => !lockedIn);
+  playersToArray(players).filter(({ lockedIn, active }) => !lockedIn && active);
 
 const toGuessesByTopic = guesses =>
   Object.keys(guesses)
@@ -75,7 +75,7 @@ const toGuessesByTopic = guesses =>
       return topicGuesses;
     }, {});
 
-const toPlayersWithScores = ({ guesses, topics, players }) => {
+const toAllPlayersWithScores = ({ guesses, topics, players }) => {
   const playerScores = Object.keys(guesses || {}).reduce(
     (playerScores, playerUid) => {
       const playerGuesses = guesses[playerUid];
@@ -118,5 +118,5 @@ export {
   toUnlockedInPlayers,
   toGuessesByTopic,
   toRemainingRounds,
-  toPlayersWithScores
+  toAllPlayersWithScores
 };

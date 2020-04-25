@@ -1,10 +1,12 @@
 @import '../variables';
 
 .scores {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: $size-xxs $size-s 0 $size-s;
+  align-items: center;
+  padding-bottom: $size-xs;
+  overflow-y: hidden;
 
   h1 {
     align-self: center;
@@ -13,10 +15,25 @@
     margin-bottom: $size-xxs;
   }
 
+  &__players {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 $size-s;
+    overflow-y: auto;
+  }
+
+  &__player {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: $size-xs;
+  }
+
   &__player-score {
     width: 100%;
     display: flex;
-    margin-bottom: $size-xs;
     align-content: center;
 
     &--index {
@@ -26,6 +43,10 @@
     &--name {
       margin-left: $size-xxs;
       margin-right: $size-xxs;
+
+      &.inactive {
+        color: $color-gray;
+      }
     }
 
     &--score {
@@ -34,5 +55,17 @@
       font-weight: bold;
       color: $color-orange;
     }
+
+    &--deactive {
+      margin-top: $size-xs;
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $size-xs $size-s;
   }
 }
