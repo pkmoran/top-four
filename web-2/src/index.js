@@ -24,6 +24,8 @@ firebase.initializeApp({
 });
 
 const Root = () => {
+  console.log(process.env.TOP_FOUR_FIREBASE_API_KEY);
+
   const state = loadState();
   saveState({});
 
