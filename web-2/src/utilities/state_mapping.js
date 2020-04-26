@@ -7,7 +7,8 @@ const topicsToArray = topics =>
 const playersToArray = players =>
   Object.keys(players).map(uid => ({ uid, ...players[uid] }));
 
-const topicsToCount = topics => Object.keys(topics).length;
+const availableTopicsToCount = topics =>
+  topicsToArray(topics).filter(({ status }) => status === 'available').length;
 
 const topicsToPlayerTopics = ({ playerUid, game: { topics = {} } }) =>
   topicsToArray(topics).filter(
@@ -109,7 +110,7 @@ const toAllPlayersWithScores = ({ guesses, topics, players }) => {
 export {
   teamsToArray,
   topicsToArray,
-  topicsToCount,
+  availableTopicsToCount,
   topicsToPlayerTopics,
   playersToPlayersByTeam,
   toPlayer,

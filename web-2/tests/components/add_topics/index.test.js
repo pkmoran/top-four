@@ -16,10 +16,7 @@ describe('<AddTopics />', () => {
         .onInput({ target: { value: '' } });
 
       expect(
-        wrapper
-          .find(Button)
-          .filter({ name: 'add' })
-          .props().disabled
+        wrapper.find(Button).filter({ name: 'add' }).props().disabled
       ).toBe(true);
     });
 
@@ -32,10 +29,7 @@ describe('<AddTopics />', () => {
         .onInput({ target: { value: 'socks with sandals' } });
 
       expect(
-        wrapper
-          .find(Button)
-          .filter({ name: 'add' })
-          .props().disabled
+        wrapper.find(Button).filter({ name: 'add' }).props().disabled
       ).toBe(false);
     });
 
@@ -49,11 +43,7 @@ describe('<AddTopics />', () => {
         .props()
         .onInput({ target: { value: 'road trips' } });
 
-      wrapper
-        .find(Button)
-        .filter({ name: 'add' })
-        .props()
-        .onClick();
+      wrapper.find(Button).filter({ name: 'add' }).props().onClick();
 
       expect(wrapper.find(TextField).props().value).toBe('');
     });
@@ -70,11 +60,7 @@ describe('<AddTopics />', () => {
         .props()
         .onInput({ target: { value: 'sex on the beach' } });
 
-      wrapper
-        .find(Button)
-        .filter({ name: 'add' })
-        .props()
-        .onClick();
+      wrapper.find(Button).filter({ name: 'add' }).props().onClick();
 
       expect(addTopic).toHaveBeenCalledTimes(1);
       expect(addTopic.mock.calls[0][0]).toBe('sex on the beach');
@@ -100,5 +86,15 @@ describe('<AddTopics />', () => {
     );
 
     expect(wrapper.find('p[name="numTopics"]').text()).toBe('Total Topics: 12');
+  });
+
+  it('disables the done button when there are less than 4 topics', () => {
+    const wrapper = shallow(
+      <AddTopics playerTopics={[]} numTopics={3} routes={[]} />
+    );
+
+    expect(wrapper.find(Button).filter({ name: 'done' }).props().disabled).toBe(
+      true
+    );
   });
 });

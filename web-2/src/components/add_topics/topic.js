@@ -10,9 +10,7 @@ const Topic = ({ topic: { uid, topic }, deleteTopic }) => {
     <div class="topic">
       <span>{topic}</span>
       <span class="topic__delete-button">
-        <IconButton color="secondary" onClick={() => deleteTopic(uid)}>
-          <DeleteOutline />
-        </IconButton>
+        <DeleteOutline color="secondary" onClick={() => deleteTopic(uid)} />
       </span>
     </div>
   );

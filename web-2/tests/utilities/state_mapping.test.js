@@ -1,7 +1,7 @@
 import {
   teamsToArray,
   topicsToArray,
-  topicsToCount,
+  availableTopicsToCount,
   topicsToPlayerTopics,
   playersToPlayersByTeam,
   toPlayer,
@@ -47,14 +47,15 @@ describe('state mapping functions', () => {
     });
   });
 
-  describe('topicsToCount', () => {
+  describe('availableTopicsToCount', () => {
     it('takes an object of topics by ID and returns the number of topics', () => {
       const topicsById = {
-        '12345': { topic: 'road trips', rank: 1 },
-        '23456': { topic: 'sex on the beach', rank: 2 }
+        '12345': { topic: 'road trips', rank: 1, status: 'available' },
+        '23456': { topic: 'sex on the beach', rank: 2, status: 'available' },
+        '34567': { topic: 'socks with sandals', rank: 3, status: 'unavailable' }
       };
 
-      const numTopics = topicsToCount(topicsById);
+      const numTopics = availableTopicsToCount(topicsById);
 
       expect(numTopics).toBe(2);
     });
