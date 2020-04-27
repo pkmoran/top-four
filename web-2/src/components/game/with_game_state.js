@@ -4,7 +4,8 @@ import { withState } from '@state';
 import {
   toPlayer,
   toAllActivePlayers,
-  toUnlockedInPlayers
+  toUnlockedInPlayers,
+  availableTopicsToCount
 } from 'utilities/state_mapping';
 import compose from 'utilities/compose';
 import { GAME_STATE } from 'utilities/constants';
@@ -14,18 +15,25 @@ const getGameState = ({
   player: { uid: playerUid, lockedIn },
   rankingPlayerUid,
   unlockedInPlayers,
-  players
+  players,
+  availableTopicsCount
 }) => {
   const ranker = playerUid === rankingPlayerUid;
 
-  const currentRankerPosition = players.findIndex(
-    ({ uid }) => uid === rankingPlayerUid
-  );
-  const nextRanker = players[(currentRankerPosition + 1) % players.length];
-  nextRanker.isThisPlayer = playerUid === nextRanker.uid;
+  if (!remoteGameState) {
+    const currentRankerPosition = players.findIndex(
+      ({ uid }) => uid === rankingPlayerUid
+    );
+    const nextRanker = players[(currentRankerPosition + 1) % players.length];
+    nextRanker.isThisPlayer = playerUid === nextRanker.uid;
 
-  if (!remoteGameState)
-    return { state: GAME_STATE.BETWEEN_ROUNDS, ranker, nextRanker };
+    return {
+      state: GAME_STATE.BETWEEN_ROUNDS,
+      ranker,
+      nextRanker,
+      availableTopicsCount
+    };
+  }
 
   if (remoteGameState === 'ranking' && !lockedIn)
     return { state: GAME_STATE.RANKING, ranker };
@@ -55,13 +63,19 @@ const withGameState = WrappedComponent => {
     'players',
     toAllActivePlayers
   );
+  const withAvailableTopicsCountState = withState(
+    'game.topics',
+    'availableTopicsCount',
+    availableTopicsToCount
+  );
 
   const wrappers = compose(
     withRemoteGameState,
     withPlayerState,
     withRankingPlayerUidState,
     withUnlockedInPlayersState,
-    withPlayersState
+    withPlayersState,
+    withAvailableTopicsCountState
   );
 
   return wrappers(Component);

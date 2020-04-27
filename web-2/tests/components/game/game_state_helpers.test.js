@@ -17,7 +17,8 @@ describe('game state helpers', () => {
           {footerContentForState({
             gameState: {
               state: GAME_STATE.BETWEEN_ROUNDS,
-              nextRanker: { isThisPlayer: true }
+              nextRanker: { isThisPlayer: true },
+              availableTopicsCount: 5
             },
             startRound
           })}
@@ -36,7 +37,8 @@ describe('game state helpers', () => {
           {footerContentForState({
             gameState: {
               state: GAME_STATE.BETWEEN_ROUNDS,
-              nextRanker: { isThisPlayer: false, name: 'Andrew' }
+              nextRanker: { isThisPlayer: false, name: 'Andrew' },
+              availableTopicsCount: 5
             }
           })}
         </div>
@@ -44,6 +46,27 @@ describe('game state helpers', () => {
 
       expect(wrapper.containsMatchingElement(<span />)).toBe(true);
       expect(wrapper.text()).toBe('Tell Andrew to start the next round!');
+    });
+
+    it('prompts for more topics between rounds when there are not enough for another round', () => {
+      const addMoreTopics = jest.fn();
+
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: {
+              state: GAME_STATE.BETWEEN_ROUNDS,
+              availableTopicsCount: 3
+            },
+            addMoreTopics
+          })}
+        </div>
+      );
+
+      expect(wrapper.containsMatchingElement(<ConfirmButton />)).toBe(true);
+      expect(wrapper.find(ConfirmButton).props().confirmAction).toEqual(
+        addMoreTopics
+      );
     });
 
     it('returns a lock in button while ranking', () => {

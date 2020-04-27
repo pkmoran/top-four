@@ -5,12 +5,22 @@ import { GAME_STATE } from 'utilities/constants';
 import ConfirmButton from 'components/game/confirm_button';
 
 const footerContentForState = ({
-  gameState: { state, unlockedInPlayers, nextRanker },
+  gameState: { state, unlockedInPlayers, nextRanker, availableTopicsCount },
   startRound,
-  lockIn
+  lockIn,
+  addMoreTopics
 }) => {
   switch (state) {
     case GAME_STATE.BETWEEN_ROUNDS:
+      if (availableTopicsCount < 4)
+        return (
+          <ConfirmButton
+            prefix="Not enough topics!"
+            confirmText="Add More?"
+            confirmAction={addMoreTopics}
+          />
+        );
+
       if (nextRanker.isThisPlayer)
         return (
           <ConfirmButton
