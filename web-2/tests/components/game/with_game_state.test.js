@@ -9,9 +9,76 @@ function MockComponent() {
 describe('withGameState(WrappedComponent)', () => {
   describe('getGameState', () => {
     it('returns between rounds state', () => {
-      expect(getGameState({ remoteGameState: null, player: {} }).state).toBe(
-        GAME_STATE.BETWEEN_ROUNDS
-      );
+      expect(
+        getGameState({
+          remoteGameState: null,
+          player: {},
+          players: [{ uid: '12345' }]
+        }).state
+      ).toBe(GAME_STATE.BETWEEN_ROUNDS);
+    });
+
+    describe('next ranker', () => {
+      it('defaults to the first player when there is no previous ranker', () => {
+        const players = [{ uid: '12345' }, { uid: '23456' }, { uid: '34567' }];
+
+        expect(
+          getGameState({ remoteGameState: null, player: {}, players })
+            .nextRanker.uid
+        ).toBe('12345');
+      });
+
+      it('calculates the next ranker in between rounds', () => {
+        const players = [{ uid: '12345' }, { uid: '23456' }, { uid: '34567' }];
+
+        expect(
+          getGameState({
+            remoteGameState: null,
+            player: {},
+            rankingPlayerUid: '12345',
+            players
+          }).nextRanker.uid
+        ).toBe('23456');
+      });
+
+      it('wraps the next ranker in between rounds', () => {
+        const players = [{ uid: '12345' }, { uid: '23456' }, { uid: '34567' }];
+
+        expect(
+          getGameState({
+            remoteGameState: null,
+            player: {},
+            rankingPlayerUid: '34567',
+            players
+          }).nextRanker.uid
+        ).toBe('12345');
+      });
+
+      it('is the current player', () => {
+        const players = [{ uid: '12345' }, { uid: '23456' }, { uid: '34567' }];
+
+        expect(
+          getGameState({
+            remoteGameState: null,
+            player: { uid: '34567' },
+            rankingPlayerUid: '23456',
+            players
+          }).nextRanker.isThisPlayer
+        ).toBe(true);
+      });
+
+      it('is not the current player', () => {
+        const players = [{ uid: '12345' }, { uid: '23456' }, { uid: '34567' }];
+
+        expect(
+          getGameState({
+            remoteGameState: null,
+            player: { uid: '12345' },
+            rankingPlayerUid: '23456',
+            players
+          }).nextRanker.isThisPlayer
+        ).toBe(false);
+      });
     });
 
     it('returns ranking state for the ranking player', () => {
@@ -19,7 +86,8 @@ describe('withGameState(WrappedComponent)', () => {
         getGameState({
           remoteGameState: 'ranking',
           rankingPlayerUid: '12345',
-          player: { uid: '12345', lockedIn: false }
+          player: { uid: '12345', lockedIn: false },
+          players: [{ uid: '12345' }]
         })
       ).toEqual({ state: GAME_STATE.RANKING, ranker: true });
     });
@@ -29,7 +97,8 @@ describe('withGameState(WrappedComponent)', () => {
         getGameState({
           remoteGameState: 'ranking',
           rankingPlayerUid: '23456',
-          player: { uid: '12345', lockedIn: false }
+          player: { uid: '12345', lockedIn: false },
+          players: [{ uid: '23456' }]
         })
       ).toEqual({ state: GAME_STATE.RANKING, ranker: false });
     });
@@ -39,7 +108,8 @@ describe('withGameState(WrappedComponent)', () => {
         getGameState({
           remoteGameState: 'ranking',
           rankingPlayerUid: '12345',
-          player: { uid: '12345', lockedIn: true }
+          player: { uid: '12345', lockedIn: true },
+          players: [{ uid: '12345' }]
         })
       ).toEqual({ state: GAME_STATE.LOCKED_IN, ranker: true });
     });
@@ -49,7 +119,8 @@ describe('withGameState(WrappedComponent)', () => {
         getGameState({
           remoteGameState: 'ranking',
           rankingPlayerUid: '23456',
-          player: { uid: '12345', lockedIn: true }
+          player: { uid: '12345', lockedIn: true },
+          players: [{ uid: '23456' }]
         })
       ).toEqual({ state: GAME_STATE.LOCKED_IN, ranker: false });
     });

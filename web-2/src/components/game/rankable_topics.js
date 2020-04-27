@@ -94,7 +94,7 @@ const withProps = WrappedComponent => {
           correctGuesses:
             topicGuesses &&
             topicGuesses.filter(guess => guess === correctTopic.rank).length,
-          totalGuesses: correctTopic && guessesByTopic[correctTopic.uid].length
+          totalGuesses: correctTopic && topicGuesses && topicGuesses.length
         };
       });
 

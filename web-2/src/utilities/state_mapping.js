@@ -107,6 +107,9 @@ const toAllPlayersWithScores = ({ guesses, topics, players }) => {
     .sort(({ score: scoreA }, { score: scoreB }) => scoreB - scoreA);
 };
 
+const toAllActivePlayers = players =>
+  playersToArray(players).filter(({ active }) => active);
+
 export {
   teamsToArray,
   topicsToArray,
@@ -121,5 +124,6 @@ export {
   toUnlockedInPlayers,
   toGuessesByTopic,
   toRemainingRounds,
-  toAllPlayersWithScores
+  toAllPlayersWithScores,
+  toAllActivePlayers
 };

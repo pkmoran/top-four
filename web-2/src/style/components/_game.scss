@@ -60,28 +60,8 @@
 }
 
 .game-footer {
+  height: 6em;
   display: flex;
-  flex-direction: column;
-  padding: $size-xs $size-s;
-  text-align: center;
-
-  &__actions {
-    margin-top: $size-xs;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &__action {
-    width: 50%;
-
-    button {
-      width: 100%;
-    }
-
-    &--confirming {
-      font-weight: bold;
-      color: $color-purple;
-    }
-  }
+  justify-content: center;
+  align-items: center;
 }

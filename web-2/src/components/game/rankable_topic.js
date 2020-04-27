@@ -65,13 +65,19 @@ const RankableTopic = ({
             </Button>
           )}
 
-        {state !== GAME_STATE.RANKING && ranker && status === 'ranked' && (
-          <span>{`${correctGuesses}/${totalGuesses}`}</span>
-        )}
+        {correctGuesses !== undefined &&
+          totalGuesses !== undefined &&
+          state !== GAME_STATE.RANKING &&
+          ranker &&
+          status === 'ranked' && (
+            <span>{`${correctGuesses}/${totalGuesses}`}</span>
+          )}
 
-        {state !== GAME_STATE.RANKING && !ranker && isRanked && (
-          <span>{`${correctGuesses}/${totalGuesses}`}</span>
-        )}
+        {correctGuesses !== undefined &&
+          totalGuesses !== undefined &&
+          state !== GAME_STATE.RANKING &&
+          !ranker &&
+          isRanked && <span>{`${correctGuesses}/${totalGuesses}`}</span>}
       </div>
     </Paper>
   );

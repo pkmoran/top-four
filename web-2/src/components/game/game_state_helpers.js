@@ -1,48 +1,46 @@
+import { h } from 'preact';
+
 import { GAME_STATE } from 'utilities/constants';
 
-const footerState = ({
-  gameState: { state, ranker, unlockedInPlayers },
+import ConfirmButton from 'components/game/confirm_button';
+
+const footerContentForState = ({
+  gameState: { state, unlockedInPlayers, nextRanker },
   startRound,
   lockIn
 }) => {
   switch (state) {
     case GAME_STATE.BETWEEN_ROUNDS:
-      return {
-        _stateName: 'between_rounds',
-        helperText: 'Whose turn is it to rank?',
-        confirmText: `I'm up!`,
-        confirmAction: startRound
-      };
+      if (nextRanker.isThisPlayer)
+        return (
+          <ConfirmButton
+            prefix="Your turn to rank!"
+            confirmText="Start round!"
+            confirmAction={startRound}
+          />
+        );
+
+      return <span>{`Tell ${nextRanker.name} to start the next round!`}</span>;
     case GAME_STATE.RANKING:
-      return {
-        _stateName: 'ranking',
-        helperText: 'Feel good about your ranks?',
-        confirmText: `Lock 'em in!`,
-        confirmAction: lockIn
-      };
+      return (
+        <ConfirmButton
+          prefix="Feeling confident???"
+          confirmText="Lock in!"
+          confirmAction={lockIn}
+        />
+      );
     case GAME_STATE.LOCKED_IN:
       if (unlockedInPlayers.length === 0)
-        return {
-          _stateName: 'locked_in_all',
-          helperText: `Everyone's locked in!`,
-          confirmText: null,
-          confirmAction: null
-        };
+        return <span>Everyone's locked in!</span>;
 
       if (unlockedInPlayers.length === 1)
-        return {
-          _stateName: 'locked_in_single',
-          helperText: `Waiting on ${unlockedInPlayers[0].name} to lock in!`,
-          confirmText: null,
-          confirmAction: null
-        };
+        return (
+          <span>{`Waiting on ${unlockedInPlayers[0].name} to lock in!`}</span>
+        );
 
-      return {
-        _stateName: 'locked_in_multiple',
-        helperText: `Waiting on ${unlockedInPlayers.length} players to lock in!`,
-        confirmText: null,
-        confirmAction: null
-      };
+      return (
+        <span>{`Waiting on ${unlockedInPlayers.length} players to lock in!`}</span>
+      );
   }
 };
 
@@ -68,4 +66,4 @@ const bodyState = ({ gameState: { state, ranker }, rankingPlayer }) => {
   }
 };
 
-export { footerState, bodyState };
+export { footerContentForState, bodyState };

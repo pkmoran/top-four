@@ -1,49 +1,113 @@
+import { h } from 'preact';
+import { shallow } from 'enzyme';
+
 import { GAME_STATE } from 'utilities/constants';
 
-import { footerState } from 'components/game/game_state_helpers';
+import ConfirmButton from 'components/game/confirm_button';
+
+import { footerContentForState } from 'components/game/game_state_helpers';
 
 describe('game state helpers', () => {
-  describe('footerState', () => {
-    it('returns between rounds state', () => {
-      expect(
-        footerState({ gameState: { state: GAME_STATE.BETWEEN_ROUNDS } })
-          ._stateName
-      ).toBe('between_rounds');
+  describe('footerContentForState', () => {
+    it('returns a start round button between rounds for the next ranker', () => {
+      const startRound = jest.fn();
+
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: {
+              state: GAME_STATE.BETWEEN_ROUNDS,
+              nextRanker: { isThisPlayer: true }
+            },
+            startRound
+          })}
+        </div>
+      );
+
+      expect(wrapper.containsMatchingElement(<ConfirmButton />)).toBe(true);
+      expect(wrapper.find(ConfirmButton).props().confirmAction).toEqual(
+        startRound
+      );
     });
 
-    it('returns ranking state', () => {
-      expect(
-        footerState({ gameState: { state: GAME_STATE.RANKING } })._stateName
-      ).toBe('ranking');
+    it('returns a waiting message between rounds for the next guesser', () => {
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: {
+              state: GAME_STATE.BETWEEN_ROUNDS,
+              nextRanker: { isThisPlayer: false, name: 'Andrew' }
+            }
+          })}
+        </div>
+      );
+
+      expect(wrapper.containsMatchingElement(<span />)).toBe(true);
+      expect(wrapper.text()).toBe('Tell Andrew to start the next round!');
     });
 
-    it('returns all players locked in state', () => {
-      expect(
-        footerState({
-          gameState: { state: GAME_STATE.LOCKED_IN, unlockedInPlayers: [] }
-        })._stateName
-      ).toBe('locked_in_all');
+    it('returns a lock in button while ranking', () => {
+      const lockIn = jest.fn();
+
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: { state: GAME_STATE.RANKING },
+            lockIn
+          })}
+        </div>
+      );
+
+      expect(wrapper.containsMatchingElement(<ConfirmButton />)).toBe(true);
+      expect(wrapper.find(ConfirmButton).props().confirmAction).toEqual(lockIn);
     });
 
-    it('returns one player not locked in state', () => {
-      const state = footerState({
-        gameState: {
-          state: GAME_STATE.LOCKED_IN,
-          unlockedInPlayers: [{ name: 'Emily' }]
-        }
-      });
+    it('returns a message when everyone is locked in', () => {
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: {
+              state: GAME_STATE.LOCKED_IN,
+              unlockedInPlayers: []
+            }
+          })}
+        </div>
+      );
 
-      expect(state._stateName).toBe('locked_in_single');
-      expect(state.helperText).toEqual(expect.stringContaining('Emily'));
+      expect(wrapper.containsMatchingElement(<span />)).toBe(true);
+      expect(wrapper.text()).toBe(`Everyone's locked in!`);
     });
 
-    it('returns multiple not locked in state', () => {
-      const state = footerState({
-        gameState: { state: GAME_STATE.LOCKED_IN, unlockedInPlayers: [{}, {}] }
-      });
+    it('returns a message when only one player is not locked in', () => {
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: {
+              state: GAME_STATE.LOCKED_IN,
+              unlockedInPlayers: [{ name: 'Emily' }]
+            }
+          })}
+        </div>
+      );
 
-      expect(state._stateName).toBe('locked_in_multiple');
-      expect(state.helperText).toEqual(expect.stringContaining('2'));
+      expect(wrapper.containsMatchingElement(<span />)).toBe(true);
+      expect(wrapper.text()).toBe('Waiting on Emily to lock in!');
+    });
+
+    it('returns a message when more than one player is not locked in', () => {
+      const wrapper = shallow(
+        <div>
+          {footerContentForState({
+            gameState: {
+              state: GAME_STATE.LOCKED_IN,
+              unlockedInPlayers: [{ name: 'Emily' }, { name: 'Harrison' }]
+            }
+          })}
+        </div>
+      );
+
+      expect(wrapper.containsMatchingElement(<span />)).toBe(true);
+      expect(wrapper.text()).toBe('Waiting on 2 players to lock in!');
     });
   });
 });
