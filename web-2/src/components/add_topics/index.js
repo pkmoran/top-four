@@ -4,8 +4,8 @@ import { Button, TextField } from '@material-ui/core';
 
 import compose from 'utilities/compose';
 import {
-  availableTopicsToCount,
-  topicsToPlayerTopics
+  topicsToPlayerTopics,
+  toAvailableAndRankingTopicsCount
 } from 'utilities/state_mapping';
 import { withAction, withState } from '@state';
 import { addTopic } from '@actions';
@@ -85,7 +85,7 @@ const withAddTopicAction = withAction(addTopic, 'addTopic');
 const withTopicsState = withState(
   'game.topics',
   'numTopics',
-  availableTopicsToCount
+  toAvailableAndRankingTopicsCount
 );
 const withPlayerTopicsState = withState(
   null,

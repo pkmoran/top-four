@@ -110,6 +110,12 @@ const toAllPlayersWithScores = ({ guesses, topics, players }) => {
 const toAllActivePlayers = players =>
   playersToArray(players).filter(({ active }) => active);
 
+const toAvailableAndRankingTopicsCount = topics =>
+  topicsToArray(topics).filter(
+    ({ status }) =>
+      status === 'available' || status === 'active' || status === 'ranked'
+  ).length;
+
 export {
   teamsToArray,
   topicsToArray,
@@ -125,5 +131,6 @@ export {
   toGuessesByTopic,
   toRemainingRounds,
   toAllPlayersWithScores,
-  toAllActivePlayers
+  toAllActivePlayers,
+  toAvailableAndRankingTopicsCount
 };
