@@ -34,7 +34,7 @@ const footerContentForState = ({
     case GAME_STATE.RANKING:
       return (
         <ConfirmButton
-          prefix="Feeling confident???"
+          prefix="Feeling confident?"
           confirmText="Lock in!"
           confirmAction={lockIn}
         />
