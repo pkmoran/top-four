@@ -68,11 +68,9 @@ describe('<RankableTopics />', () => {
         .activeTopics;
 
       expect(sortedActiveTopics[0].correctTopic.uid).toBe('23456');
-      expect(sortedActiveTopics[0].correctGuesses).toBe(1);
-      expect(sortedActiveTopics[0].totalGuesses).toBe(4);
+      expect(sortedActiveTopics[0].correctPercent).toBe('25%');
       expect(sortedActiveTopics[1].correctTopic.uid).toBe('12345');
-      expect(sortedActiveTopics[1].correctGuesses).toBe(2);
-      expect(sortedActiveTopics[1].totalGuesses).toBe(3);
+      expect(sortedActiveTopics[1].correctPercent).toBe('67%');
     });
   });
 });

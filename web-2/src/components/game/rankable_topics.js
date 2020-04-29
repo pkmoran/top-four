@@ -87,14 +87,24 @@ const withProps = WrappedComponent => {
         const correctTopic = topics.find(({ rank }) => rank === index);
         const topicGuesses = correctTopic && guessesByTopic[correctTopic.uid];
 
+        const correctGuesses =
+          topicGuesses &&
+          topicGuesses.filter(guess => guess === correctTopic.rank).length;
+        const totalGuesses =
+          correctTopic && topicGuesses && topicGuesses.length;
+
+        let correctPercent;
+        if (correctGuesses !== undefined && totalGuesses !== undefined) {
+          correctPercent = `${Math.round(
+            (correctGuesses / totalGuesses) * 100
+          )}%`;
+        }
+
         return {
           ...topic,
           localRank: index,
           correctTopic,
-          correctGuesses:
-            topicGuesses &&
-            topicGuesses.filter(guess => guess === correctTopic.rank).length,
-          totalGuesses: correctTopic && topicGuesses && topicGuesses.length
+          correctPercent
         };
       });
 

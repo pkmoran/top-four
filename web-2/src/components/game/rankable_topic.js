@@ -7,16 +7,77 @@ import { GAME_STATE } from 'utilities/constants';
 import { withAction } from '@state';
 import { revealTopic } from '@actions';
 
+const renderTopicIfUnranked = (isRanked, topic) => {
+  if (!isRanked) return <span class="rankable-topic__name">{topic}</span>;
+};
+
+const renderIncorrectTopicIfRanked = (isRanked, isCorrect, topic) => {
+  if (isRanked && !isCorrect) {
+    return (
+      <span class="rankable-topic__name">
+        <strike>{topic}</strike>
+      </span>
+    );
+  }
+};
+
+const renderCorrectTopicIfRanked = (isRanked, correctTopic) => {
+  if (isRanked) {
+    return <span class="rankable-topic__name">{correctTopic.topic}</span>;
+  }
+};
+
+const maybeRenderRevealButton = (
+  state,
+  topicStatus,
+  ranker,
+  unlockedInPlayers,
+  handleReveal
+) => {
+  if (
+    state === GAME_STATE.LOCKED_IN &&
+    ranker &&
+    topicStatus !== 'ranked' &&
+    unlockedInPlayers.length === 0
+  ) {
+    return (
+      <Button
+        name="reveal_button"
+        variant="outlined"
+        color="primary"
+        onClick={handleReveal}
+      >
+        Reveal!
+      </Button>
+    );
+  }
+};
+
+const maybeRenderCorrectPercent = (
+  state,
+  topicStatus,
+  ranker,
+  correctPercent
+) => {
+  if (
+    state !== GAME_STATE.RANKING &&
+    ranker &&
+    topicStatus === 'ranked' &&
+    correctPercent
+  ) {
+    return <span>{correctPercent}</span>;
+  }
+};
+
 const RankableTopic = ({
   topic: {
     uid,
     topic,
-    status,
+    status: topicStatus,
     rank,
     localRank,
     correctTopic,
-    correctGuesses,
-    totalGuesses
+    correctPercent
   },
   gameState: { state, ranker, unlockedInPlayers },
   dragging,
@@ -38,46 +99,24 @@ const RankableTopic = ({
     <Paper elevation={dragging ? 7 : 1}>
       <div class={topicClasses}>
         <div class="rankable-topic__names">
-          {!isRanked && <span class="rankable-topic__name">{topic}</span>}
-          {isRanked && !isCorrect && (
-            <span class="rankable-topic__name">
-              <strike>{topic}</strike>
-            </span>
-          )}
-          {isRanked && (
-            <span class="rankable-topic__name">{correctTopic.topic}</span>
-          )}
+          {renderTopicIfUnranked(isRanked, topic)}
+
+          {renderIncorrectTopicIfRanked(isRanked, isCorrect, topic)}
+
+          {renderCorrectTopicIfRanked(isRanked, correctTopic)}
         </div>
 
         {state === GAME_STATE.RANKING && <DragIndicatorIcon />}
 
-        {state === GAME_STATE.LOCKED_IN &&
-          ranker &&
-          unlockedInPlayers.length === 0 &&
-          status !== 'ranked' && (
-            <Button
-              name="reveal_button"
-              variant="outlined"
-              color="primary"
-              onClick={handleReveal}
-            >
-              Reveal!
-            </Button>
-          )}
+        {maybeRenderRevealButton(
+          state,
+          topicStatus,
+          ranker,
+          unlockedInPlayers,
+          handleReveal
+        )}
 
-        {correctGuesses !== undefined &&
-          totalGuesses !== undefined &&
-          state !== GAME_STATE.RANKING &&
-          ranker &&
-          status === 'ranked' && (
-            <span>{`${correctGuesses}/${totalGuesses}`}</span>
-          )}
-
-        {correctGuesses !== undefined &&
-          totalGuesses !== undefined &&
-          state !== GAME_STATE.RANKING &&
-          !ranker &&
-          isRanked && <span>{`${correctGuesses}/${totalGuesses}`}</span>}
+        {maybeRenderCorrectPercent(state, topicStatus, ranker, correctPercent)}
       </div>
     </Paper>
   );
