@@ -50,12 +50,10 @@
   &__footer {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     padding: $size-xs 0;
-  }
-
-  &__total-topics {
-    margin-bottom: $size-xs;
+    min-height: 6.5em;
   }
 }
 
