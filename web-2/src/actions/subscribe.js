@@ -4,8 +4,12 @@ import { GAME_UPDATE } from '@actions/types';
 
 let previousGame;
 
-const subscribeToGameUpdates = (gameUid, { dispatch }) => {
-  previousGame = null;
+const subscribeToGameUpdates = (
+  gameUid,
+  gameFromStorage = null,
+  { dispatch }
+) => {
+  previousGame = gameFromStorage;
 
   return new Promise(resolve => {
     subscribeToGameUpdatesService(gameUid, game => {

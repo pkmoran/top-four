@@ -40,7 +40,9 @@ const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
     payload: { gameId, gameUid, playerUid, name }
   });
 
-  subscribeToGameUpdates(gameUid, { dispatch }).then(() => toShare(gameId)());
+  subscribeToGameUpdates(gameUid, null, { dispatch }).then(() =>
+    toShare(gameId)()
+  );
 };
 
 const joinGame = async ({ name, gameId }, { dispatch }) => {
@@ -65,7 +67,7 @@ const joinGame = async ({ name, gameId }, { dispatch }) => {
     payload: { gameId, gameUid, playerUid, name }
   });
 
-  subscribeToGameUpdates(gameUid, { dispatch }).then(() => {
+  subscribeToGameUpdates(gameUid, null, { dispatch }).then(() => {
     let route;
 
     if (!noTeams) {

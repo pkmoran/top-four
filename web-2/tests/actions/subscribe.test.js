@@ -15,7 +15,7 @@ describe('subscription actions', () => {
 
   describe('subscribeToGameUpdates', () => {
     it('calls subscribeToGameUpdatesService with gameUid', () => {
-      subscribeToGameUpdates('12345', { dispatch: jest.fn() });
+      subscribeToGameUpdates('12345', null, { dispatch: jest.fn() });
 
       expect(subscribeToGameUpdatesService).toHaveBeenCalledTimes(1);
       expect(subscribeToGameUpdatesService.mock.calls[0][0]).toBe('12345');
@@ -24,7 +24,7 @@ describe('subscription actions', () => {
     it('dispatches the game update action on new data', () => {
       const dispatch = jest.fn();
 
-      subscribeToGameUpdates('12345', { dispatch });
+      subscribeToGameUpdates('12345', null, { dispatch });
 
       const on = subscribeToGameUpdatesService.mock.calls[0][1];
       on({ newData: '98765' });
@@ -50,7 +50,7 @@ describe('subscription actions', () => {
         '56789': { status: 'active' }
       };
 
-      subscribeToGameUpdates('12345', { dispatch });
+      subscribeToGameUpdates('12345', null, { dispatch });
 
       const on = subscribeToGameUpdatesService.mock.calls[0][1];
       on({ state: 'ranking', topics });
