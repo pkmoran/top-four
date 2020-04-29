@@ -85,7 +85,9 @@ describe('<AddTopics />', () => {
       <AddTopics playerTopics={[]} numTopics={12} routes={[]} />
     );
 
-    expect(wrapper.find('p[name="numTopics"]').text()).toBe('Total Topics: 12');
+    expect(wrapper.find('span[name="numTopics"]').text()).toBe(
+      'Total Topics: 12'
+    );
   });
 
   it('disables the done button when there are less than 4 topics', () => {

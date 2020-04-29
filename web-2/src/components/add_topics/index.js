@@ -62,7 +62,9 @@ const AddTopics = ({
           ))}
         </div>
         <div class="add-topics__footer">
-          <p name="numTopics">Total Topics: {numTopics}</p>
+          <span name="numTopics" class="add-topics__total-topics">
+            Total Topics: {numTopics}
+          </span>
           <Button
             variant="contained"
             color="primary"
