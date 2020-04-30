@@ -4,3 +4,4 @@ node_modules
 *.lock
 jsconfig.json
 .env
+size-plugin.json
