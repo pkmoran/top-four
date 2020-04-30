@@ -7,6 +7,9 @@ import { GAME_STATE } from 'utilities/constants';
 import { withAction } from '@state';
 import { revealTopic } from '@actions';
 
+import CorrectLogo from 'components/shared/correct_logo';
+import IncorrectLogo from 'components/shared/incorrect_logo';
+
 const renderTopicIfUnranked = (isRanked, topic) => {
   if (!isRanked) return <span class="rankable-topic__name">{topic}</span>;
 };
@@ -53,6 +56,14 @@ const maybeRenderRevealButton = (
   }
 };
 
+const maybeRenderCorrectLogo = (ranker, isRanked, isCorrect) => {
+  if (!ranker && isRanked && isCorrect) return <CorrectLogo />;
+};
+
+const maybeRenderIncorrectLogo = (ranker, isRanked, isCorrect) => {
+  if (!ranker && isRanked && !isCorrect) return <IncorrectLogo />;
+};
+
 const maybeRenderCorrectPercent = (
   state,
   topicStatus,
@@ -65,7 +76,7 @@ const maybeRenderCorrectPercent = (
     topicStatus === 'ranked' &&
     correctPercent
   ) {
-    return <span>{correctPercent}</span>;
+    return <span name="percent">{correctPercent}</span>;
   }
 };
 
@@ -117,6 +128,10 @@ const RankableTopic = ({
         )}
 
         {maybeRenderCorrectPercent(state, topicStatus, ranker, correctPercent)}
+
+        {maybeRenderCorrectLogo(ranker, isRanked, isCorrect)}
+
+        {maybeRenderIncorrectLogo(ranker, isRanked, isCorrect)}
       </div>
     </Paper>
   );

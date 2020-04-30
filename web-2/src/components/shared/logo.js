@@ -1,7 +1,5 @@
 import { h } from 'preact';
 
-import cx from 'utilities/cx';
-
 const Logo = ({ size }) => {
   const height = size === 'small' ? 42 * 0.75 : 42;
 
