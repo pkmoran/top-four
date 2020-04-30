@@ -112,8 +112,7 @@ const toAllActivePlayers = players =>
 
 const toAvailableAndRankingTopicsCount = topics =>
   topicsToArray(topics).filter(
-    ({ status }) =>
-      status === 'available' || status === 'active' || status === 'ranked'
+    ({ status }) => status === 'available' || status === 'active'
   ).length;
 
 export {
