@@ -51,13 +51,23 @@ const Scores = ({ playerScores, playerUid, togglePlayerActive }) => {
         })}
       </div>
 
-      <Button
-        variant={editing ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => setEditing(!editing)}
-      >
-        {editing ? 'Done' : 'Edit Players'}
-      </Button>
+      <div class="scores__footer">
+        <Button
+          variant={editing ? 'contained' : 'outlined'}
+          color="primary"
+          onClick={() => setEditing(!editing)}
+        >
+          {editing ? 'Done' : 'Edit Players'}
+        </Button>
+
+        <a
+          class="scores__feedback"
+          href="mailto:feedback@topfour.io"
+          target="_blank"
+        >
+          feedback@topfour.io
+        </a>
+      </div>
     </div>
   );
 };

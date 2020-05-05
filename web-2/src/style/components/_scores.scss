@@ -64,8 +64,11 @@
   &__footer {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    padding: $size-xs $size-s;
+  }
+
+  &__feedback {
+    margin-top: $size-xs;
   }
 }
