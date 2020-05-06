@@ -17,7 +17,7 @@ const Scores = ({ playerScores, playerUid, togglePlayerActive }) => {
 
   return (
     <div class="scores">
-      <h1>Scores!</h1>
+      <h1>Scores</h1>
 
       <div class="scores__players">
         {players.map(({ uid, name, score, active }, index) => {

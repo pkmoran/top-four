@@ -46,4 +46,17 @@
   button {
     align-self: center;
   }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__description {
+    text-align: center;
+    color: $color-gray;
+    font-style: italic;
+    margin-bottom: $size-s;
+  }
 }

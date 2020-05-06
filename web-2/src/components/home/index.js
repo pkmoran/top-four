@@ -20,11 +20,11 @@ const Home = ({ clearState, routes: [toJoin, toCreate] }) => {
       </div>
       <div class="home__buttons">
         <Button variant="contained" disableElevation onClick={toJoin}>
-          Join an existing game!
+          Join an existing game
         </Button>
         <span class="home__separator">or</span>
         <Button variant="contained" disableElevation onClick={toCreate}>
-          Start a new one!
+          Start a new one
         </Button>
       </div>
     </div>

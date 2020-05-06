@@ -25,4 +25,7 @@ export default function (config, env, helpers, options) {
       dir
     );
   });
+
+  // disable hot reloading
+  config.devServer.hot = false;
 }

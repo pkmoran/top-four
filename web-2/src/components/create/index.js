@@ -34,7 +34,6 @@ const Create = ({ topicPacks, startGame }) => {
         <Logo size="small" />
       </div>
       <div class="create__container">
-        <h2>Create a New Game!</h2>
         <div class="create__slider">
           <Slider>
             <GameMode gameMode={gameMode} setGameMode={setGameMode} />

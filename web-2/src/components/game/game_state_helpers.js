@@ -25,7 +25,7 @@ const footerContentForState = ({
         return (
           <ConfirmButton
             prefix="Your turn to rank!"
-            confirmText="Start round!"
+            confirmText="Start round"
             confirmAction={startRound}
           />
         );
@@ -35,7 +35,7 @@ const footerContentForState = ({
       return (
         <ConfirmButton
           prefix="Feeling confident?"
-          confirmText="Lock in!"
+          confirmText="Lock in"
           confirmAction={lockIn}
         />
       );
@@ -58,19 +58,19 @@ const bodyState = ({ gameState: { state, ranker }, rankingPlayer }) => {
   switch (state) {
     case GAME_STATE.BETWEEN_ROUNDS:
       return {
-        header: 'Waiting!',
-        subheader: '...for someone to start ranking.'
+        header: 'Waiting',
+        subheader: '...for the next round to start.'
       };
     case GAME_STATE.RANKING:
     case GAME_STATE.LOCKED_IN:
       if (ranker)
         return {
-          header: 'Rank!',
+          header: 'Rank',
           subheader: '...the following topics, best to worst.'
         };
 
       return {
-        header: 'Guess!',
+        header: 'Guess',
         subheader: `...how ${rankingPlayer.name} would rank the following topics.`
       };
   }

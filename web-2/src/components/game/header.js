@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import compose from 'utilities/compose';
 import { toGameRound, toTotalRounds } from 'utilities/state_mapping';
@@ -10,11 +11,11 @@ const Header = ({ round, totalRounds, gameId, onClickScores }) => {
       <span>
         <span class="game-header__game-id">{gameId}</span>{' '}
         <span class="game-header__rounds">
-          &bull; Round {round}/{totalRounds}
+          &bull; Round {round} of {totalRounds}
         </span>
       </span>
 
-      <a onClick={onClickScores}>SCORES-></a>
+      <MenuOpenIcon color="primary" onClick={onClickScores} />
     </div>
   );
 };

@@ -18,7 +18,8 @@ const AddTopics = ({
   addTopic,
   numTopics = 0,
   playerTopics,
-  routes: [toGame]
+  routes: [toGame],
+  gameId
 }) => {
   const [topic, setTopic] = useState('');
 
@@ -33,7 +34,10 @@ const AddTopics = ({
         <Logo size="small" />
       </div>
       <div class="add-topics__container">
-        <h2>Add Topics</h2>
+        <div class="add-topics__header">
+          <span class="add-topics__header--game-id">{gameId}</span>
+          <h2 class="add-topics__header--title">Add Topics</h2>
+        </div>
         <form
           class="add-topics__form"
           autoComplete="off"
@@ -94,6 +98,7 @@ const withPlayerTopicsState = withState(
   'playerTopics',
   topicsToPlayerTopics
 );
+const withGameIdState = withState('gameId');
 
 // routes
 const withRoutes = withRouter(toGame);
@@ -102,6 +107,7 @@ const wrappers = compose(
   withAddTopicAction,
   withTopicsState,
   withPlayerTopicsState,
+  withGameIdState,
   withRoutes
 );
 

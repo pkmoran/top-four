@@ -21,7 +21,13 @@ const Share = ({ gameId, nextButton }) => {
           <span class="gameId__value">{gameId}</span>
         </div>
 
-        {nextButton}
+        <div class="share__footer">
+          <span class="share__description">
+            Share this ID with your friends so they can join your game
+          </span>
+
+          {nextButton}
+        </div>
       </div>
     </div>
   );
@@ -59,7 +65,7 @@ const withNextButton = WrappedComponent => {
     } else {
       nextButton = (
         <Button variant="contained" color="primary" onClick={toGame}>
-          Done!
+          Done
         </Button>
       );
     }

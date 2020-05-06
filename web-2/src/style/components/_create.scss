@@ -21,10 +21,6 @@
     background-color: $color-white;
     border-radius: 4px;
     box-shadow: 0 4px 10px rgba($color: $color-black, $alpha: 0.25);
-
-    h2 {
-      text-align: center;
-    }
   }
 
   &__slider {
@@ -40,7 +36,7 @@
 
   &__header {
     font-size: 1.5rem;
-    margin-bottom: $size-xs;
+    margin: $size-xs 0;
   }
 
   &__choices {
@@ -56,7 +52,7 @@
 
   &__header {
     font-size: 1.5rem;
-    margin-bottom: $size-xs;
+    margin: $size-xs 0;
   }
 
   &__choices {
@@ -73,7 +69,7 @@
 
   &__header {
     font-size: 1.5rem;
-    margin-bottom: $size-xs;
+    margin: $size-xs 0;
   }
 
   &__input {
