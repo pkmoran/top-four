@@ -7,6 +7,9 @@
       "hosting": {
         "dev": [
           "top-four-dev"
+        ],
+        "prod": [
+          "top-four-cca25"
         ]
       }
     }
