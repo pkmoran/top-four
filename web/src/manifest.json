@@ -1,6 +1,6 @@
 {
-  "name": "web-2",
-  "short_name": "web-2",
+  "name": "Top Four",
+  "short_name": "Top Four",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
