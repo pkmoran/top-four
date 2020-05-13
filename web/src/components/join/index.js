@@ -41,7 +41,7 @@ const Join = ({ joinGame }) => {
           <div class="join__name-input">
             <TextField
               name="name"
-              label="What's you name?"
+              label="What's your name?"
               value={name}
               onInput={({ target: { value } }) => setName(value)}
             />
