@@ -3,7 +3,9 @@ import {
   STARTED_GAME,
   GAME_UPDATE,
   UPDATE_LOCAL_RANKS,
-  CLEAR_STATE
+  CLEAR_STATE,
+  SHOW_COACHMARK,
+  HIDE_COACHMARK
 } from '@actions/types';
 import { WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { withReducerLogging } from 'utilities/logging';
@@ -43,6 +45,22 @@ const gameStateReducer = (state, { type, payload }) => {
       };
     case CLEAR_STATE:
       return {};
+    case SHOW_COACHMARK:
+      return {
+        ...state,
+        coachmark: {
+          show: true,
+          content: payload
+        }
+      };
+    case HIDE_COACHMARK:
+      return {
+        ...state,
+        coachmark: {
+          show: payload,
+          content: null
+        }
+      };
     default:
       return state;
   }

@@ -8,6 +8,7 @@ import compose from 'utilities/compose';
 import resolve from 'utilities/resolve';
 import { subscribeToGameUpdates } from '@actions';
 import { IN_PROGRESS_URL_REGEX } from 'utilities/constants';
+import cx from 'utilities/cx';
 
 import ErrorBoundary from 'components/error_boundary';
 
@@ -20,19 +21,31 @@ import Teams from 'routes/teams';
 import AddTopics from 'routes/add_topics';
 import Game from 'routes/game';
 
-const App = () => {
+import CoachmarkContent from 'components/shared/coachmark_content';
+
+const App = ({ coachmark }) => {
+  const { show, content } = coachmark || {};
+
+  const appContentClass = cx('app-content', {
+    'app-content--blur-in': !!content,
+    'app-content--blur-out': !content
+  });
+
   return (
     <ErrorBoundary>
       <div id="app">
-        <Router>
-          <Home path="/" />
-          <Join path="/join" />
-          <Create path="/create" />
-          <Share path="/:routeGameId/share" />
-          <Teams path="/:routeGameId/teams" />
-          <AddTopics path="/:routeGameId/topics" />
-          <Game path="/:routeGameId/game" />
-        </Router>
+        <div class={appContentClass}>
+          <Router>
+            <Home path="/" />
+            <Join path="/join" />
+            <Create path="/create" />
+            <Share path="/:routeGameId/share" />
+            <Teams path="/:routeGameId/teams" />
+            <AddTopics path="/:routeGameId/topics" />
+            <Game path="/:routeGameId/game" />
+          </Router>
+        </div>
+        {show && <CoachmarkContent content={content} />}
       </div>
     </ErrorBoundary>
   );
@@ -40,6 +53,7 @@ const App = () => {
 
 const withSubscribeAction = withAction(subscribeToGameUpdates, 'subscribe');
 const withFullState = withState(null, 'fullState');
+const withCoachmarkContentState = withState('coachmark');
 
 const withSubscribeEffect = WrappedComponent => {
   return props => {
@@ -79,6 +93,7 @@ const withLocaStorageEffect = WrappedComponent => {
 const wrappers = compose(
   withSubscribeAction,
   withFullState,
+  withCoachmarkContentState,
   withSubscribeEffect,
   withLocaStorageEffect
 );

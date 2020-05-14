@@ -1,0 +1,83 @@
+@import '../../variables';
+
+@keyframes blur-in {
+  from {
+    filter: blur(0);
+  }
+  to {
+    filter: blur(10px);
+  }
+}
+
+@keyframes blur-out {
+  from {
+    filter: blur(10px);
+  }
+  to {
+    filter: blur(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    background-color: rgba($color: $color-black, $alpha: 0);
+    color: rgba($color: $color-white, $alpha: 0);
+  }
+  to {
+    background-color: rgba($color: $color-black, $alpha: 0.5);
+    color: rgba($color: $color-white, $alpha: 1);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    background-color: rgba($color: $color-black, $alpha: 0.5);
+    color: rgba($color: $color-white, $alpha: 1);
+  }
+  to {
+    background-color: rgba($color: $color-black, $alpha: 0);
+    color: rgba($color: $color-white, $alpha: 0);
+  }
+}
+
+.app-content {
+  height: 100%;
+
+  &--blur-in {
+    animation-name: blur-in;
+    animation-duration: $timing-fast;
+    animation-fill-mode: forwards;
+  }
+
+  &--blur-out {
+    animation-name: blur-out;
+    animation-duration: $timing-fast;
+    animation-fill-mode: forwards;
+  }
+}
+
+.coachmark-content {
+  color: $color-white;
+  font-weight: bold;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  text-align: justify;
+  padding: $size-s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  &--fade-in {
+    animation-name: fade-in;
+    animation-duration: $timing-fast;
+    animation-fill-mode: forwards;
+  }
+
+  &--fade-out {
+    animation-name: fade-out;
+    animation-duration: $timing-fast;
+    animation-fill-mode: forwards;
+  }
+}
