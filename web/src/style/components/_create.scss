@@ -65,8 +65,22 @@
   align-items: center;
 
   &__header {
-    font-size: 1.5rem;
-    margin: $size-xs 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+
+    &--title {
+      font-size: 1.5rem;
+      margin: $size-xs 0;
+    }
+
+    &--coachmark {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 
   &__choices {

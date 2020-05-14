@@ -11,6 +11,7 @@ import { withAction, withState } from '@state';
 import { addTopic } from '@actions';
 import withRouter, { toGame } from 'utilities/router';
 
+import Coachmark from 'components/shared/coachmark';
 import Logo from 'components/shared/logo';
 import Topic from 'components/add_topics/topic';
 
@@ -37,6 +38,31 @@ const AddTopics = ({
         <div class="add-topics__header">
           <span class="add-topics__header--game-id">{gameId}</span>
           <h2 class="add-topics__header--title">Add Topics</h2>
+          <div class="add-topics__header--coachmark">
+            <Coachmark>
+              Topics are people, places and things that you’ll be asked to rank
+              throughout the game. Good topics are things that are trivial yet
+              polarizing. Feel free to include inside jokes and things specific
+              to your group! Here are a few examples of potential topics:
+              <ul>
+                <li>Las Vegas</li>
+                <li>Dave Matthews Band</li>
+                <li>The Bachelor</li>
+                <li>Going to the movies alone</li>
+              </ul>
+              Here are some things to avoid:
+              <ul>
+                <li>
+                  "Either/ors" like "cats or dogs". That’s an entirely different
+                  game. Just enter "cats!" Better yet, enter "Cats! The Musical"
+                </li>
+                <li>
+                  Broad categories like "airlines" or "music". It’s fun to get
+                  specific. Instead, try "Delta Airlines" or "Jazz"
+                </li>
+              </ul>
+            </Coachmark>
+          </div>
         </div>
         <form
           class="add-topics__form"
