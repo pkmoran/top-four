@@ -1,4 +1,4 @@
-@import 'variables';
+@import '../variables';
 
 .join {
   height: 100%;
@@ -57,6 +57,17 @@
 
     h2 {
       text-align: center;
+    }
+  }
+
+  &__header {
+    position: relative;
+    width: 100%;
+
+    &--coachmark {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
 }

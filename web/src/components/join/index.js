@@ -6,6 +6,7 @@ import { withAction } from '@state';
 import { joinGame } from '@actions';
 
 import Logo from 'components/shared/logo';
+import Coachmark from 'components/shared/coachmark';
 
 const Join = ({ joinGame }) => {
   const [name, setName] = useState('');
@@ -36,7 +37,16 @@ const Join = ({ joinGame }) => {
         <Logo size="small" />
       </div>
       <div class="join__container">
-        <h2>Join an Existing Game!</h2>
+        <div class="join__header">
+          <h2>Join an Existing Game</h2>
+          <div class="join__header--coachmark">
+            <Coachmark>
+              Don't have a game code? Make sure one player in the group chooses
+              START A NEW GAME on the previous screen. They'll get a code to
+              share with everyone.
+            </Coachmark>
+          </div>
+        </div>
         <form autoComplete="off">
           <div class="join__name-input">
             <TextField
@@ -70,6 +80,7 @@ const Join = ({ joinGame }) => {
             </Button>
           </div>
         </form>
+        <div class="join__spacer" />
       </div>
     </div>
   );

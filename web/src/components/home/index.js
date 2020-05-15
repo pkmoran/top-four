@@ -35,7 +35,7 @@ const Home = ({ clearState, routes: [toJoin, toCreate], showCoachmark }) => {
           disableElevation
           onClick={toCreate}
         >
-          Start a new one
+          Start a new game
         </Button>
         <span class="home__separator" />
         <Button

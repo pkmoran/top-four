@@ -42,8 +42,7 @@ const AddTopics = ({
             <Coachmark>
               Topics are people, places and things that you’ll be asked to rank
               throughout the game. Good topics are things that are trivial yet
-              polarizing. Feel free to include inside jokes and things specific
-              to your group! Here are a few examples of potential topics:
+              polarizing. Here are a few examples of potential topics:
               <ul>
                 <li>Las Vegas</li>
                 <li>Dave Matthews Band</li>
