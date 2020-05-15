@@ -27,7 +27,15 @@
     color: $color-white;
   }
 
-  button {
+  .home__main-button {
     background-color: $color-white;
+    width: 100%;
+  }
+
+  .home__secondary-button {
+    margin-top: $size-xs;
+    color: $color-white;
+    border-color: $color-white;
+    width: 100%;
   }
 }
