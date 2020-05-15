@@ -18,11 +18,14 @@ const pageView = page => {
   }
 };
 
-const logError = error => {
+const logError = (error, path) => {
   maybeInitialize();
 
   if (process.env.NODE_ENV !== 'test') {
-    ReactGA.exception({ description: error, fatal: true });
+    ReactGA.exception({
+      description: `${path} | ${error.message}`,
+      fatal: true
+    });
   }
 };
 
