@@ -7,6 +7,7 @@ import { withState } from '@state';
 import { toAllPlayersWithScores } from 'utilities/state_mapping';
 import compose from 'utilities/compose';
 import { GAME_STATE } from 'utilities/constants';
+import { logErrorMessage } from '@services/logger';
 
 import Header from 'components/game/header';
 import Body from 'components/game/body';
@@ -65,8 +66,12 @@ const withProps = WrappedComponent => {
     const { playerUid, playerScores } = props;
 
     const players = playerScores.filter(({ active }) => active);
-    let winner;
 
+    if (players.length === 0) {
+      logErrorMessage('no active players in Game');
+    }
+
+    let winner;
     if (players.length > 1 && players[0].score === players[1].score) {
       winner = `There's a tie!`;
     } else if (players[0].uid === playerUid) {

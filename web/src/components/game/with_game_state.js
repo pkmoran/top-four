@@ -9,15 +9,21 @@ import {
 } from 'utilities/state_mapping';
 import compose from 'utilities/compose';
 import { GAME_STATE } from 'utilities/constants';
+import { logErrorMessage } from '@services/logger';
 
 const getGameState = ({
   remoteGameState,
-  player: { uid: playerUid, lockedIn },
+  player,
   rankingPlayerUid,
   unlockedInPlayers,
   players,
   availableTopicsCount
 }) => {
+  if (!player) {
+    logErrorMessage('missing player in getGameState');
+  }
+
+  const { uid: playerUid, lockedIn } = player;
   const ranker = playerUid === rankingPlayerUid;
 
   if (!remoteGameState) {
@@ -25,7 +31,12 @@ const getGameState = ({
       ({ uid }) => uid === rankingPlayerUid
     );
     const nextRanker = players[(currentRankerPosition + 1) % players.length];
-    nextRanker.isThisPlayer = playerUid === nextRanker.uid;
+
+    if (!nextRanker) {
+      logErrorMessage('missing nextRanker in getGameState');
+    }
+
+    nextRanker.isThisPlayer = nextRanker && playerUid === nextRanker.uid;
 
     return {
       state: GAME_STATE.BETWEEN_ROUNDS,

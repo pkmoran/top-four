@@ -18,25 +18,37 @@ const pageView = page => {
   }
 };
 
-const logError = (error, path) => {
+const path = () => {
+  const {
+    location: { pathname }
+  } = window;
+
+  return pathname.substring(pathname.lastIndexOf('/'));
+};
+
+const logErrorMessage = message => {
   maybeInitialize();
 
   if (process.env.NODE_ENV !== 'test') {
     ReactGA.exception({
-      description: `${path} | ${error.message}`,
+      description: `${path()} | ${message}`,
       fatal: true
     });
   }
 };
 
+const logError = error => {
+  logErrorMessage(error.message);
+};
+
 const withPageView = WrappedComponent => {
   return props => {
     useEffect(() => {
-      pageView(window.location.pathname);
+      pageView(path());
     }, []);
 
     return <WrappedComponent {...props} />;
   };
 };
 
-export { logError, withPageView };
+export { logError, logErrorMessage, withPageView };

@@ -6,6 +6,7 @@ import cx from 'utilities/cx';
 import { GAME_STATE } from 'utilities/constants';
 import { withAction } from '@state';
 import { revealTopic } from '@actions';
+import { logErrorMessage } from '@services/logger';
 
 import CorrectLogo from 'components/shared/correct_logo';
 import IncorrectLogo from 'components/shared/incorrect_logo';
@@ -81,7 +82,16 @@ const maybeRenderCorrectPercent = (
 };
 
 const RankableTopic = ({
-  topic: {
+  topic: topicObj,
+  gameState: { state, ranker, unlockedInPlayers },
+  dragging,
+  revealTopic
+}) => {
+  if (!topicObj) {
+    logErrorMessage('missing topic in RankableTopic');
+  }
+
+  const {
     uid,
     topic,
     status: topicStatus,
@@ -89,11 +99,7 @@ const RankableTopic = ({
     localRank,
     correctTopic,
     correctPercent
-  },
-  gameState: { state, ranker, unlockedInPlayers },
-  dragging,
-  revealTopic
-}) => {
+  } = topicObj;
   const handleReveal = () => {
     revealTopic(uid);
   };

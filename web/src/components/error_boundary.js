@@ -18,7 +18,7 @@ class ErrorBoundary extends Component {
   componentDidCatch(error) {
     if (process.env.NODE_ENV !== 'production') console.log(error);
 
-    logError(error, window.location.pathname);
+    logError(error);
   }
 
   handleClick = () => {
