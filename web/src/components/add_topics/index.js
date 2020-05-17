@@ -1,6 +1,7 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 import { Button, TextField } from '@material-ui/core';
+import sampleSize from 'lodash/sampleSize';
 
 import compose from 'utilities/compose';
 import {
@@ -8,7 +9,7 @@ import {
   toAvailableAndRankingTopicsCount
 } from 'utilities/state_mapping';
 import { withAction, withState } from '@state';
-import { addTopic } from '@actions';
+import { addTopic, getTopicPacks } from '@actions';
 import withRouter, { toGame } from 'utilities/router';
 
 import Coachmark from 'components/shared/coachmark';
@@ -20,13 +21,16 @@ const AddTopics = ({
   numTopics = 0,
   playerTopics,
   routes: [toGame],
-  gameId
+  gameId,
+  topicExample,
+  onTopicAdded
 }) => {
   const [topic, setTopic] = useState('');
 
   const handleAddTopic = () => {
     addTopic(topic);
     setTopic('');
+    onTopicAdded && onTopicAdded();
   };
 
   return (
@@ -71,8 +75,12 @@ const AddTopics = ({
           <div class="add-topics__input">
             <TextField
               label="Trivial topic"
+              placeholder={topicExample ? topicExample : null}
               value={topic}
               onInput={({ target: { value } }) => setTopic(value)}
+              InputLabelProps={{
+                shrink: true
+              }}
             />
           </div>
           <Button
@@ -111,6 +119,7 @@ const AddTopics = ({
 
 // actions
 const withAddTopicAction = withAction(addTopic, 'addTopic');
+const withGetTopicPacksAction = withAction(getTopicPacks, 'getTopicPacks');
 
 // state
 const withTopicsState = withState(
@@ -124,16 +133,68 @@ const withPlayerTopicsState = withState(
   topicsToPlayerTopics
 );
 const withGameIdState = withState('gameId');
+const withTopicPacksState = withState('topicPacks');
 
 // routes
 const withRoutes = withRouter(toGame);
 
+const randomTopicFromTopicPacks = topicPacks => {
+  if (topicPacks) {
+    const randomTopicsPack = topicPacks.find(
+      ({ isRandomPack }) => isRandomPack
+    );
+
+    if (randomTopicsPack) {
+      const randomTopics = Object.keys(randomTopicsPack.topics).map(
+        topicUid => randomTopicsPack.topics[topicUid].topic
+      );
+
+      const randomTopic = sampleSize(randomTopics, 1);
+      return randomTopic.length < 20
+        ? randomTopic
+        : randomTopicFromTopicPacks(topicPacks);
+    }
+  }
+};
+
+const withTopicExampleProp = WrappedComponent => {
+  return props => {
+    const { topicPacks, getTopicPacks } = props;
+    const [randomTopic, setRandomTopic] = useState(
+      randomTopicFromTopicPacks(topicPacks)
+    );
+
+    useEffect(() => {
+      getTopicPacks();
+    }, []);
+
+    useEffect(() => {
+      setRandomTopic(randomTopicFromTopicPacks(topicPacks));
+    }, [topicPacks]);
+
+    const onTopicAdded = useCallback(() => {
+      setRandomTopic(randomTopicFromTopicPacks(topicPacks));
+    }, [setRandomTopic, topicPacks]);
+
+    return (
+      <WrappedComponent
+        {...props}
+        onTopicAdded={onTopicAdded}
+        topicExample={randomTopic}
+      />
+    );
+  };
+};
+
 const wrappers = compose(
   withAddTopicAction,
+  withGetTopicPacksAction,
   withTopicsState,
   withPlayerTopicsState,
   withGameIdState,
-  withRoutes
+  withTopicPacksState,
+  withRoutes,
+  withTopicExampleProp
 );
 
 export { AddTopics };

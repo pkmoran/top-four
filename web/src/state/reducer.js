@@ -24,19 +24,22 @@ const gameStateReducer = (state, { type, payload }) => {
       return { ...state, localRanks: payload };
     case TOPIC_PACKS:
       const topicPacks = Object.keys(payload).map(uid => {
-        const { name, topics } = payload[uid];
+        const { name, topics, isRandomPack } = payload[uid];
 
         return {
           rawName: name,
           name: `${name} (${Object.keys(topics).length})`,
-          uid
+          uid,
+          isRandomPack,
+          topics
         };
       });
 
       topicPacks.unshift({
         rawName: 'Write our own!',
         name: 'Write our own!',
-        uid: WRITE_OUR_OWN_UID
+        uid: WRITE_OUR_OWN_UID,
+        isRandomPack: false
       });
 
       return {
