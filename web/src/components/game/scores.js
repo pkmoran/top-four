@@ -7,6 +7,7 @@ import compose from 'utilities/compose';
 import { withAction, withState } from '@state';
 import { togglePlayerActive } from '@actions';
 import { toAllPlayersWithScores } from 'utilities/state_mapping';
+import { logEvent } from '@services/logger';
 
 const Scores = ({ playerScores, playerUid, togglePlayerActive }) => {
   const [editing, setEditing] = useState(false);
@@ -14,6 +15,14 @@ const Scores = ({ playerScores, playerUid, togglePlayerActive }) => {
   const players = editing
     ? playerScores
     : playerScores.filter(({ active }) => active);
+
+  const handleClickEditPlayers = () => {
+    if (!editing) {
+      logEvent('scores', 'edit_players');
+    }
+
+    setEditing(!editing);
+  };
 
   return (
     <div class="scores">
@@ -55,12 +64,13 @@ const Scores = ({ playerScores, playerUid, togglePlayerActive }) => {
         <Button
           variant={editing ? 'contained' : 'outlined'}
           color="primary"
-          onClick={() => setEditing(!editing)}
+          onClick={handleClickEditPlayers}
         >
           {editing ? 'Done' : 'Edit Players'}
         </Button>
 
         <a
+          onClick={() => logEvent('scores', 'click_feedback')}
           class="scores__feedback"
           href="mailto:feedback@topfour.io"
           target="_blank"

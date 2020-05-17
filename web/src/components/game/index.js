@@ -7,7 +7,7 @@ import { withState } from '@state';
 import { toAllPlayersWithScores } from 'utilities/state_mapping';
 import compose from 'utilities/compose';
 import { GAME_STATE } from 'utilities/constants';
-import { logErrorMessage } from '@services/logger';
+import { logErrorMessage, logEvent } from '@services/logger';
 
 import Header from 'components/game/header';
 import Body from 'components/game/body';
@@ -20,9 +20,15 @@ const SlideTransition = props => <Slide {...props} />;
 const Game = ({ closeSnackbar, gameState, snackbarOpen, winner }) => {
   const [showScores, setShowScores] = useState(false);
 
+  const handleClickScores = () => {
+    setShowScores(true);
+
+    logEvent('in_game', 'show_scores');
+  };
+
   return (
     <div class="game">
-      <Header gameState={gameState} onClickScores={() => setShowScores(true)} />
+      <Header gameState={gameState} onClickScores={handleClickScores} />
       <Body gameState={gameState} />
       <Footer gameState={gameState} />
 

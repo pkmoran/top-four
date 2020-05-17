@@ -5,6 +5,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
 import cx from 'utilities/cx';
+import { logEvent } from '@services/logger';
 
 const ConfirmButton = ({ confirmText, confirmAction, prefix }) => {
   const [confirming, setConfirming] = useState(false);
@@ -18,15 +19,17 @@ const ConfirmButton = ({ confirmText, confirmAction, prefix }) => {
     confirmAction();
   };
 
+  const handleCancel = () => {
+    setConfirming(false);
+
+    logEvent('in_game', 'cancel_confirm', confirmText);
+  };
+
   return (
     <div class={actionsClasses}>
       {confirming && (
         <span class="confirm-button__cancel">
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => setConfirming(false)}
-          >
+          <Button variant="outlined" color="primary" onClick={handleCancel}>
             <CloseIcon />
           </Button>
         </span>

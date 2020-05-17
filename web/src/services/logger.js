@@ -4,6 +4,8 @@ import ReactGA from 'react-ga';
 let initialized = false;
 
 const maybeInitialize = () => {
+  if (process.env.NODE_ENV === 'test') return;
+
   if (!initialized) {
     ReactGA.initialize(process.env.TOP_FOUR_ANALYTICS_TRACKING_ID, {
       titleCase: false,

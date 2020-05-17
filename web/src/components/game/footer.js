@@ -7,8 +7,15 @@ import { startRound, lockIn } from '@actions';
 import withRouter, { toAddTopics } from 'utilities/router';
 
 import { footerContentForState } from 'components/game/game_state_helpers';
+import { logEvent } from '@services/logger';
 
 const Footer = ({ gameState, startRound, lockIn, routes: [toAddTopics] }) => {
+  const handleAddMoreTopics = () => {
+    toAddTopics();
+
+    logEvent('in_game', 'add_more_topics');
+  };
+
   return (
     <Paper elevation={3}>
       <div class="game-footer">
@@ -16,7 +23,7 @@ const Footer = ({ gameState, startRound, lockIn, routes: [toAddTopics] }) => {
           gameState,
           startRound,
           lockIn,
-          addMoreTopics: toAddTopics
+          addMoreTopics: handleAddMoreTopics
         })}
       </div>
     </Paper>
