@@ -67,7 +67,7 @@ describe('pre game actions', () => {
 
       startGame(
         { name: 'andrew', gameMode: TEAMS, topicPackUid: '12345' },
-        {}
+        { state: { topicPacks: [] } }
       ).catch(jest.fn);
 
       expect(startGameService).toHaveBeenCalledTimes(1);
@@ -86,7 +86,7 @@ describe('pre game actions', () => {
           gameMode: INDIVIDUALS,
           topicPackUid: WRITE_OUR_OWN_UID
         },
-        {}
+        { state: { topicPacks: [] } }
       ).catch(jest.fn);
 
       expect(startGameService).toHaveBeenCalledTimes(1);
@@ -103,7 +103,10 @@ describe('pre game actions', () => {
 
       const dispatch = jest.fn();
 
-      await startGame({ name: 'andrew' }, { dispatch });
+      await startGame(
+        { name: 'andrew' },
+        { dispatch, state: { topicPacks: [] } }
+      );
 
       expect(startGameService).toHaveBeenCalledTimes(1);
 

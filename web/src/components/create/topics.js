@@ -11,7 +11,7 @@ const Topics = ({ topicPacks, topicPackUid, setTopicPackUid }) => {
           What topics do you want to play with?
         </span>
         <div class="topics__header--coachmark">
-          <Coachmark>
+          <Coachmark eventLabel="topic_packs">
             Topics are people, places and things that you’ll be asked to rank
             each round. If you’re new to Top Four, we recommend selecting
             "Random" to play with topics we’ve provided. If you’ve played

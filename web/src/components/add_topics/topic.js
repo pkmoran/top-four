@@ -3,7 +3,7 @@ import { DeleteOutline } from '@material-ui/icons';
 
 import { withAction } from '@state';
 import { deleteTopic } from '@actions';
-import { logErrorMessage } from '@services/logger';
+import { logErrorMessage, logEvent } from '@services/logger';
 
 const Topic = ({ topic: topicObj, deleteTopic }) => {
   if (!topicObj) {
@@ -12,11 +12,17 @@ const Topic = ({ topic: topicObj, deleteTopic }) => {
 
   const { uid, topic } = topicObj;
 
+  const handleDeleteTopic = () => {
+    deleteTopic(uid);
+
+    logEvent('add_topic', 'delete_topic');
+  };
+
   return (
     <div class="topic">
       <span>{topic}</span>
       <span class="topic__delete-button">
-        <DeleteOutline color="secondary" onClick={() => deleteTopic(uid)} />
+        <DeleteOutline color="secondary" onClick={handleDeleteTopic} />
       </span>
     </div>
   );

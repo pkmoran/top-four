@@ -3,11 +3,18 @@ import HelpIcon from '@material-ui/icons/HelpOutline';
 
 import { withAction } from '@state';
 import { showCoachmark } from '@actions';
+import { logEvent } from '@services/logger';
 
-const Coachmark = ({ children, showCoachmark }) => {
+const Coachmark = ({ children, showCoachmark, eventLabel }) => {
+  const handleShowCoachmark = () => {
+    showCoachmark(children);
+
+    logEvent('coachmark', 'show_coachmark', eventLabel);
+  };
+
   return (
     <div class="coachmark">
-      <HelpIcon onClick={() => showCoachmark(children)} color="secondary" />
+      <HelpIcon onClick={handleShowCoachmark} color="secondary" />
     </div>
   );
 };

@@ -9,13 +9,18 @@ import {
   deleteTopicService
 } from '@services';
 
+import { logEvent } from '@services/logger';
+
 import { TEAMS, WRITE_OUR_OWN_UID } from 'utilities/constants';
 import { tagLogger } from 'utilities/logging';
 
 import { subscribeToGameUpdates } from '@actions/subscribe';
 import { STARTED_GAME, CLEAR_STATE } from '@actions/types';
 
-const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
+const startGame = async (
+  { name, gameMode, topicPackUid },
+  { dispatch, state }
+) => {
   const numberOfTeams = gameMode === TEAMS ? 2 : 0;
 
   const data = await startGameService({
@@ -43,6 +48,14 @@ const startGame = async ({ name, gameMode, topicPackUid }, { dispatch }) => {
   subscribeToGameUpdates(gameUid, null, { dispatch }).then(() =>
     toShare(gameId)()
   );
+
+  if (state && state.topicPacks) {
+    const topicPack = state.topicPacks.find(({ uid }) => uid === topicPackUid);
+
+    if (topicPack) {
+      logEvent('start_game', 'topic_pack', topicPack.rawName);
+    }
+  }
 };
 
 const joinGame = async ({ name, gameId }, { dispatch }) => {

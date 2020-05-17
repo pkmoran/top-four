@@ -8,11 +8,18 @@ import { clearState, showCoachmark } from '@actions';
 
 import Logo from 'components/shared/logo';
 import Instructions from 'components/home/instructions';
+import { logEvent } from '@services/logger';
 
 const Home = ({ clearState, routes: [toJoin, toCreate], showCoachmark }) => {
   useEffect(() => {
     clearState();
   }, []);
+
+  const handleClickInstructions = () => {
+    showCoachmark(<Instructions />);
+
+    logEvent('coachmark', 'show_coachmark', 'instructions');
+  };
 
   return (
     <div class="home">
@@ -41,7 +48,7 @@ const Home = ({ clearState, routes: [toJoin, toCreate], showCoachmark }) => {
         <Button
           className="home__secondary-button"
           variant="outlined"
-          onClick={() => showCoachmark(<Instructions />)}
+          onClick={handleClickInstructions}
         >
           How to play
         </Button>

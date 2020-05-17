@@ -39,7 +39,7 @@ const AddTopics = ({
           <span class="add-topics__header--game-id">{gameId}</span>
           <h2 class="add-topics__header--title">Add Topics</h2>
           <div class="add-topics__header--coachmark">
-            <Coachmark>
+            <Coachmark eventLabel="add_topics">
               Topics are people, places and things that you’ll be asked to rank
               throughout the game. Good topics are things that are trivial yet
               polarizing. Here are a few examples of potential topics:

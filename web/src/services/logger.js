@@ -5,7 +5,10 @@ let initialized = false;
 
 const maybeInitialize = () => {
   if (!initialized) {
-    ReactGA.initialize(process.env.TOP_FOUR_ANALYTICS_TRACKING_ID);
+    ReactGA.initialize(process.env.TOP_FOUR_ANALYTICS_TRACKING_ID, {
+      titleCase: false,
+      debug: process.env.NODE_ENV === 'development'
+    });
     initialized = true;
   }
 };
@@ -38,7 +41,25 @@ const logErrorMessage = message => {
 };
 
 const logError = error => {
-  logErrorMessage(error.message);
+  logErrorMessage(`${error.message} | ${error.stack}`);
+};
+
+const logEvent = (category, action, label, value) => {
+  maybeInitialize();
+
+  if (process.env.NODE_ENV !== 'test') {
+    const event = { category, action };
+
+    if (label) {
+      event.label = label;
+    }
+
+    if (value) {
+      event.value = value;
+    }
+
+    ReactGA.event(event);
+  }
 };
 
 const withPageView = WrappedComponent => {
@@ -51,4 +72,4 @@ const withPageView = WrappedComponent => {
   };
 };
 
-export { logError, logErrorMessage, withPageView };
+export { logError, logEvent, logErrorMessage, withPageView };
