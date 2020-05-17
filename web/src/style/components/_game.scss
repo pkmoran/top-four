@@ -27,18 +27,28 @@
 }
 
 .game-header {
-  padding: $size-xs $size-s 0 $size-s;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
+
+  &__top-bar {
+    padding: $size-xs $size-s 0 $size-s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-weight: bold;
+    }
+  }
 
   a {
     font-weight: bold;
     color: $color-orange;
   }
 
-  span {
-    font-weight: bold;
+  h1 {
+    color: $color-orange;
+    margin-bottom: $size-xxs;
+    margin-top: $size-xxs;
   }
 
   &__game-id {
@@ -48,16 +58,9 @@
 
 .game-body {
   flex-grow: 1;
-  text-align: center;
-  overflow-y: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-
-  h1 {
-    color: $color-orange;
-    margin-bottom: $size-xxs;
-    margin-top: $size-xxs;
-  }
 }
 
 .game-footer {

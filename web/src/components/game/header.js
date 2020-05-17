@@ -2,20 +2,39 @@ import { h } from 'preact';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import compose from 'utilities/compose';
-import { toGameRound, toTotalRounds } from 'utilities/state_mapping';
+import {
+  toGameRound,
+  toRankingPlayer,
+  toTotalRounds
+} from 'utilities/state_mapping';
 import { withState } from '@state';
 
-const Header = ({ round, totalRounds, gameId, onClickScores }) => {
+import { headerState } from 'components/game/game_state_helpers';
+
+const Header = ({
+  header,
+  subheader,
+  round,
+  totalRounds,
+  gameId,
+  onClickScores
+}) => {
   return (
     <div class="game-header">
-      <span>
-        <span class="game-header__game-id">{gameId}</span>{' '}
-        <span class="game-header__rounds">
-          &bull; Round {round} of {totalRounds}
+      <div class="game-header__top-bar">
+        <span>
+          <span class="game-header__game-id">{gameId}</span>{' '}
+          <span class="game-header__rounds">
+            &bull; Round {round} of {totalRounds}
+          </span>
         </span>
-      </span>
 
-      <MenuOpenIcon color="primary" onClick={onClickScores} />
+        <MenuOpenIcon color="primary" onClick={onClickScores} />
+      </div>
+      <div class="game-header__headers">
+        <h1>{header}</h1>
+        <span>{subheader}</span>
+      </div>
     </div>
   );
 };
@@ -28,11 +47,28 @@ const withTotalRoundsState = withState(
   toTotalRounds
 );
 const withGameIdState = withState('gameId');
+const withRankingPlayerState = withState(
+  'game',
+  'rankingPlayer',
+  toRankingPlayer
+);
+
+const withProps = WrappedComponent => {
+  return props => {
+    const { header, subheader } = headerState(props);
+
+    return (
+      <WrappedComponent {...props} header={header} subheader={subheader} />
+    );
+  };
+};
 
 const wrappers = compose(
   withGameRoundState,
   withTotalRoundsState,
-  withGameIdState
+  withGameIdState,
+  withRankingPlayerState,
+  withProps
 );
 
 export { Header };

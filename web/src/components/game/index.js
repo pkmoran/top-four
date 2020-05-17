@@ -22,7 +22,7 @@ const Game = ({ closeSnackbar, gameState, snackbarOpen, winner }) => {
 
   return (
     <div class="game">
-      <Header onClickScores={() => setShowScores(true)} />
+      <Header gameState={gameState} onClickScores={() => setShowScores(true)} />
       <Body gameState={gameState} />
       <Footer gameState={gameState} />
 

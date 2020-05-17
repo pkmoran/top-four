@@ -54,7 +54,7 @@ const footerContentForState = ({
   }
 };
 
-const bodyState = ({ gameState: { state, ranker }, rankingPlayer }) => {
+const headerState = ({ gameState: { state, ranker }, rankingPlayer }) => {
   switch (state) {
     case GAME_STATE.BETWEEN_ROUNDS:
       return {
@@ -76,4 +76,4 @@ const bodyState = ({ gameState: { state, ranker }, rankingPlayer }) => {
   }
 };
 
-export { footerContentForState, bodyState };
+export { footerContentForState, headerState };
