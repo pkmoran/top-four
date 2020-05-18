@@ -75,7 +75,7 @@ const AddTopics = ({
           <div class="add-topics__input">
             <TextField
               label="Trivial topic"
-              placeholder={topicExample ? topicExample : null}
+              placeholder={topicExample ? `e.g. ${topicExample}` : null}
               value={topic}
               onInput={({ target: { value } }) => setTopic(value)}
               InputLabelProps={{
