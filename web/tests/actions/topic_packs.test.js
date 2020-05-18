@@ -7,6 +7,7 @@ jest.mock('@services', () => ({
 import { getTopicPacks } from '@actions/topic_packs';
 
 import { TOPIC_PACKS } from '@actions/types';
+import { WRITE_OUR_OWN_UID } from 'utilities/constants';
 
 describe('topic pack actions', () => {
   beforeEach(() => {
@@ -15,7 +16,7 @@ describe('topic pack actions', () => {
 
   describe('getTopicPacks', () => {
     it('calls getTopicPacksService', () => {
-      getTopicPacksService.mockResolvedValue([42]);
+      getTopicPacksService.mockResolvedValue({});
 
       getTopicPacks({ state: {}, dispatch: () => {} });
 
@@ -23,7 +24,27 @@ describe('topic pack actions', () => {
     });
 
     it('dispatches the topic packs action on success', async () => {
-      getTopicPacksService.mockResolvedValue([42]);
+      getTopicPacksService.mockResolvedValue({
+        '12345': {
+          name: 'pack 1',
+          topics: { '1': {}, '2': {}, '3': {}, '4': {} }
+        },
+        '23456': {
+          name: 'random pack',
+          topics: {
+            a: {},
+            b: {},
+            c: {},
+            d: {},
+            e: {},
+            f: {},
+            g: {},
+            h: {},
+            i: {}
+          },
+          isRandomPack: true
+        }
+      });
       const dispatch = jest.fn();
 
       await getTopicPacks({ state: {}, dispatch });
@@ -33,11 +54,16 @@ describe('topic pack actions', () => {
       const dispatchedAction = dispatch.mock.calls[0][0];
 
       expect(dispatchedAction.type).toBe(TOPIC_PACKS);
-      expect(dispatchedAction.payload).toEqual([42]);
+      expect(dispatchedAction.payload.length).toBe(3);
+      expect(dispatchedAction.payload[0].uid).toBe(WRITE_OUR_OWN_UID);
+      expect(dispatchedAction.payload[1].uid).toBe('23456');
+      expect(dispatchedAction.payload[1].name).toBe('random pack (2 turns)');
+      expect(dispatchedAction.payload[2].uid).toBe('12345');
+      expect(dispatchedAction.payload[2].name).toBe('pack 1 (1 turns)');
     });
 
     it('does not call getTopicPacksService if topic packs already exist', () => {
-      getTopicPacksService.mockResolvedValue(42);
+      getTopicPacksService.mockResolvedValue({});
 
       getTopicPacks({ state: { topicPacks: [42] } });
 
