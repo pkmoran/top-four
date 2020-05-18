@@ -26,6 +26,7 @@ const AddTopics = ({
   onTopicAdded
 }) => {
   const [topic, setTopic] = useState('');
+  const numRounds = Math.floor(numTopics / 4);
 
   const handleAddTopic = () => {
     addTopic(topic);
@@ -100,7 +101,11 @@ const AddTopics = ({
         </div>
         <div class="add-topics__footer">
           <span name="numTopics" class="add-topics__total-topics">
-            Total Topics: {numTopics}
+            {numRounds === 0
+              ? 'Not enough topics'
+              : `Enough topics for ${numRounds} turn${
+                  numRounds > 1 ? 's' : ''
+                }`}
           </span>
           <Button
             variant="contained"

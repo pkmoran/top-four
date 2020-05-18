@@ -82,11 +82,11 @@ describe('<AddTopics />', () => {
 
   it('renders the total number of topics', () => {
     const wrapper = shallow(
-      <AddTopics playerTopics={[]} numTopics={12} routes={[]} />
+      <AddTopics playerTopics={[]} numTopics={13} routes={[]} />
     );
 
     expect(wrapper.find('span[name="numTopics"]').text()).toBe(
-      'Total Topics: 12'
+      'Enough topics for 3 turns'
     );
   });
 
