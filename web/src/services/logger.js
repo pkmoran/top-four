@@ -1,6 +1,8 @@
 import { useEffect } from 'preact/hooks';
 import ReactGA from 'react-ga';
 
+import { logExceptionService } from '@services';
+
 let initialized = false;
 
 const maybeInitialize = () => {
@@ -34,11 +36,15 @@ const path = () => {
 const logErrorMessage = message => {
   maybeInitialize();
 
+  const toLog = `${path()} | ${message}`;
+
   if (process.env.NODE_ENV !== 'test') {
     ReactGA.exception({
-      description: `${path()} | ${message}`,
+      description: toLog,
       fatal: true
     });
+
+    logExceptionService(toLog);
   }
 };
 
