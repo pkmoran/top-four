@@ -26,6 +26,13 @@ const Game = ({ closeSnackbar, gameState, snackbarOpen, winner }) => {
     logEvent('in_game', 'show_scores');
   };
 
+  const handleClickSnackbar = () => {
+    closeSnackbar();
+    setShowScores(true);
+
+    logEvent('in_game', 'click_snackbar');
+  };
+
   return (
     <div class="game">
       <Header gameState={gameState} onClickScores={handleClickScores} />
@@ -42,6 +49,7 @@ const Game = ({ closeSnackbar, gameState, snackbarOpen, winner }) => {
       </Drawer>
 
       <Snackbar
+        onClick={handleClickSnackbar}
         open={snackbarOpen}
         onClose={closeSnackbar}
         autoHideDuration={4000}
