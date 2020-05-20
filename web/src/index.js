@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@material-ui/core';
 
 import { GameStateProvider } from '@state';
-import { saveState, loadState } from 'utilities/local_storage';
+import { loadState } from 'utilities/local_storage';
 
 import App from 'components/app';
 
@@ -12,7 +12,6 @@ import theme from 'style/theme';
 
 const Root = () => {
   const state = loadState();
-  saveState({});
 
   return (
     <ThemeProvider theme={theme}>

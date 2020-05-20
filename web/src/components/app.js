@@ -70,32 +70,11 @@ const withSubscribeEffect = WrappedComponent => {
   };
 };
 
-const withLocaStorageEffect = WrappedComponent => {
-  return props => {
-    const writeStateToLocalStorage = () => {
-      saveState(props.fullState);
-    };
-
-    useEffect(() => {
-      window.addEventListener('pagehide', writeStateToLocalStorage);
-      window.addEventListener('beforeunload', writeStateToLocalStorage);
-
-      return () => {
-        window.removeEventListener('pagehide', writeStateToLocalStorage);
-        window.removeEventListener('beforeunload', writeStateToLocalStorage);
-      };
-    }, [props.fullState]);
-
-    return <WrappedComponent {...props} />;
-  };
-};
-
 const wrappers = compose(
   withSubscribeAction,
   withFullState,
   withCoachmarkContentState,
-  withSubscribeEffect,
-  withLocaStorageEffect
+  withSubscribeEffect
 );
 
 export { App };

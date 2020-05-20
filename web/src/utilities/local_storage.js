@@ -22,4 +22,15 @@ const loadState = () => {
   }
 };
 
-export { saveState, loadState };
+const withSaveableState = reducer => {
+  return (oldState, action) => {
+    const newState = reducer(oldState, action);
+
+    const { coachmark: _, ...state } = newState;
+    saveState(state);
+
+    return newState;
+  };
+};
+
+export { saveState, loadState, withSaveableState };

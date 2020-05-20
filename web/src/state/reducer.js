@@ -7,8 +7,9 @@ import {
   SHOW_COACHMARK,
   HIDE_COACHMARK
 } from '@actions/types';
-import { WRITE_OUR_OWN_UID } from 'utilities/constants';
+
 import { withReducerLogging } from 'utilities/logging';
+import { withSaveableState } from 'utilities/local_storage';
 
 const gameStateReducer = (state, { type, payload }) => {
   switch (type) {
@@ -47,4 +48,4 @@ const gameStateReducer = (state, { type, payload }) => {
   }
 };
 
-export default withReducerLogging(gameStateReducer);
+export default withSaveableState(withReducerLogging(gameStateReducer));

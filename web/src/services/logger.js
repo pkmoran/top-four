@@ -10,8 +10,7 @@ const maybeInitialize = () => {
 
   if (!initialized) {
     ReactGA.initialize(process.env.TOP_FOUR_ANALYTICS_TRACKING_ID, {
-      titleCase: false,
-      debug: process.env.NODE_ENV === 'development'
+      titleCase: false
     });
     initialized = true;
   }
