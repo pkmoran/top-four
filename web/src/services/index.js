@@ -106,19 +106,6 @@ const setPlayerActiveService = (playerUid, active, gameUid) => {
     .update({ active });
 };
 
-const logExceptionService = message => {
-  const date = new Date();
-
-  firebase
-    .database()
-    .ref(
-      `/exceptions/${date.getFullYear()}-${
-        date.getMonth() + 1
-      }-${date.getDate()}`
-    )
-    .push(message);
-};
-
 export {
   startGameService,
   getTopicPacksService,
@@ -130,6 +117,5 @@ export {
   deleteTopicService,
   updateGameService,
   lockInService,
-  setPlayerActiveService,
-  logExceptionService
+  setPlayerActiveService
 };

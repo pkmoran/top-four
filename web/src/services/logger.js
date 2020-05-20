@@ -1,8 +1,6 @@
 import { useEffect } from 'preact/hooks';
 import ReactGA from 'react-ga';
 
-import { logExceptionService } from '@services';
-
 let initialized = false;
 
 const maybeInitialize = () => {
@@ -42,8 +40,6 @@ const logErrorMessage = message => {
       description: toLog,
       fatal: true
     });
-
-    logExceptionService(toLog);
   }
 };
 
