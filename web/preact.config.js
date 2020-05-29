@@ -30,4 +30,6 @@ export default function (config, env, helpers, options) {
   if (config.devServer) {
     config.devServer.hot = false;
   }
+
+  console.log(env);
 }

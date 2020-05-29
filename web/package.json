@@ -7,9 +7,9 @@
     "start": "per-env",
     "start:production": "npm run -s serve",
     "start:development": "npm run -s dev",
-    "build": "preact build",
+    "build": "preact build --template src/template.prod.html",
     "serve": "preact build && serve build --single",
-    "dev": "preact watch",
+    "dev": "preact watch --template src/template.dev.html",
     "lint": "eslint src",
     "test": "jest --watch-all",
     "test-ci": "jest"
